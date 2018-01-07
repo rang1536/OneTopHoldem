@@ -8,13 +8,21 @@
 						http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- DB 연결 -->
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
 		<property name="url" value="jdbc:oracle:thin:@175.202.108.60:1521:kis" />
 		<property name="username" value="admin" />
 		<property name="password" value="sRc0488#" />
-	</bean>
+	</bean> -->
 
+	<!-- DB 연결 MSSQL-->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+		<property name="url" value="jdbc:sqlserver://220.82.136.71:1433;databaseName=HoldemDB" />
+		<property name="username" value="holdem_onetop" />
+		<property name="password" value="1111" />
+	</bean>
+	
 	<!-- sqlSessionFactory -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />

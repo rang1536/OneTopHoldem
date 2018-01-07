@@ -2,6 +2,19 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="AdminDao">
+<mapper namespace="AdDao">
+
+<!--db test  -->
+<select id="selectTest" resultType="int">
+	SELECT count(*)
+	FROM dbo.Account
+</select>
+
+<!-- 모든 회원정보 조회 -->
+<select id="selectAllUser" resultType="one.top.holdem.admin.vo.Account">
+	SELECT *
+	FROM dbo.Account	
+</select>
+
 
 </mapper>
