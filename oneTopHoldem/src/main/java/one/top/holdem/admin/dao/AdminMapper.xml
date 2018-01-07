@@ -16,5 +16,11 @@
 	FROM dbo.Account	
 </select>
 
+<!-- 하나의 회원조회  -->
+<select id="selectAccount" parameterType="long" resultType="one.top.holdem.admin.vo.Account">
+	SELECT *
+	FROM dbo.Account
+	WHERE accountId = #{accountId}
+</select>
 
 </mapper>

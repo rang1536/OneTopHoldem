@@ -19,6 +19,23 @@ public class Account {
 	private long ticket;
 	private int costume;
 	private long recommenderAccountId;
+	
+	private String goldCount; //보유골드 3자리 컴마추가된 문자열
+	private String gradeName; //등급명
+	
+	
+	public String getGradeName() {
+		return gradeName;
+	}
+	public void setGradeName(String gradeName) {
+		this.gradeName = gradeName;
+	}
+	public String getGoldCount() {
+		return goldCount;
+	}
+	public void setGoldCount(String goldCount) {
+		this.goldCount = goldCount;
+	}
 	public String getCreatedDate() {
 		return createdDate;
 	}

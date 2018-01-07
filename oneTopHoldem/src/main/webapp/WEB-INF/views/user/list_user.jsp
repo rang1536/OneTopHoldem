@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:import url="./module/side.jsp"></c:import>
+<c:import url="../module/side.jsp"></c:import>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,7 +28,7 @@
 	
 	<script>
 	$(document).ready(function(){
-		$('.topMenu:eq(0)').css('background','#FFC19E');
+		$('.topMenu:eq(1)').css('background','#FFC19E');
 		
    		var table = 
         $('#payList').DataTable( {
@@ -69,22 +69,20 @@
 	    	   var list = json.list;
 	    	   
 	    	   for(var i=0; i<list.length; i++){
-	    		    list[i].goldText = "<span class='numberInput'>"+list[i].gold+"</span>"
-					// 데이터 수정버튼 추가
+	    		    // 데이터 수정버튼 추가
 	   	      		list[i].btnGroup ="<div align='center'>"
-	   	      		list[i].btnGroup += "<button type='button' class='btn btn-success' onclick='modifyAccount("+list[i].accountId+")'>수정</button>"
-	   	      		list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatus("+list[i].accountId+");'>정지</button>"
-	   	      		list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-danger' onclick='deleteAccount("+list[i].accountId+");'>삭제</button></div>";		   	    			   	    	
+	   	      		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='changePass("+list[i].accountId+")'>비번변경</button>";
+	   	      		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='addGoldFn("+list[i].accountId+")'>골드증여</button>";
+	   	     		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='modifyAccount("+list[i].accountId+")'>티켓증여</button>";
+	   	      		list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatus("+list[i].accountId+");'>정지</button>" 			   	    			   	    	
    	           }
 	    	   console.log("list : "+list)
 	    	   return list;
 	      	}
 		  },            
 		  columns : [
+			  {data: "gradeName"},
 		      {data: "loginId"},
-		      {data: "commission"},
-		      {data: "createdDate"},
-		      {data: "goldCount"},
 		      {data: "btnGroup"}	     
 		  ],
 	         initComplete : function() {
@@ -101,25 +99,9 @@
 		$('#addBranch').modal();
 	}
 	
-	//지점수정
-	function modifyAccount(accountId){
-		/* alert(accountId); */
-		$.ajax({
-			url : 'readAccount',
-			data : {'accountId':accountId},
-			dataType:'json',
-			type:'post',
-			success:function(data){
-				$('#modifyAccount').find('#accountId').val(data.accountId);
-				$('#modifyAccount').find('#todayTd').text(data.createdDate);
-				$('#modifyAccount').find('#commission').val(data.commission);
-				$('#modifyAccount').find('#recommendAccountId').val(data.recommendAccountId);
-				$('#modifyAccount').find('#telephone').val(data.telephone);
-				$('#modifyAccount').find('#accountText').val(data.accountText);
-				
-				$('#modifyAccount').modal();
-			}
-		})
+	//단체문자
+	function sendMms(){
+		$('#mms').modal();
 	}
 	
 	//지점 상태변경( >>정지)
@@ -129,17 +111,79 @@
 		}
 	}
 	
-	//지점 삭제
-	function deleteAccount(accountId){
-		if(confirm('해당지점을 삭제하시겠습니까?')){
-			//계정 삭제
-		}
-	}	
 	
-	//단체문자
-	function sendMms(){
-		$('#mms').modal();
+	//비번변경 클릭이벤트
+	function changePass(accountId){
+		$.ajax({
+			url : 'readAccount',
+			data : {'accountId':accountId},
+			dataType:'json',
+			type:'post',
+			success:function(data){
+				$('#changePass').find('#accountId').val(data.accountId);
+				$('#changePass').find('#targetTd').text('['+data.loginId+'님] 비밀번호 변경');
+				$('#changePass').modal();
+			}
+		})
+		
 	}
+	
+	//골드증여 클릭이벤트
+	function addGoldFn(accountId){
+		$.ajax({
+			url : 'readAccount',
+			data : {'accountId':accountId},
+			dataType:'json',
+			type:'post',
+			success:function(data){
+				$('#addGold').find('#accountId').val(data.accountId);
+				$('#addGold').find('#targetTd').text('['+data.loginId+'님] 골드증여');
+				$('#addGold').modal();
+			}
+		})
+	}
+	
+	//골드증여 유효성검사
+	function addGoldSubmit(){
+		var accountId =  $('#addGold').find('#accountId').val();
+		var addGold = $('#addGold').find('#addGold').val();
+		
+		if(confirm('골드를 보내시겠습니까?')){
+			if(addGold == null || addGold == ''){
+				alert('보내실 골드를 입력해주세요');
+				$('#addGold').find('#addGold').focus();
+				return;
+			}
+			// submit
+		}
+	}
+	
+	//비번변경 유효성검사
+	function changePassword(){
+		var password = $('#changePass').find('#loginPassword').val();
+		var rePass = $('#changePass').find('#reLoginPassword').val();
+		var accountId =  $('#changePass').find('#accountId').val();
+		
+		if(password == null || password == ''){
+			alert('비밀번호를 입력하세요');
+			return;
+		}
+		if(rePass == null || rePass == ''){
+			alert('비밀번호를 확인해주세요');
+			return;
+		}
+		
+		if(password == rePass){
+			//submit
+		}else{
+			alert('비밀번호가 일치하지 않습니다!!');
+			$('#changePass').find('#loginPassword').val('');
+			$('#changePass').find('#reLoginPassword').val('');
+			$('#changePass').find('#loginPassword').focus();
+			return;
+		}
+	}
+	
 	
 	</script>
 </head>
@@ -155,7 +199,7 @@
 	</div>
 	<div class="row">
 		<div class="col-lg-12">
-            <a href="#"><i class="fa fa-home fa-fw"></i></a>  >  지점관리
+            <a href="#"><i class="fa fa-home fa-fw"></i></a>  >  회원정보관리
         </div>
 	</div>
 	
@@ -164,17 +208,13 @@
 			<table id="payList">
 				<colgroup>
 					<col width="150px">
-					<col width="100px">
 					<col width="150px">
-					<col width="150px">               
 					<col width="300px">
 				</colgroup>
 				<thead>
 					<tr>
-						<th>ID</th>
-						<th>커미션</th>
-						<th>가입일</th>
-						<th>보유머니</th>
+						<th>등급</th>
+						<th>아이디</th>
 						<th>-</th>						
 					</tr>
 				</thead>
@@ -186,8 +226,9 @@
 	</div>
 </div>
 
-<c:import url="./popup/add_branch.jsp"></c:import>
-<c:import url="./popup/modify_account.jsp"></c:import>
-<c:import url="./popup/mms.jsp"></c:import>
+<c:import url="../popup/add_branch.jsp"></c:import> 	<!--지점등록 팝업  -->
+<c:import url="../popup/mms.jsp"></c:import> 			<!--단체문자 팝업  -->
+<c:import url="../popup/change_Pass.jsp"></c:import> 	<!--비번변경 팝업  -->
+<c:import url="../popup/add_gold.jsp"></c:import> 		<!--골드증여 팝업  -->
 </body>
 </html>

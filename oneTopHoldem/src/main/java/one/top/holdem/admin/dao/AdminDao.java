@@ -24,4 +24,9 @@ public class AdminDao {
 	public List<Account> selectAllUser(){
 		return sqlSession.selectList("AdDao.selectAllUser");
 	}
+	
+	//하나의 회원 조회
+	public Account selectAccount(long accountId) {
+		return sqlSession.selectOne("AdDao.selectAccount", accountId);
+	}
 }

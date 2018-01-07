@@ -19,4 +19,10 @@ public class AdminController {
 		int result = adminService.testDbServ();
 		return "login";
 	}
+	
+	//회원정보관리
+	@RequestMapping(value="/userManagement", method = RequestMethod.GET)
+	public String userManagementCtrl() {
+		return "/user/list_user";
+	}
 }
