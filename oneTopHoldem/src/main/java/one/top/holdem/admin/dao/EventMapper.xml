@@ -8,7 +8,7 @@
 
 <select id="eventList" resultType="one.top.holdem.admin.vo.Event">
 	SELECT *
-	FROM dbo.Event
+	FROM dbo.Tournament
 </select>
 
  
