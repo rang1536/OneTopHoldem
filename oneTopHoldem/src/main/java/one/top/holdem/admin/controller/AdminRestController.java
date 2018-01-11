@@ -34,4 +34,12 @@ public class AdminRestController {
 		Account account = adminService.readAcccountServ(accountId);
 		return account;
 	}
+	
+	//입출금조회
+	@RequestMapping(value="/readGoldInOut", method = RequestMethod.POST)
+	public Account readGoldInOutCtrl(@RequestParam(value="accountId")long accountId){
+		/*System.out.println("아이디 확인 : "+accountId);*/
+		
+		return null;
+	}
 }
