@@ -32,7 +32,7 @@
 					</tr>
 				</table>
 				<br/>
-				<button type="button" class="btn btn-default btn-success btn-block" onclick="addGoldSubmit();">
+				<button type="button" class="btn btn-default btn-success btn-block" onclick="addTicketSubmit();">
 					<span class="glyphicon glyphicon-off"></span>
 					증여
 				</button>
@@ -40,7 +40,9 @@
 			</form>
 		</div>
 		<div class="modal-footer">
-			<button type="submit" class="btn btn-default btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+			<button type="submit" class="btn btn-default btn-default pull-left" data-dismiss="modal">
+				<span class="glyphicon glyphicon-remove"></span> Cancel
+			</button>
 		</div>
 	</div>
 </div>

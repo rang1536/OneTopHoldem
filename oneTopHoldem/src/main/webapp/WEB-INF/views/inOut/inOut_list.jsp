@@ -71,10 +71,7 @@
 	    	   for(var i=0; i<list.length; i++){
 	    		    // 데이터 수정버튼 추가
 	   	      		list[i].btnGroup ="<div align='center'>"
-	   	      		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='changePass("+list[i].accountId+")'>비번변경</button>";
-	   	      		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='addGoldFn("+list[i].accountId+")'>골드증여</button>";
-	   	     		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='modifyAccount("+list[i].accountId+")'>티켓증여</button>";
-	   	      		list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatus("+list[i].accountId+");'>정지</button>" 			   	    			   	    	
+	   	      		list[i].btnGroup += "<button type='button' class='btn btn-primary' onclick='reFresh("+list[i].accountId+")'>충전하기</button>";	   	      		 	    	
    	           }
 	    	   console.log("list : "+list)
 	    	   return list;
@@ -93,110 +90,6 @@
 	   });
    		
 	});
-	
-	//지점등록
-	function addBranchPop(){
-		$('#addBranch').modal();
-	}
-	
-	//단체문자
-	function sendMms(){
-		$('#mms').modal();
-	}
-	
-	//지점 상태변경( >>정지)
-	function changeStatus(accountId){
-		if(confirm('해당지점을 정지로 바꾸겠습니다?')){
-			//accountStatus > 1로 수정
-		}
-	}
-	
-	
-	//비번변경 클릭이벤트
-	function changePass(accountId){
-		$.ajax({
-			url : 'readAccount',
-			data : {'accountId':accountId},
-			dataType:'json',
-			type:'post',
-			success:function(data){
-				$('#changePass').find('#accountId').val(data.accountId);
-				$('#changePass').find('#targetTd').text('['+data.loginId+'님] 비밀번호 변경');
-				$('#changePass').modal();
-			}
-		})
-		
-	}
-	
-	//골드증여 클릭이벤트
-	function addGoldFn(accountId){
-		$.ajax({
-			url : 'readAccount',
-			data : {'accountId':accountId},
-			dataType:'json',
-			type:'post',
-			success:function(data){
-				$('#addGold').find('#accountId').val(data.accountId);
-				$('#addGold').find('#targetTd').text('['+data.loginId+'님] 골드증여');
-				$('#addGold').modal();
-			}
-		})
-	}
-	
-	//골드증여 유효성검사
-	function addGoldSubmit(){
-		var accountId =  $('#addGold').find('#accountId').val();
-		var addGold = $('#addGold').find('#addGold').val();
-		
-		if(confirm('골드를 보내시겠습니까?')){
-			if(addGold == null || addGold == ''){
-				alert('보내실 골드를 입력해주세요');
-				$('#addGold').find('#addGold').focus();
-				return;
-			}
-			// submit
-		}
-	}
-	
-	//비번변경 유효성검사
-	function changePassword(){
-		var password = $('#changePass').find('#loginPassword').val();
-		var rePass = $('#changePass').find('#reLoginPassword').val();
-		var accountId =  $('#changePass').find('#accountId').val();
-		
-		if(password == null || password == ''){
-			alert('비밀번호를 입력하세요');
-			return;
-		}
-		if(rePass == null || rePass == ''){
-			alert('비밀번호를 확인해주세요');
-			return;
-		}
-		
-		if(password == rePass){
-			//submit
-		}else{
-			alert('비밀번호가 일치하지 않습니다!!');
-			$('#changePass').find('#loginPassword').val('');
-			$('#changePass').find('#reLoginPassword').val('');
-			$('#changePass').find('#loginPassword').focus();
-			return;
-		}
-	}
-	
-	function modifyAccount(accountId){
-		$.ajax({
-			url : 'readAccount',
-			data : {'accountId':accountId},
-			dataType:'json',
-			type:'post',
-			success:function(data){
-				$('#addTicket').find('#accountId').val(data.accountId);
-				$('#addTicket').find('#targetTd').text('['+data.loginId+'님] 티켓증여');
-				$('#addTicket').modal();
-			}
-		})
-	}
 	
 	</script>
 </head>
@@ -221,14 +114,18 @@
 			<table id="payList">
 				<colgroup>
 					<col width="150px">
-					<col width="150px">
 					<col width="300px">
+					<col width="300px">
+					<col width="300px">
+					<col width="150px">
 				</colgroup>
 				<thead>
 					<tr>
-						<th>등급</th>
 						<th>아이디</th>
-						<th>-</th>						
+						<th>보유금액</th>
+						<th>충전금액</th>
+						<th>회수금액</th>
+						<th>기능</th>						
 					</tr>
 				</thead>
 				<tbody>
@@ -239,10 +136,5 @@
 	</div>
 </div>
 
-<c:import url="../popup/add_branch.jsp"></c:import> 	<!--지점등록 팝업  -->
-<c:import url="../popup/mms.jsp"></c:import> 			<!--단체문자 팝업  -->
-<c:import url="../popup/change_Pass.jsp"></c:import> 	<!--비번변경 팝업  -->
-<c:import url="../popup/add_gold.jsp"></c:import> 		<!--골드증여 팝업  -->
-<c:import url="../popup/add_ticket.jsp"></c:import>		<!--티켓증여 팝업 -->
 </body>
 </html>

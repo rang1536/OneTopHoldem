@@ -52,10 +52,10 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="#">One-Top Hold'em 관리자</a>
-                <a class="navbar-brand topMenu" href="#" onmouseover="this.style.backgroundColor='#FFC19E'" onmouseout="this.style.backgroundColor=''">지점관리</a>
+                <a class="navbar-brand topMenu" href="branchManagement" onmouseover="this.style.backgroundColor='#FFC19E'" onmouseout="this.style.backgroundColor=''">지점관리</a>
                 <a class="navbar-brand topMenu" href="userManagement" onmouseover="this.style.backgroundColor='#FFC19E'" onmouseout="this.style.backgroundColor=''">회원정보관리</a>
-                <a class="navbar-brand topMenu" href="#" onmouseover="this.style.backgroundColor='#FFC19E'" onmouseout="this.style.backgroundColor=''">게임관리</a>
-                <a class="navbar-brand topMenu" href="#" onmouseover="this.style.backgroundColor='#FFC19E'" onmouseout="this.style.backgroundColor=''">입출금관리</a>
+                <a class="navbar-brand topMenu" href="gameManagement" onmouseover="this.style.backgroundColor='#FFC19E'" onmouseout="this.style.backgroundColor=''">게임관리</a>
+                <a class="navbar-brand topMenu" href="inOutManagement" onmouseover="this.style.backgroundColor='#FFC19E'" onmouseout="this.style.backgroundColor=''">입출금관리</a>
                 <a class="navbar-brand topMenu" href="#" onmouseover="this.style.backgroundColor='#FFC19E'" onmouseout="this.style.backgroundColor=''">이벤트관리</a>
                 <a class="navbar-brand topMenu" href="eventList.do" onmouseover="this.style.backgroundColor='#FFC19E'" onmouseout="this.style.backgroundColor=''">수익관리</a>
             </div>
