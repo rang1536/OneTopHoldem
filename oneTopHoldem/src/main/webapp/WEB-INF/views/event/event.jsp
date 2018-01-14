@@ -79,6 +79,7 @@
 		  },            
 		  columns : [
 			  {data: "startDate"},
+			  {data: "startDate"},
 			  {data: "needTicket"},
 			  {data: "needGold"},
 			  {data: "needCommission"},
@@ -92,8 +93,28 @@
 			  {data: "addOnNeedCommission"},
 			  {data: "addOnReceiveChip"},
 			  {data: "isDoubleBuyIn"},
-			  {data: "title"}
-
+			  {data: "minUser"},
+			  {data: "maxUser"},
+			  {data: "guarantee"},
+			  {data: "tournamentType"},
+			  {data: "blindUpTime"},
+			  {data: "breakTimeLevel"},
+			  {data: "breakTime"},
+			  {data: "title"},
+			  {data: "anteBaseValue"},
+			  {data: "anteUpValue9"},
+			  {data: "anteUpValue19"},
+			  {data: "anteUpValue29"},
+			  {data: "anteUpValue39"},
+			  {data: "anteUpValue49"},
+			  {data: "anteUpValueOther"},
+			  {data: "smallBlindBaseValue"},
+			  {data: "smallBlindUpValue9"},
+			  {data: "smallBlindUpValue19"},
+			  {data: "smallBlindUpValue29"},
+			  {data: "smallBlindUpValue39"},
+			  {data: "smallBlindUpValue49"},
+			  {data: "smallBlindUpValueOther"}
 		  ],
 	         initComplete : function() {
 	  
@@ -131,26 +152,42 @@
 	</div>
 	
 	<div class="row">
-		<div id="content">
-			<table id="eventList">
+		<div id="content" >
+			<table id="eventList" style="width:100%;overflow:auto;scollbar:true">
 				<colgroup>
-					<col width="150px">
-					<col width="100px">
-					<col width="150px">
-					<col width="150px">               
+					<col width="*">
+					<col width="*">
+					<col width="*">
+					<col width="*">               
 					<col width="300px">
+					
+					<col width="*">
+					<col width="*">
+					<col width="*">
+					<col width="*">
+					<col width="*">
+					
+					<col width="*">
+					<col width="*">
+					<col width="*">
+					<col width="*">
+					<col width="*">
+					
 				</colgroup>
 				<thead>
 					<tr>
 						<th>날자</th>
+						<th>시간</th>
 						<th>참가비</th>
 						<th>참가정원</th>
 						<th>제목</th>
+						
 						<th>게임타입</th>
 						<th>블라인드업</th>
 						<th>브레이크타임</th>
 						<th>프리롤</th>
 						<th>바이인</th>
+						
 						<th>더블바이인</th>
 						<th>라바이</th>
 						<th>애드온</th>
