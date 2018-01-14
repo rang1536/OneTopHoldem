@@ -44,15 +44,15 @@
 					</tr>
 					<tr>
 						<td><span style="color:red;">*</span>커미션</td>
-						<td><input type="text" class="form-control" name="commission" style="width:90%;" id="commission" onkeyup="isNum();" placeholder="숫자만 입력"/></td>
+						<td><input type="text" class="form-control" name="commission" style="width:90%;" id="commission" onkeyup="isNum(this.value, 'commission');" placeholder="숫자만 입력"/></td>
 						<td><span style="color:red;">*</span>추천인ID</td>
 						<td><input type="text" class="form-control" name="recommendAccountId" id="recommendAccountId"/></td>
 					</tr>
 					<tr>
 						<td><span style="color:red;">*</span>연락처</td>
-						<td><input type="text" class="form-control" name="telephone" id="telephone" onkeyup="isNum();" placeholder="숫자만 입력"/></td>
+						<td><input type="text" class="form-control" name="telephone" id="telephone" onkeyup="isNum(this.value, 'telephone');" placeholder="숫자만 입력"/></td>
 						<td>연락처2</td>
-						<td><input type="text" class="form-control" name="hp2" id="hp2" onkeyup="isNum();" placeholder="숫자만 입력"/></td>
+						<td><input type="text" class="form-control" name="hp2" id="hp2" onkeyup="isNum(this.value, 'hp2');" placeholder="숫자만 입력"/></td>
 					</tr>
 					<tr>
 						<td colspan="4" style="text-align:left;"><br/>&nbsp;&nbsp;특이사항</td>						

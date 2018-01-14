@@ -24,7 +24,15 @@ public class Account {
 	private String gradeName; //등급명
 	private String chargeGoldToString;
 	
+	private String reLoginPassword;
 	
+	
+	public String getReLoginPassword() {
+		return reLoginPassword;
+	}
+	public void setReLoginPassword(String reLoginPassword) {
+		this.reLoginPassword = reLoginPassword;
+	}
 	public String getChargeGoldToString() {
 		return chargeGoldToString;
 	}

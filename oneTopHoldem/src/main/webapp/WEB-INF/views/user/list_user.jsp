@@ -69,14 +69,20 @@
 	    	   var list = json.list;
 	    	   
 	    	   for(var i=0; i<list.length; i++){
+	    			// 정지된 지점 표시
+					if(list[i].accountStatus == 1) list[i].loginId += '(정지됨)'; 
+	    			
 	    		    // 데이터 수정버튼 추가
 	   	      		list[i].btnGroup ="<div align='center'>"
 	   	      		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='changePass("+list[i].accountId+")'>비번변경</button>";
 	   	      		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='addGoldFn("+list[i].accountId+")'>골드증여</button>";
 	   	     		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='modifyAccount("+list[i].accountId+")'>티켓증여</button>";
-	   	      		list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatus("+list[i].accountId+");'>정지</button>" 			   	    			   	    	
+	   	     		
+		   	     	if(list[i].accountStatus == 1) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatusNone("+list[i].accountId+");'>정지풀기</button>"
+					else if(list[i].accountStatus == 0) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatus("+list[i].accountId+");'>정지</button>"
+	   	      		
    	           }
-	    	   console.log("list : "+list)
+	    	   
 	    	   return list;
 	      	}
 		  },            
@@ -94,9 +100,81 @@
    		
 	});
 	
-	//지점등록
+	function isNum(str, tag){ //키업이벤트 숫자만 입력하는지 체크
+		var key = event.keyCode;
+		if(!(key==8 || key==9 || key==13 || key==46 || key==144 || (key>=48&&key<=57) || key==110 || key==190)){
+			alert('숫자만 입력가능합니다!!');
+			str = str.substring(0,str.length-1);
+			$('#addBranch').find('#'+tag).val(str);
+			event.returnValue = false;
+		}
+	}
+	
+	// id 중복체크(지점등록)
+	function overlapCheck(loginId){
+		if(loginId != null && loginId != ''){
+			$.ajax({
+				url : 'overlap',
+				data: {'loginId':loginId},
+				dataType: 'json',
+				type : 'post',
+				success : function(data){
+					if(data.result == 'fail'){
+						alert('같은 아이디가 존재합니다. 변경해주세요');
+						$('#addBranchForm').find('#loginId').val('');
+						$('#addBranchForm').find('#loginId').focus();
+						return;
+					}
+				}
+			})
+		}
+	}
+	
+	//지점등록 팝업창 열기
 	function addBranchPop(){
 		$('#addBranch').modal();
+	}
+	//지점등록하기 - 유효성검사 & 폼값 서브밋
+	function addBranch(){
+		var loginId = $('#addBranchForm').find('#loginId').val();
+		var loginPassword = $('#addBranchForm').find('#loginPassword').val();
+		var reLoginPassword = $('#addBranchForm').find('#reLoginPassword').val();
+		var commission = $('#addBranchForm').find('#commission').val();
+		var recommendAccountId = $('#addBranchForm').find('#recommendAccountId').val();
+		var telephone = $('#addBranchForm').find('#telephone').val();
+		var hp2 = $('#addBranchForm').find('#hp2').val();
+		var accountText = $('#addBranchForm').find('#accountText').val();
+		
+		//널체크
+		if(loginId ==null || loginId == ''){
+			alert('아이디를 입력해주세요!!');
+			return ;
+		}else if(loginPassword ==null || loginPassword == ''){
+			alert('패스워드를 입력해주세요!!');
+			return ;
+		}else if(reLoginPassword ==null || reLoginPassword == ''){
+			alert('패스워드를 다시 입력해주세요!!');
+			return ;
+		}else if(commission ==null || commission == ''){
+			alert('커미션을 입력해주세요!!');
+			return ;
+		}else if(recommendAccountId ==null || recommendAccountId == ''){
+			alert('추천인을 입력해주세요!!');
+			return ;
+		}else if(telephone ==null || telephone == ''){
+			alert('연락처를 입력해주세요!!');
+			return ;
+		}
+		
+		//비번, 재입력간 일치여부 확인
+		if(loginPassword != reLoginPassword){
+			alert('비밀번호가 다릅니다 다시 입력하세요');
+			$('#addBranchForm').find('#reLoginPassword').val('');
+			$('#addBranchForm').find('#reLoginPassword').focus();
+			return;
+		}
+		
+		$('#addBranchForm').attr('action','addBranch').submit();
 	}
 	
 	//단체문자
@@ -108,11 +186,42 @@
 	function changeStatus(accountId){
 		if(confirm('해당지점을 정지로 바꾸겠습니다?')){
 			//accountStatus > 1로 수정
+			$.ajax({
+				url : 'modifyAccountStatus',
+				data:{'accountId':accountId},
+				dataType:'json',
+				type:'post',
+				success:function(data){
+					if(data.updateCheck == 'success'){
+						alert('지점상태를 정지로 수정하였습니다!!');
+						window.location.reload(true);
+					}
+				}
+			})
+		}
+	}
+	
+	//지점 상태변경( >>정지풀기)
+	function changeStatusNone(accountId){
+		if(confirm('해당지점의 정지를 푸시겠습니다?')){
+			//accountStatus > 0로 수정
+			$.ajax({
+				url : 'modifyAccountStatusNone',
+				data:{'accountId':accountId},
+				dataType:'json',
+				type:'post',
+				success:function(data){
+					if(data.updateCheck == 'success'){
+						alert('정지를 풀었습니다!!');
+						window.location.reload(true);
+					}
+				}
+			})
 		}
 	}
 	
 	
-	//비번변경 클릭이벤트
+	//비번변경 팝업창열기
 	function changePass(accountId){
 		$.ajax({
 			url : 'readAccount',
@@ -125,6 +234,46 @@
 				$('#changePass').modal();
 			}
 		})
+		
+	}
+	
+	//비번변경하기
+	function changePassword(){
+		var pass = $('#changePass').find('#loginPassword').val();
+		var rePass = $('#changePass').find('#reLoginPassword').val();
+		
+		if(pass == null || pass == ''){
+			alert('비밀번호를 입력하세요');
+			$('#changePass').find('#loginPassword').focus();
+			return;
+		}else if(rePass == null || rePass == ''){
+			alert('비밀번호를 확인해주세요');
+			$('#changePass').find('#reLoginPassword').focus();
+			return;
+		}
+		
+		if(pass != rePass){
+			alert('비밀번호가 일치하지 않습니다!!');
+			$('#changePass').find('#reLoginPassword').val('');
+			$('#changePass').find('#reLoginPassword').focus();
+			return;
+		}
+		
+		var params = $('#changePassForm').serialize();
+		if(confirm('비밀번호를 변경하시겠습니까?')){
+			$.ajax({
+				url : 'changePass',
+				data : params,
+				dataType:'json',
+				type:'post',
+				success : function(data){
+					if(data.changeCheck == 'success'){
+						alert('비밀번호를 수정하였습니다');
+						return;
+					}
+				}
+			})
+		}
 		
 	}
 	
@@ -203,19 +352,20 @@
 <body>
 <div id="page-wrapper">
 	<br/>
-	<div class="row" style="text-align:right;margin-right:10px;">
+	<div class="row">
+		<div class="col-lg-12">
+            <a href="#"><i class="fa fa-home fa-fw"></i></a>  >  회원정보관리
+        </div>
+	</div>
+	<br/>
+	<div class="row" style="text-align:left;margin-right:10px;">
 		<div>
 			<button type="button" class="btn btn-success" onclick="sendMms();">일괄메세지</button>
 			<button type="button" class="btn btn-primary" onclick="addBranchPop();">지점등록</button>
 		</div>
 		
 	</div>
-	<div class="row">
-		<div class="col-lg-12">
-            <a href="#"><i class="fa fa-home fa-fw"></i></a>  >  회원정보관리
-        </div>
-	</div>
-	
+	<br/>
 	<div class="row">
 		<div id="content">
 			<table id="payList">

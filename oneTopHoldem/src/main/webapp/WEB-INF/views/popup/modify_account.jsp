@@ -40,15 +40,15 @@
 					</tr>
 					<tr>
 						<td>커미션</td>
-						<td><input type="text" class="form-control" name="commission" style="width:90%;" id="commission" onkeyup="isNum();"/></td>
+						<td><input type="text" class="form-control" name="commission" style="width:90%;" id="commission" onkeyup="isNumModify(this.value,'commission');"/></td>
 						<td>추천인ID</td>
 						<td><input type="text" class="form-control" name="recommendAccountId" id="recommendAccountId" readonly /></td>
 					</tr>
 					<tr>
 						<td>연락처</td>
-						<td><input type="text" class="form-control" name="telephone" id="telephone" onkeyup="isNum();"/></td>
+						<td><input type="text" class="form-control" name="telephone" id="telephone" onkeyup="isNumModify(this.value,'telephone');"/></td>
 						<td>연락처</td>
-						<td><input type="text" class="form-control" name="hp2" id="hp2" onkeyup="isNum();" /></td>
+						<td><input type="text" class="form-control" name="hp2" id="hp2" onkeyup="isNumModify(this.value,'hp2');" /></td>
 					</tr>
 					<tr>
 						<td colspan="4" style="text-align:left;"><br/>&nbsp;&nbsp;&nbsp;특이사항</td>						

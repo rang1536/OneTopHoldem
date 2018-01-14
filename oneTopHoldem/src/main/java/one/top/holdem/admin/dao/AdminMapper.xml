@@ -45,8 +45,28 @@
 		<if test="accountText != null and accountText != ''">,accountText=#{accountText}</if>
 		<if test="recommenderAccountId != null and recommenderAccountId != ''">,recommenderAccountId=#{recommenderAccountId}</if>
 		<if test="loginPassword != null and loginPassword != ''">,loginPassword=PwdEncrypt('#{commission}')</if>
+	WHERE accountId = #{accountId}	
+</update>
+
+<!-- 지점상태변경 0:none 1:stop -->
+<update id="updateAccountStatus" parameterType="Map">
+	UPDATE dbo.Account
+	SET accountStatus = #{accountState}
 	WHERE accountId = #{accountId}
-	
+</update>
+
+<!-- 지점삭제 -->
+<delete id="deleteAccount" parameterType="int">
+	DELETE
+	FROM dbo.account
+	WHERE accounId = #{accountId}
+</delete>
+
+<!-- 비번변경 -->
+<update id="updatePass" parameterType="one.top.holdem.admin.vo.Account">
+	UPDATE dbo.Account
+	SET loginPassword=PwdEncrypt('#{commission}')
+	WHERE accountId = #{accountId}	
 </update>
 
 
