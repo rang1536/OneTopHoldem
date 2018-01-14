@@ -21,11 +21,12 @@
 			<h4 style="color:red;"><span class="glyphicon glyphicon-check"></span> 정보수정</h4>
 		</div>
 		<div class="modal-body">
-			<form role="form" id="modifyAccountForm">
+			<form role="form" id="modifyAccountForm" method="post">
+				<input type="hidden" name="accountId" id="accountId"/>
 				<table style="width:100%;">
 					<tr>
 						<td>ID</td>
-						<td><input type="text" class="form-control" name="accountId" id="accountId" readonly/></td>
+						<td><input type="text" class="form-control" name="loginId" id="loginId" readonly/></td>
 						<td>비밀번호</td>
 						<td><input type="text" class="form-control" name="loginPassword"/></td>
 					</tr>
@@ -39,15 +40,15 @@
 					</tr>
 					<tr>
 						<td>커미션</td>
-						<td><input type="text" class="form-control" name="commission" style="width:90%;" id="commission" /></td>
+						<td><input type="text" class="form-control" name="commission" style="width:90%;" id="commission" onkeyup="isNum();"/></td>
 						<td>추천인ID</td>
-						<td><input type="text" class="form-control" name="recommendAccountId" id="recommendAccountId" /></td>
+						<td><input type="text" class="form-control" name="recommendAccountId" id="recommendAccountId" readonly /></td>
 					</tr>
 					<tr>
 						<td>연락처</td>
-						<td><input type="text" class="form-control" name="telephone" id="telephone" /></td>
+						<td><input type="text" class="form-control" name="telephone" id="telephone" onkeyup="isNum();"/></td>
 						<td>연락처</td>
-						<td><input type="text" class="form-control" name="hp2" id="hp2" /></td>
+						<td><input type="text" class="form-control" name="hp2" id="hp2" onkeyup="isNum();" /></td>
 					</tr>
 					<tr>
 						<td colspan="4" style="text-align:left;"><br/>&nbsp;&nbsp;&nbsp;특이사항</td>						
@@ -59,7 +60,7 @@
 					</tr>
 				</table>
 				<br/>
-				<button type="button" class="btn btn-default btn-success btn-block" id="approvalBtn">
+				<button type="button" class="btn btn-default btn-success btn-block" onclick="modifyBranch();">
 					<span class="glyphicon glyphicon-off"></span>
 					 수정
 				</button>

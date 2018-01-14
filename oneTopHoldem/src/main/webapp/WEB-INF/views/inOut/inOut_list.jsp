@@ -28,7 +28,7 @@
 	
 	<script>
 	$(document).ready(function(){
-		$('.topMenu:eq(1)').css('background','#FFC19E');
+		$('.topMenu:eq(3)').css('background','#FFC19E');
 		
    		var table = 
         $('#payList').DataTable( {
@@ -69,18 +69,23 @@
 	    	   var list = json.list;
 	    	   
 	    	   for(var i=0; i<list.length; i++){
-	    		    // 데이터 수정버튼 추가
+	    		    // 충전버튼 추가
 	   	      		list[i].btnGroup ="<div align='center'>"
-	   	      		list[i].btnGroup += "<button type='button' class='btn btn-primary' onclick='reFresh("+list[i].accountId+")'>충전하기</button>";	   	      		 	    	
+	   	      		list[i].btnGroup += "<button type='button' class='btn btn-primary' onclick='reFresh("+list[i].accountId+")'>충전하기</button>";
+	   	      		
+	   	      		// 회수금액세팅
+	   	      		list[i].collectionGold = 0;
    	           }
 	    	   console.log("list : "+list)
 	    	   return list;
 	      	}
 		  },            
 		  columns : [
-			  {data: "gradeName"},
-		      {data: "loginId"},
-		      {data: "btnGroup"}	     
+			  {data: "loginId"},
+		      {data: "goldCount"},
+		      {data: "chargeGold"},	
+		      {data: "collectionGold"},
+		      {data: "btnGroup"}
 		  ],
 	         initComplete : function() {
 	  
@@ -98,8 +103,8 @@
 	<br/>
 	<div class="row" style="text-align:right;margin-right:10px;">
 		<div>
-			<button type="button" class="btn btn-success" onclick="sendMms();">일괄메세지</button>
-			<button type="button" class="btn btn-primary" onclick="addBranchPop();">지점등록</button>
+			<button type="button" class="btn btn-success" onclick="mmsList();">메세지보기</button>
+			<button type="button" class="btn btn-success" onclick="modifyMyInfo();">개인정보수정</button>
 		</div>
 		
 	</div>

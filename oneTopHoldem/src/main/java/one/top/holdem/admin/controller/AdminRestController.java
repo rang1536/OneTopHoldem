@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import one.top.holdem.admin.service.AdminService;
 import one.top.holdem.admin.vo.Account;
+import one.top.holdem.admin.vo.Import;
 
 @RestController
 public class AdminRestController {
@@ -37,9 +38,18 @@ public class AdminRestController {
 	
 	//입출금조회
 	@RequestMapping(value="/readGoldInOut", method = RequestMethod.POST)
-	public Account readGoldInOutCtrl(@RequestParam(value="accountId")long accountId){
+	public List<Import> readGoldInOutCtrl(@RequestParam(value="accountId")long accountId){
 		/*System.out.println("아이디 확인 : "+accountId);*/
-		
-		return null;
+		List<Import> list = adminService.readImportServ();
+		return list;
 	}
+	
+	//id중복검사 overlap
+	@RequestMapping(value="/overlap", method = RequestMethod.POST)
+	public Map<String, String> overlapCtrl(@RequestParam(value="loginId")String loginId){
+		/*System.out.println("아이디 확인 : "+loginId);*/
+		Map<String, String> map = adminService.readIdOverlapCountServ(loginId);
+		return map; 
+	}
+	
 }

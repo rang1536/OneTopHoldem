@@ -29,6 +29,15 @@
 	<script>
 	$(document).ready(function(){
 		$('.topMenu:eq(0)').css('background','#FFC19E');
+		var inputCheck = '${inputCheck}'; //지점등록시 체크하는 변수
+		var updateCheck = '${updateCheck}'; //지점수정시 체크하는 변수
+		
+		// 지점등록, 수정등 성공여부 알림창
+		if(inputCheck == 'success') alert('지점등록에 성공하였습니다!!');
+		else if(inputCheck == 'fail') alert('지점등록에 실패하였습니다!!');
+		
+		if(updateCheck == 'success') alert('지점수정에 성공하였습니다!!');
+		else if(updateCheck == 'fail') alert('지점수정에 실패하였습니다!!');
 		
    		var table = 
         $('#payList').DataTable( {
@@ -96,12 +105,77 @@
    		
 	});
 	
-	//지점등록
+	//유효성검사 하는 함수 정의 - 널체크, 숫자만 입력.
+	function nullCheck(str){ //널체크
+		if(str == null || str == ''){
+			alert('필수항목을 모두 입력해주세요!!');
+			return;
+		}
+		return false;
+	}
+	
+	function isNum(){ //키업이벤트 숫자만 입력하는지 체크
+		var key = event.keyCode;
+		if(!(key==8 || key==9 || key==13 || key==46 || key==144 || (key>=48&&key<=57) || key==110 || key==190)){
+			alert('숫자만 입력가능합니다!!')
+			event.returnValue = false;
+		}
+	}
+	
+	// id 중복체크(지점등록)
+	function overlapCheck(loginId){
+		if(loginId != null && loginId != ''){
+			$.ajax({
+				url : 'overlap',
+				data: {'loginId':loginId},
+				dataType: 'json',
+				type : 'post',
+				success : function(data){
+					if(data.result == 'fail'){
+						alert('같은 아이디가 존재합니다. 변경해주세요');
+						$('#addBranchForm').find('#loginId').val('');
+						$('#addBranchForm').find('#loginId').focus();
+						return;
+					}
+				}
+			})
+		}
+	}
+	//지점등록 팝업창 열기
 	function addBranchPop(){
 		$('#addBranch').modal();
 	}
 	
-	//지점수정
+	//지점등록하기 - 유효성검사 & 폼값 서브밋
+	function addBranch(){
+		var loginId = $('#addBranchForm').find('#loginId').val();
+		var loginPassword = $('#addBranchForm').find('#loginPassword').val();
+		var reLoginPassword = $('#addBranchForm').find('#reLoginPassword').val();
+		var commission = $('#addBranchForm').find('#commission').val();
+		var recommendAccountId = $('#addBranchForm').find('#recommendAccountId').val();
+		var telephone = $('#addBranchForm').find('#telephone').val();
+		var hp2 = $('#addBranchForm').find('#hp2').val();
+		var accountText = $('#addBranchForm').find('#accountText').val();
+		
+		//널체크
+		nullCheck(loginId);
+		nullCheck(loginPassword);
+		nullCheck(reLoginPassword);
+		nullCheck(commission);
+		nullCheck(recommendAccountId);
+		nullCheck(telephone);
+		
+		//비번, 재입력간 일치여부 확인
+		if(loginPassword != reLoginPassword){
+			alert('비밀번호가 다릅니다 다시 입력하세요');
+			$('#addBranchForm').find('#reLoginPassword').val('');
+			$('#addBranchForm').find('#reLoginPassword').focus();
+			return;
+		}
+		
+		$('#addBranchForm').attr('action','addBranch').submit();
+	}
+	//지점수정 팝업창 텍스트박스 값세팅 및 팝업창 열기
 	function modifyAccount(accountId){
 		/* alert(accountId); */
 		$.ajax({
@@ -111,6 +185,7 @@
 			type:'post',
 			success:function(data){
 				$('#modifyAccount').find('#accountId').val(data.accountId);
+				$('#modifyAccount').find('#loginId').val(data.loginId);
 				$('#modifyAccount').find('#todayTd').text(data.createdDate);
 				$('#modifyAccount').find('#commission').val(data.commission);
 				$('#modifyAccount').find('#recommendAccountId').val(data.recommendAccountId);
@@ -120,6 +195,23 @@
 				$('#modifyAccount').modal();
 			}
 		})
+	}
+	
+	//지점수정
+	function modifyBranch(){
+		var loginPassword = $('#modifyAccountForm').find('#loginPassword').val();
+		var reLoginPassword = $('#modifyAccountForm').find('#reLoginPassword').val();
+		
+		if(loginPassword != null && loginPassword != ''){ //비밀번호를 입력했다면 재입력 비번과 확인하여 다르면 같게 입력하게함.
+			if(loginPassword != reLoginPassword){
+				alert('비밀번호가 다릅니다 다시 입력하세요');
+				$('#modifyAccountForm').find('#reLoginPassword').val('');
+				$('#modifyAccountForm').find('#reLoginPassword').focus();
+				return;
+			}
+		}
+		
+		$('#modifyAccountForm').attr('action','modifyAccount').submit();
 	}
 	
 	//지점 상태변경( >>정지)
@@ -146,17 +238,17 @@
 <body>
 <div id="page-wrapper">
 	<br/>
-	<div class="row" style="text-align:right;margin-right:10px;">
-		<div>
-			<button type="button" class="btn btn-success" onclick="sendMms();">일괄메세지</button>
-			<button type="button" class="btn btn-primary" onclick="addBranchPop();">지점등록</button>
-		</div>
-		
-	</div>
 	<div class="row">
 		<div class="col-lg-12">
             <a href="#"><i class="fa fa-home fa-fw"></i></a>  >  지점관리
         </div>
+	</div>
+	<br/>
+	<div class="row">
+		<div style="text-align:left;margin-right:10px;">
+			<button type="button" class="btn btn-success" onclick="sendMms();">일괄메세지</button>
+			<button type="button" class="btn btn-primary" onclick="addBranchPop();">지점등록</button>
+		</div>
 	</div>
 	
 	<div class="row">

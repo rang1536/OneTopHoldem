@@ -15,15 +15,22 @@ public class Account {
 	private int accountLevel;
 	private long accountExp;
 	private long gold;
-	private long chargeGlod;
+	private long chargeGold;
 	private long ticket;
 	private int costume;
 	private long recommenderAccountId;
 	
 	private String goldCount; //보유골드 3자리 컴마추가된 문자열
 	private String gradeName; //등급명
+	private String chargeGoldToString;
 	
 	
+	public String getChargeGoldToString() {
+		return chargeGoldToString;
+	}
+	public void setChargeGoldToString(String chargeGoldToString) {
+		this.chargeGoldToString = chargeGoldToString;
+	}
 	public String getGradeName() {
 		return gradeName;
 	}
@@ -120,11 +127,12 @@ public class Account {
 	public void setGold(long gold) {
 		this.gold = gold;
 	}
-	public long getChargeGlod() {
-		return chargeGlod;
+	
+	public long getChargeGold() {
+		return chargeGold;
 	}
-	public void setChargeGlod(long chargeGlod) {
-		this.chargeGlod = chargeGlod;
+	public void setChargeGold(long chargeGold) {
+		this.chargeGold = chargeGold;
 	}
 	public long getTicket() {
 		return ticket;
@@ -150,9 +158,11 @@ public class Account {
 				+ ", accountState=" + accountState + ", telephone=" + telephone + ", email=" + email + ", accountText="
 				+ accountText + ", accountId=" + accountId + ", loginId=" + loginId + ", loginPassword=" + loginPassword
 				+ ", nickname=" + nickname + ", accountLevel=" + accountLevel + ", accountExp=" + accountExp + ", gold="
-				+ gold + ", chargeGlod=" + chargeGlod + ", ticket=" + ticket + ", costume=" + costume
-				+ ", recommenderAccountId=" + recommenderAccountId + "]";
+				+ gold + ", chargeGold=" + chargeGold + ", ticket=" + ticket + ", costume=" + costume
+				+ ", recommenderAccountId=" + recommenderAccountId + ", goldCount=" + goldCount + ", gradeName="
+				+ gradeName + "]";
 	}
+	
 	
 	
 }
