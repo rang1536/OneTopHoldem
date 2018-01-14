@@ -1,5 +1,5 @@
 package one.top.holdem.admin.vo;
 
-public class Member {
+public class RecommenderNotice {
 
 }

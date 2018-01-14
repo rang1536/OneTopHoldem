@@ -21,13 +21,14 @@
 			<h4 style="color:red;"><span class="glyphicon glyphicon-check"></span> 지점등록</h4>
 		</div>
 		<div class="modal-body">
-			<form role="form" id="approvalForm">
+			<h4 style="font-size:14px;">(* 표시된 항목은 필수입력 사항입니다.)</h4>
+			<form role="form" id="addBranchForm" method="post">
 				<table style="width:100%;">
 					<tr>
-						<td>ID</td>
-						<td><input type="text" class="form-control" name="accountId"/></td>
-						<td>비밀번호</td>
-						<td><input type="text" class="form-control" name="loginPassword"/></td>
+						<td><span style="color:red;">*</span>ID</td>
+						<td><input type="text" class="form-control" name="loginId" id="loginId" onblur="overlapCheck(this.value);"/></td>
+						<td><span style="color:red;">*</span>비밀번호</td>
+						<td><input type="password" class="form-control" name="loginPassword" id="loginPassword" placeholder="4자리이상 입력"/></td>
 					</tr>
 					<tr>
 						<td>가입일</td>
@@ -38,32 +39,32 @@
 								$('#todayTd').text(now);
 							</script>
 						</td>
-						<td>비번재입력</td>
-						<td><input type="text" class="form-control" name="reLoginPassword"/></td>
+						<td><span style="color:red;">*</span>비번재입력</td>
+						<td><input type="password" class="form-control" name="reLoginPassword" id="reLoginPassword"/></td>
 					</tr>
 					<tr>
-						<td>커미션</td>
-						<td><input type="text" class="form-control" name="commission" style="width:90%;"/></td>
-						<td>추천인ID</td>
-						<td><input type="text" class="form-control" name="recommendAccountId"/></td>
+						<td><span style="color:red;">*</span>커미션</td>
+						<td><input type="text" class="form-control" name="commission" style="width:90%;" id="commission" onkeyup="isNum();" placeholder="숫자만 입력"/></td>
+						<td><span style="color:red;">*</span>추천인ID</td>
+						<td><input type="text" class="form-control" name="recommendAccountId" id="recommendAccountId"/></td>
 					</tr>
 					<tr>
-						<td>연락처</td>
-						<td><input type="text" class="form-control" name="hp"/></td>
-						<td>연락처</td>
-						<td><input type="text" class="form-control" name="hp2"/></td>
+						<td><span style="color:red;">*</span>연락처</td>
+						<td><input type="text" class="form-control" name="telephone" id="telephone" onkeyup="isNum();" placeholder="숫자만 입력"/></td>
+						<td>연락처2</td>
+						<td><input type="text" class="form-control" name="hp2" id="hp2" onkeyup="isNum();" placeholder="숫자만 입력"/></td>
 					</tr>
 					<tr>
-						<td colspan="4">특이사항</td>						
+						<td colspan="4" style="text-align:left;"><br/>&nbsp;&nbsp;특이사항</td>						
 					</tr>
 					<tr>
 						<td colspan="4">
-							<textarea row="5" class="form-control"></textarea>
+							<textarea row="5" class="form-control" name="accountText" id="accountText"></textarea>
 						</td>
 					</tr>
 				</table>
 				<br/>
-				<button type="button" class="btn btn-default btn-success btn-block" id="approvalBtn">
+				<button type="button" class="btn btn-default btn-success btn-block" onclick="addBranch();">
 					<span class="glyphicon glyphicon-off"></span>
 					 등록
 				</button>

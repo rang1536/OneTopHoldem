@@ -16,5 +16,38 @@
 	FROM dbo.Account	
 </select>
 
+<!-- 하나의 회원조회  -->
+<select id="selectAccount" parameterType="long" resultType="one.top.holdem.admin.vo.Account">
+	SELECT *
+	FROM dbo.Account
+	WHERE accountId = #{accountId}
+</select>
+
+<!-- 보유금액 조회 -->
+<select id="selectImport" resultType="one.top.holdem.admin.vo.Import">
+	SELECT *
+	FROM dbo.Import
+</select>
+
+<!-- 아이디 중복체크 -->
+<select id="selectIdOverLapCount" parameterType="String" resultType="int">
+	SELECT COUNT(*)
+	FROM dbo.Account
+	WHERE loginId = #{loginId}
+</select>
+
+<!-- 지점수정 - 패스워드 변경이 있을시 암호화 하여 업데이트처리 PwdEncrypt('패스워드')함수 사용  -->
+<update id="updateAccount" parameterType="one.top.holdem.admin.vo.Account">
+	UPDATE dbo.Account
+	SET loginId = #{loginId}
+		<if test="commission != null and commission != ''">,commission=#{commission}</if>
+		<if test="telephone != null and telephone != ''">,telephone=#{telephone}</if>
+		<if test="accountText != null and accountText != ''">,accountText=#{accountText}</if>
+		<if test="recommenderAccountId != null and recommenderAccountId != ''">,recommenderAccountId=#{recommenderAccountId}</if>
+		<if test="loginPassword != null and loginPassword != ''">,loginPassword=PwdEncrypt('#{commission}')</if>
+	WHERE accountId = #{accountId}
+	
+</update>
+
 
 </mapper>
