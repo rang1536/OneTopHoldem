@@ -1,6 +1,9 @@
 package one.top.holdem.admin.service;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import one.top.holdem.admin.dao.EventDao;
 import one.top.holdem.admin.vo.Event;
+import one.top.holdem.admin.vo.Import;
 import one.top.holdem.util.ExcelRead;
 import one.top.holdem.util.ReadOption;
 
@@ -45,6 +49,33 @@ public class EventService {
 			
 //			eventDao.insertEvent(eventVO);
 		}
+	}
+	
+	//수익조회
+	public List<Import> readImportServ(){
+		Date date = new Date();
+		
+		SimpleDateFormat format = new SimpleDateFormat("YYYYMMDD");
+		String nowDate = format.format(date);
+		String year = nowDate.substring(0, 4);
+		String month = nowDate.substring(4,6);
+		
+		System.out.println("오늘날짜 : "+nowDate);
+		System.out.println("년 : "+year+" 월 : "+month);
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("year", year);
+		params.put("month", month);
+		
+		List<Import> list = eventDao.selectImport(params);
+		
+		if(list != null) {
+			for(int i=0; i<list.size(); i++) {
+				System.out.println(i+ " 번째 결과값 확인 : "+list);
+			}
+		}
+		
+		return list;
 	}
 
 }
