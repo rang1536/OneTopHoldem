@@ -1,6 +1,7 @@
 package one.top.holdem.admin.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +45,20 @@ public class AdminDao {
 	// 지점정보수정 updateAccount
 	public int updateAccount(Account account) {
 		return sqlSession.update("AdDao.updateAccount", account);
+	}
+	
+	// 지점상태변경 updateAccountStatus
+	public int updateAccountStatus(Map<String, Object> params) {
+		return sqlSession.update("AdDao.updateAccountStatus", params);
+	}
+	
+	// 지점삭제
+	public int deleteAccount(int accountId) {
+		return sqlSession.delete("AdDao.deleteAccount", accountId);
+	}
+	
+	//비번변경
+	public int updatePass(Account account) {
+		return sqlSession.update("AdDao.updatePass", account);
 	}
 }

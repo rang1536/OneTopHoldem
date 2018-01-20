@@ -52,4 +52,35 @@ public class AdminRestController {
 		return map; 
 	}
 	
+	//지점상태 정지로 변경 modifyAccountStatus
+	@RequestMapping(value="/modifyAccountStatus", method = RequestMethod.POST)
+	public Map<String, String> modifyAccountStatusCtrl(@RequestParam(value="accountId")int accountId){
+		/*System.out.println("아이디 확인 : "+accountId);*/
+		Map<String, String> map = adminService.modifyAccountStatusServ(accountId, 1);
+		return map; 
+	}
+	
+	//지점상태 정지로 변경 modifyAccountStatus
+	@RequestMapping(value="/modifyAccountStatusNone", method = RequestMethod.POST)
+	public Map<String, String> modifyAccountStatusNoneCtrl(@RequestParam(value="accountId")int accountId){
+		/*System.out.println("아이디 확인 : "+accountId);*/
+		Map<String, String> map = adminService.modifyAccountStatusServ(accountId, 0);
+		return map; 
+	}
+	
+	//지점상태 정지로 변경 modifyAccountStatus
+	@RequestMapping(value="/removeAccount", method = RequestMethod.POST)
+	public Map<String, String> removeAccountCtrl(@RequestParam(value="accountId")int accountId){
+		/*System.out.println("아이디 확인 : "+accountId);*/
+		Map<String, String> map = adminService.removeAccountServ(accountId);
+		return map; 
+	}
+	
+	//비번변경 changePass
+	@RequestMapping(value="/changePass", method = RequestMethod.POST)
+	public Map<String, String> changePassCtrl(Account account){
+		/*System.out.println("아이디 확인 : "+accountId);*/
+		Map<String, String> map = adminService.changePassServ(account);
+		return map; 
+	}
 }

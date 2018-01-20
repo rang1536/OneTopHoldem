@@ -77,16 +77,21 @@
 	      "dataSrc": function(json){
 	    	   var list = json.list;
 	    	   
-	    	   for(var i=0; i<list.length; i++){
-	    		    list[i].goldText = "<span class='numberInput'>"+list[i].gold+"</span>"
+				for(var i=0; i<list.length; i++){
+					// 정지된 지점 표시
+					if(list[i].accountStatus == 1) list[i].loginId += '(정지됨)'; 
+					
+					list[i].goldText = "<span class='numberInput'>"+list[i].gold+"</span>"
 					// 데이터 수정버튼 추가
-	   	      		list[i].btnGroup ="<div align='center'>"
-	   	      		list[i].btnGroup += "<button type='button' class='btn btn-success' onclick='modifyAccount("+list[i].accountId+")'>수정</button>"
-	   	      		list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatus("+list[i].accountId+");'>정지</button>"
-	   	      		list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-danger' onclick='deleteAccount("+list[i].accountId+");'>삭제</button></div>";		   	    			   	    	
-   	           }
-	    	   console.log("list : "+list)
-	    	   return list;
+					list[i].btnGroup ="<div align='center'>"
+					list[i].btnGroup += "<button type='button' class='btn btn-success' onclick='modifyAccount("+list[i].accountId+")'>수정</button>"
+					
+					if(list[i].accountStatus == 1) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatusNone("+list[i].accountId+");'>정지풀기</button>"
+					else if(list[i].accountStatus == 0) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatus("+list[i].accountId+");'>정지</button>"
+					
+					list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-danger' onclick='deleteAccount("+list[i].accountId+");'>삭제</button></div>";		   	    			   	    	
+				}
+				return list;
 	      	}
 		  },            
 		  columns : [
@@ -109,19 +114,30 @@
 	function nullCheck(str){ //널체크
 		if(str == null || str == ''){
 			alert('필수항목을 모두 입력해주세요!!');
-			return;
+			return false;
 		}
-		return false;
+		return true; 
 	}
 	
-	function isNum(){ //키업이벤트 숫자만 입력하는지 체크
+	function isNum(str, tag){ //키업이벤트 숫자만 입력하는지 체크
 		var key = event.keyCode;
 		if(!(key==8 || key==9 || key==13 || key==46 || key==144 || (key>=48&&key<=57) || key==110 || key==190)){
-			alert('숫자만 입력가능합니다!!')
+			alert('숫자만 입력가능합니다!!');
+			str = str.substring(0,str.length-1);
+			$('#addBranch').find('#'+tag).val(str);
 			event.returnValue = false;
 		}
 	}
 	
+	function isNumModify(str, tag){ //키업이벤트 숫자만 입력하는지 체크
+		var key = event.keyCode;
+		if(!(key==8 || key==9 || key==13 || key==46 || key==144 || (key>=48&&key<=57) || key==110 || key==190)){
+			alert('숫자만 입력가능합니다!!');
+			str = str.substring(0,str.length-1);
+			$('#modifyAccount').find('#'+tag).val(str);
+			event.returnValue = false;
+		}
+	}
 	// id 중복체크(지점등록)
 	function overlapCheck(loginId){
 		if(loginId != null && loginId != ''){
@@ -158,12 +174,25 @@
 		var accountText = $('#addBranchForm').find('#accountText').val();
 		
 		//널체크
-		nullCheck(loginId);
-		nullCheck(loginPassword);
-		nullCheck(reLoginPassword);
-		nullCheck(commission);
-		nullCheck(recommendAccountId);
-		nullCheck(telephone);
+		if(loginId ==null || loginId == ''){
+			alert('아이디를 입력해주세요!!');
+			return ;
+		}else if(loginPassword ==null || loginPassword == ''){
+			alert('패스워드를 입력해주세요!!');
+			return ;
+		}else if(reLoginPassword ==null || reLoginPassword == ''){
+			alert('패스워드를 다시 입력해주세요!!');
+			return ;
+		}else if(commission ==null || commission == ''){
+			alert('커미션을 입력해주세요!!');
+			return ;
+		}else if(recommendAccountId ==null || recommendAccountId == ''){
+			alert('추천인을 입력해주세요!!');
+			return ;
+		}else if(telephone ==null || telephone == ''){
+			alert('연락처를 입력해주세요!!');
+			return ;
+		}
 		
 		//비번, 재입력간 일치여부 확인
 		if(loginPassword != reLoginPassword){
@@ -218,6 +247,37 @@
 	function changeStatus(accountId){
 		if(confirm('해당지점을 정지로 바꾸겠습니다?')){
 			//accountStatus > 1로 수정
+			$.ajax({
+				url : 'modifyAccountStatus',
+				data:{'accountId':accountId},
+				dataType:'json',
+				type:'post',
+				success:function(data){
+					if(data.updateCheck == 'success'){
+						alert('지점상태를 정지로 수정하였습니다!!');
+						window.location.reload(true);
+					}
+				}
+			})
+		}
+	}
+	
+	//지점 상태변경( >>정지풀기)
+	function changeStatusNone(accountId){
+		if(confirm('해당지점의 정지를 푸시겠습니다?')){
+			//accountStatus > 1로 수정
+			$.ajax({
+				url : 'modifyAccountStatusNone',
+				data:{'accountId':accountId},
+				dataType:'json',
+				type:'post',
+				success:function(data){
+					if(data.updateCheck == 'success'){
+						alert('정지를 풀었습니다!!');
+						window.location.reload(true);
+					}
+				}
+			})
 		}
 	}
 	
@@ -225,6 +285,18 @@
 	function deleteAccount(accountId){
 		if(confirm('해당지점을 삭제하시겠습니까?')){
 			//계정 삭제
+			$.ajax({
+				url : 'removeAccount',
+				data:{'accountId':accountId},
+				dataType:'json',
+				type:'post',
+				success:function(data){
+					if(data.deleteCheck == 'success'){
+						alert('선택한 지점을 삭제하였습니다!!');
+						window.location.reload(true);
+					}
+				}
+			})
 		}
 	}	
 	

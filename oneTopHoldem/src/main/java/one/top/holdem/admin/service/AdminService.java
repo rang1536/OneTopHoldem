@@ -94,10 +94,46 @@ public class AdminService {
 		Map<String, String> map = new HashMap<String, String>();
 		int result = adminDao.updateAccount(account);
 		
-		if(result == 0) map.put("updateCheck", "success");
-		else if(result > 0) map.put("updateCheck", "fail");
+		if(result > 0) map.put("updateCheck", "success");
+		else if(result == 0) map.put("updateCheck", "fail");
 		
 		return map;
 	}
 	
+	// 지점상태변경
+	public Map<String, String> modifyAccountStatusServ(int accountId, int accountState){
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("accountId", accountId);
+		params.put("accountState", accountState);
+		
+		int result = adminDao.updateAccountStatus(params);
+		
+		Map<String, String> map = new HashMap<String, String>();
+		if(result > 0) map.put("updateCheck", "success");
+		else if(result == 0) map.put("updateCheck", "fail");
+		
+		return map;
+	}
+	
+	//지점삭제
+	public Map<String, String> removeAccountServ(int accountId){
+		int result = adminDao.deleteAccount(accountId);
+		
+		Map<String, String> map = new HashMap<String, String>();
+		if(result > 0) map.put("deleteCheck", "success");
+		else if(result == 0) map.put("deleteCheck", "fail");
+		
+		return map;
+	}
+	
+	//비번변경
+	public Map<String, String> changePassServ(Account account){
+		int result = adminDao.updatePass(account);
+		
+		Map<String, String> map = new HashMap<String, String>();
+		if(result > 0) map.put("changeCheck", "success");
+		else if(result == 0) map.put("changeCheck", "fail");
+		
+		return map;
+	}
 }

@@ -21,7 +21,7 @@
 			<h4 style="color:red;"><span class="glyphicon glyphicon-check"></span> 비밀번호 변경</h4>
 		</div>
 		<div class="modal-body">
-			<form role="form" id="changePassForm">
+			<form role="form" id="changePassForm" method="post">
 				<input type="hidden" id="accountId"/>
 				<table style="width:100%;">
 					<tr>
