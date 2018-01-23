@@ -18,4 +18,9 @@ public class EventController {
 		return "/event/event";
 	}
 
+	//수익관리 importManagement
+	@RequestMapping(value="/importManagement", method = RequestMethod.GET)
+	public String importManagementCtrl() {
+		return "/importManager/import_list";
+	}
 }

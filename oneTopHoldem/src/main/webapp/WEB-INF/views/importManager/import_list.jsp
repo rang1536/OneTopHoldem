@@ -24,14 +24,14 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 	               
 	<link rel="StyleSheet" href="<c:url value='resources/css/datatable.css'/>" type="text/css">
-	<link rel="StyleSheet" href="<c:url value='resources/css/datatableUse.css'/>" type="text/css"> 
+	<link rel="StyleSheet" href="<c:url value='resources/css/datatableUse.css'/>" type="text/css">
 	
 	<script>
 	$(document).ready(function(){
-		var startNum = '${startNum}';
+		$('.topMenu:eq(5)').css('background','#FFC19E');
 		
    		var table = 
-        $('#eventList').DataTable( {
+        $('#payList').DataTable( {
           dom: 'Bfrtip',
           lengthChange: false,
           autoWidth : false,
@@ -63,58 +63,28 @@
        },
 	    ajax : {
 	   
-	      "url":"eventList",
+	      "url":"importList",
 	      "type":"POST",
 	      "dataSrc": function(json){
 	    	   var list = json.list;
 	    	   
-	    	   for(var i=0; i<list.length; i++){
-	    		    list[i].goldText = "<span class='numberInput'>"+list[i].gold+"</span>"
-					// 데이터 수정버튼 추가
-	   	      		list[i].btnGroup ="<div align='center'><button type='button' class='btn btn-success'>수정</button>&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning'>정지</button>&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-danger'>삭제</button></div>";		   	    			   	    	
+	    	  /*  for(var i=0; i<list.length; i++){
+	    		    // 데이터 수정버튼 추가
+	   	      		list[i].btnGroup ="<div align='center'>"
+	   	      		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='changePass("+list[i].accountId+")'>비번변경</button>";
+	   	      		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='addGoldFn("+list[i].accountId+")'>골드증여</button>";
+	   	     		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='modifyAccount("+list[i].accountId+")'>티켓증여</button>";
+	   	      		list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatus("+list[i].accountId+");'>정지</button>" 			   	    			   	    	
    	           }
-	    	   console.log("list : "+list)
+	    	   console.log("list : "+list) */
 	    	   return list;
 	      	}
 		  },            
 		  columns : [
-			  {data: "startDate"},
-			  {data: "startDate"},
-			  {data: "needTicket"},
-			  {data: "needGold"},
-			  {data: "needCommission"},
-			  {data: "receiveChip"},
-			  {data: "maxRebuyCount"},
-			  {data: "rebuyNeedGold"},
-			  {data: "rebuyNeedCommission"},
-			  {data: "rebuyReceiveChip"},
-			  {data: "maxAddOnCount"},
-			  {data: "addOnNeedGold"},
-			  {data: "addOnNeedCommission"},
-			  {data: "addOnReceiveChip"},
-			  {data: "isDoubleBuyIn"},
-			  {data: "minUser"},
-			  {data: "maxUser"},
-			  {data: "guarantee"},
-			  {data: "tournamentType"},
-			  {data: "blindUpTime"},
-			  {data: "breakTimeLevel"},
-			  {data: "breakTime"},
-			  {data: "title"},
-			  {data: "anteBaseValue"},
-			  {data: "anteUpValue9"},
-			  {data: "anteUpValue19"},
-			  {data: "anteUpValue29"},
-			  {data: "anteUpValue39"},
-			  {data: "anteUpValue49"},
-			  {data: "anteUpValueOther"},
-			  {data: "smallBlindBaseValue"},
-			  {data: "smallBlindUpValue9"},
-			  {data: "smallBlindUpValue19"},
-			  {data: "smallBlindUpValue29"},
-			  {data: "smallBlindUpValue39"},
-			  {data: "smallBlindUpValue49"},
-			  {data: "smallBlindUpValueOther"}
+			  {data: "day"},
+			  {accountId:"accountId"},
+		      {data: "gold"},
+		      {data: "cash"}	     
 		  ],
 	         initComplete : function() {
 	  
@@ -123,92 +93,61 @@
 	         } 
 	   });
    		
-   		fn_setscene();
-   		
 	});
 	
-	function fn_setscene(){
-		
-	}
-	
-	//엑셀파일 업로드
-	$(function(){          
-		$('#btn-upload').click(function(e){
-			e.preventDefault();             
-			$("input:file").click();               
-			var ext = $("input:file").val().split(".").pop().toLowerCase();
-			/* if(ext.length > 0){
-				if($.inArray(ext, ["gif","png","jpg","jpeg"]) == -1) { 
-					alert("gif,png,jpg 파일만 업로드 할수 있습니다.");
-					return false;  
-				}                  
-			} */
-			$("input:file").val().toLowerCase();
-		});                         
-	});          
 	</script>
 </head>
 <body>
 <div id="page-wrapper">
 	<br/>
-	
-	<div class="row" style="margin-right:10px;">
-		<div>
-			<form name="event" enctype="multipart/form-data" method="post" action="<c:url value="eventWrite"/>" >
-				<input type="file" name="excelFile" id="excelFile" style="width:0%;height:0%;display:none;"/>
-				<button type="button" class="btn btn-success" id="btn-upload" style="margin-left:20px;">이벤트업로드</button>
-			</form>
-		</div>
+	<div class="row">
+		<div class="col-lg-12">
+            <a href="#"><i class="fa fa-home fa-fw"></i></a>  >  수익관리
+        </div>
 	</div>
 	<br/>
 	<div class="row">
-		<div class="col-lg-12">
-            <a href="#"><i class="fa fa-home fa-fw"></i></a>  >  이벤트 목록
-        </div>
+		<div style="text-align:left;margin-right:10px;font-size:16px;">
+			<span style="margin:15px;">2018년</span>
+			<select id="month" name="month">
+				<option value="01">01월</option>
+				<option value="02">02월</option>
+				<option value="03">03월</option>
+				<option value="04">04월</option>
+				<option value="05">05월</option>
+				<option value="06">06월</option>
+				<option value="07">07월</option>
+				<option value="08">08월</option>
+				<option value="09">09월</option>
+				<option value="10">10월</option>
+				<option value="11">11월</option>
+				<option value="12">12월</option>
+			</select>
+			<script>
+				var date = new Date();
+				var month = date.getMonth()+1;
+				if(month < 10) month = "0"+month.toString();
+				console.log(month);
+				$('#month').val(month).attr('selected','selected');
+			</script>
+		</div>
 	</div>
 	
 	<div class="row">
-		<div id="content" >
-			<table id="eventList" style="width:100%;overflow:auto;scollbar:true">
+		<div id="content">
+			<table id="payList">
 				<colgroup>
 					<col width="*">
 					<col width="*">
 					<col width="*">
-					<col width="*">               
-					<col width="300px">
-					
 					<col width="*">
-					<col width="*">
-					<col width="*">
-					<col width="*">
-					<col width="*">
-					
-					<col width="*">
-					<col width="*">
-					<col width="*">
-					<col width="*">
-					<col width="*">
-					
 				</colgroup>
 				<thead>
 					<tr>
-						<th>날자</th>
-						<th>시간</th>
-						<th>참가비</th>
-						<th>참가정원</th>
-						<th>제목</th>
-						
-						<th>게임타입</th>
-						<th>블라인드업</th>
-						<th>브레이크타임</th>
-						<th>프리롤</th>
-						<th>바이인</th>
-						
-						<th>더블바이인</th>
-						<th>라바이</th>
-						<th>애드온</th>
-						<th>참여마감시간</th>
-						<th>삭제</th>
+						<th>날짜</th>
+						<th>코드</th>
+						<th>획득골드</th>
+						<th>획득현금액</th>											
 					</tr>
 				</thead>
 				<tbody>
@@ -218,7 +157,5 @@
 		</div>
 	</div>
 </div>
-
-<c:import url="../popup/add_branch.jsp"></c:import>
 </body>
 </html>

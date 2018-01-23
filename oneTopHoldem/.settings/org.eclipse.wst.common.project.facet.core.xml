@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <faceted-project>
+<<<<<<< HEAD
   <runtime name="Apache Tomcat v8.5"/>
+=======
+  <runtime name="Apache Tomcat v7.0 (2)"/>
+>>>>>>> branch 'master' of https://github.com/rang1536/oneTopHoldem.git
   <fixed facet="jst.web"/>
   <fixed facet="jst.java"/>
   <installed facet="jst.web" version="3.0"/>
