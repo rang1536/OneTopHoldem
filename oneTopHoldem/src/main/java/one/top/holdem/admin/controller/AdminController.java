@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import one.top.holdem.admin.service.AdminService;
 import one.top.holdem.admin.vo.Account;
+import one.top.holdem.admin.vo.Master;
 
 
 @Controller
@@ -40,7 +41,11 @@ public class AdminController {
 	
 	//게임관리
 	@RequestMapping(value="/gameManagement", method = RequestMethod.GET)
-	public String gameManagementCtrl() {
+	public String gameManagementCtrl(Model model) {
+		// 현재 배당율 조회하여 포워딩
+		Master master = adminService.readNowMasterInfo();
+		
+		model.addAttribute("master", master);
 		return "/gameManager/input_form";
 	}
 	

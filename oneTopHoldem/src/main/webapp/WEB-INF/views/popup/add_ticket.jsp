@@ -28,7 +28,7 @@
 						<td style="text-align:center;" id="targetTd"></td>
 					</tr>
 					<tr>
-						<td><br/><input type="text" class="form-control" name="addTicket" id="addTicket" placeholder="보내실 티켓숫자 입력" /><br/></td>
+						<td><br/><input type="text" class="form-control" name="addTicketText" id="addTicketText" onkeyup="isNumTicket(this.value, 'addTicketText');" placeholder="보내실 티켓숫자 입력" /><br/></td>
 					</tr>
 				</table>
 				<br/>

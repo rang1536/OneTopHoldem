@@ -28,7 +28,7 @@
 						<td style="text-align:center;" id="targetTd"></td>
 					</tr>
 					<tr>
-						<td><br/><input type="text" class="form-control" name="addGold" id="addGold" placeholder="보내실 골드 입력" /><br/></td>
+						<td><br/><input type="text" class="form-control" name="addGoldText" id="addGoldText" onkeyup="isNumGold(this.value, 'addGoldText');" placeholder="보내실 골드 입력" /><br/></td>
 					</tr>
 				</table>
 				<br/>

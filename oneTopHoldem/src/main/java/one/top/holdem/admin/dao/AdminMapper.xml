@@ -69,5 +69,53 @@
 	WHERE accountId = #{accountId}	
 </update>
 
+<!-- 골드증여 -->
+<update id="updateAccountGoldPlus" parameterType="one.top.holdem.admin.vo.Account">
+	UPDATE dbo.Account
+	SET gold = #{gold}
+	WHERE accountId = ${accountId}
+</update>
+
+<!-- 티켓증여 -->
+<update id="updateAccountTicketPlus" parameterType="one.top.holdem.admin.vo.Account">
+	UPDATE dbo.Account
+	SET ticket = #{ticket}
+	WHERE accountId = ${accountId}
+</update>
+
+<!-- 현재 카트배당율 조회 -->
+<select id="selectNowMasterInfo" resultType="one.top.holdem.admin.vo.Master">
+	SELECT *
+	FROM dbo.Master
+</select>
+
+<!-- 게임배당율 수정 -->
+<update id="updateMasterInfo" parameterType="one.top.holdem.admin.vo.Master">
+	UPDATE dbo.Master
+	SET 
+		dealerCommission=#{dealerCommission},
+		jackpotProbability=#{jackpotProbability},
+		noPairJackpot=#{noPairJackpot},
+		onepairJackpot=#{onepairJackpot},
+		twoPairJackpot=#{twoPairJackpot},
+		threeOfAKindJackpot=#{threeOfAKindJackpot},
+		straightJackpot=#{straightJackpot},
+		flushJackpot=#{flushJackpot},
+		fullHouseJackpot=#{fullHouseJackpot},
+		fourOfAKindJackpot=#{fourOfAKindJackpot},
+		straightFlushJackpot=#{straightFlushJackpot}
+</update>
+
+<!-- 긴급공지삭제 -->
+<delete id="deleteNotice">
+	DELETE FROM dbo.Notice
+</delete>
+
+<!-- 긴급공지등록 -->
+<insert id="insertNotice" parameterType="one.top.holdem.admin.vo.Notice">
+	INSERT INTO dbo.Notice(lastSendDate, notice)
+	VALUES(#{lastSendDate}, #{notice})
+</insert>
+
 
 </mapper>

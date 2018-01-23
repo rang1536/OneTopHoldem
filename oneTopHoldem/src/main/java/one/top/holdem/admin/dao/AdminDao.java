@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import one.top.holdem.admin.vo.Account;
 import one.top.holdem.admin.vo.Import;
+import one.top.holdem.admin.vo.Master;
+import one.top.holdem.admin.vo.Notice;
 
 @Repository
 public class AdminDao {
@@ -60,5 +62,35 @@ public class AdminDao {
 	//비번변경
 	public int updatePass(Account account) {
 		return sqlSession.update("AdDao.updatePass", account);
+	}
+	
+	//골드증여 updateAccountGoldPlus
+	public int updateAccountGoldPlus(Account account) {
+		return sqlSession.update("AdDao.updateAccountGoldPlus", account);
+	}
+	
+	//티켓증여 updateAccountTicketPlus
+	public int updateAccountTicketPlus(Account account) {
+		return sqlSession.update("AdDao.updateAccountTicketPlus", account);
+	}
+	
+	//기존 카드배당율 조회 selectNowMasterInfo
+	public Master selectNowMasterInfo(){
+		return sqlSession.selectOne("AdDao.selectNowMasterInfo");
+	}
+	
+	//카드배당율 수정 updateMasterInfo
+	public int updateMasterInfo(Master master) {
+		return sqlSession.update("AdDao.updateMasterInfo", master);
+	} 
+	
+	//긴급공지 등록 insertNotice
+	public int insertNotice(Notice notice){
+		return sqlSession.insert("AdDao.insertNotice",notice);
+	}
+	
+	//긴급공지삭제 
+	public int deleteNotice(){
+		return sqlSession.delete("AdDao.deleteNotice");
 	}
 }

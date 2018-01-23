@@ -76,7 +76,7 @@
 	   	      		list[i].btnGroup ="<div align='center'>"
 	   	      		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='changePass("+list[i].accountId+")'>비번변경</button>";
 	   	      		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='addGoldFn("+list[i].accountId+")'>골드증여</button>";
-	   	     		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='modifyAccount("+list[i].accountId+")'>티켓증여</button>";
+	   	     		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='addTicket("+list[i].accountId+")'>티켓증여</button>";
 	   	     		
 		   	     	if(list[i].accountStatus == 1) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatusNone("+list[i].accountId+");'>정지풀기</button>"
 					else if(list[i].accountStatus == 0) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatus("+list[i].accountId+");'>정지</button>"
@@ -292,18 +292,33 @@
 		})
 	}
 	
-	//골드증여 유효성검사
+	//골드증여 유효성검사 및 서브밋
 	function addGoldSubmit(){
 		var accountId =  $('#addGold').find('#accountId').val();
-		var addGold = $('#addGold').find('#addGold').val();
+		var addGold = $('#addGold').find('#addGoldText').val();
 		
 		if(confirm('골드를 보내시겠습니까?')){
 			if(addGold == null || addGold == ''){
 				alert('보내실 골드를 입력해주세요');
-				$('#addGold').find('#addGold').focus();
+				$('#addGold').find('#addGoldText').focus();
 				return;
 			}
 			// submit
+			$.ajax({
+				url : 'addGold',
+				data : {'accountId':accountId,'addGold':addGold},
+				dataType:'json',
+				type:'post',
+				success:function(data){
+					if(data.addGoldCheck == 'success'){
+						alert('골드를 보냈습니다!!');
+						return;
+					}else{
+						alert('골드 증여에 실패하였습니다.');
+						return;
+					}
+				}
+			})
 		}
 	}
 	
@@ -333,7 +348,8 @@
 		}
 	}
 	
-	function modifyAccount(accountId){
+	//티켓증여 팝업창 열기
+	function addTicket(accountId){
 		$.ajax({
 			url : 'readAccount',
 			data : {'accountId':accountId},
@@ -347,6 +363,55 @@
 		})
 	}
 	
+	//티켓증여 유효성검사 및 서브밋
+	function addGoldSubmit(){
+		var accountId =  $('#addTicket').find('#accountId').val();
+		var addTicket = $('#addTicket').find('#addTicketText').val();
+		
+		if(confirm('티켓을 보내시겠습니까?')){
+			if(addTicket == null || addTicket == ''){
+				alert('보내실 티켓을 입력해주세요');
+				$('#addTicket').find('#addTicketText').focus();
+				return;
+			}
+			// submit
+			$.ajax({
+				url : 'addTicket',
+				data : {'accountId':accountId,'addTicket':addTicket},
+				dataType:'json',
+				type:'post',
+				success:function(data){
+					if(data.addTicketCheck == 'success'){
+						alert('티켓을 보냈습니다!!');
+						return;
+					}else{
+						alert('티켓 증여에 실패하였습니다.');
+						return;
+					}
+				}
+			})
+		}
+	}
+	
+	function isNumGold(str, tag){ //키업이벤트 숫자만 입력하는지 체크
+		var key = event.keyCode;
+		if(!(key==8 || key==9 || key==13 || key==46 || key==144 || (key>=48&&key<=57) || key==110 || key==190)){
+			alert('숫자만 입력가능합니다!!');
+			str = str.substring(0,str.length-1);
+			$('#addGold').find('#'+tag).val(str);
+			event.returnValue = false;
+		}
+	}
+	
+	function isNumTicket(str, tag){ //키업이벤트 숫자만 입력하는지 체크
+		var key = event.keyCode;
+		if(!(key==8 || key==9 || key==13 || key==46 || key==144 || (key>=48&&key<=57) || key==110 || key==190)){
+			alert('숫자만 입력가능합니다!!');
+			str = str.substring(0,str.length-1);
+			$('#addTicket').find('#'+tag).val(str);
+			event.returnValue = false;
+		}
+	}
 	</script>
 </head>
 <body>

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import one.top.holdem.admin.service.AdminService;
 import one.top.holdem.admin.vo.Account;
 import one.top.holdem.admin.vo.Import;
+import one.top.holdem.admin.vo.Master;
 
 @RestController
 public class AdminRestController {
@@ -82,5 +83,43 @@ public class AdminRestController {
 		/*System.out.println("아이디 확인 : "+accountId);*/
 		Map<String, String> map = adminService.changePassServ(account);
 		return map; 
+	}
+	
+	//골드증여 addGold - chargeGold필드인지 골드에 바로 더하는지 확인 해야함 01.18 - 일단 기존골드 + 보내는골드로 작업.
+	@RequestMapping(value="/addGold", method = RequestMethod.POST)
+	public Map<String, String> addGoldCtrl(@RequestParam(value="accountId")int accountId,
+			@RequestParam(value="addGold")long addGold){
+		/*System.out.println("아이디 확인 : "+accountId+" 증여할 골드 : "+addGold);*/
+		Map<String, String> map = adminService.modifyAccountGoldServ(accountId, addGold);
+		return map; 
+	}
+	
+	//티켓증여 addTicket 
+	@RequestMapping(value="/addTicket", method = RequestMethod.POST)
+	public Map<String, String> addTicketCtrl(@RequestParam(value="accountId")int accountId,
+			@RequestParam(value="addTicket")long addTicket){
+		/*System.out.println("아이디 확인 : "+accountId+" 증여할 티켓 : "+addTicket);*/
+		Map<String, String> map = adminService.modifyAccountTicketServ(accountId, addTicket);
+		return map; 
+	}
+	
+	//게임 배당율 수정 modifyMasterInfo
+	@RequestMapping(value="/modifyMasterInfo", method = RequestMethod.POST)
+	public Map<String, String> modifyMasterInfoCtrl(Master master){
+		/*System.out.println("폼 입력값 확인  : "+master);*/
+		Map<String, String> map = adminService.modifyMasterInfoServ(master);
+		return map; 
+	}
+	
+	
+	// 긴급공지등록 addNotice
+	@RequestMapping(value="/addNotice", method = RequestMethod.POST)
+	public Map<String, String> addNoticeCtrl(@RequestParam(value="hour")int hour,
+			@RequestParam(value="minute")int minute,
+			@RequestParam(value="msg")String msg){
+		/*System.out.println("폼 입력값 확인  : "+hour+" ,"+minute+" ,"+msg);*/
+		/* 긴급공지 로직 정해질때까지 보류
+		 * Map<String, String> map = adminService.addNoticeServ(hour, minute, msg);*/
+		return null; 
 	}
 }
