@@ -1,16 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta name="naver-site-verification" content="386830e1722986ad012f3a82d27ac917108c5f9e"/>
 	
 	<title>ONE TOP HOLD'EM</title>
 	
 	<link href="resources/img/favicon.png" rel="shortcut icon" />
-	<script src="<c:url value='/resources/js/jquery-3.2.1.min.js'/>"></script>
+	<script src="resources/vendor/jquery/jquery.min.js"></script>
 	<link href="resources/css/common.css" rel="stylesheet" type="text/css">
 	<link href="resources/css/layout.css" rel="stylesheet" type="text/css">
 	<link href="resources/css/contents.css" rel="stylesheet" type="text/css">
@@ -30,21 +29,35 @@
 	</style>
 	
 	<script>
-		function loginAjax(){
-			var id= $('#id').val();
-			var pw= $('#pw').val();
-			alert('id : '+id+' pw : '+pw);
-			if(id == '' || id==null){
-				alert('아이디를 입력하세요');
-				$('#id').focus();
-				return;
-			}else if(pw == '' || pw==null){
-				alert('비밀번호를 입력하세요');
-				$('#pw').focus();
-				return;
-			}
-			/* $('#userForm').submit(); */
-		} 
+	$(document).ready(function(){
+		var loginCheck = '${loginCheck}';
+		if(loginCheck == 'failId'){
+			alert('해당 계정이 존재하지 않습니다!!');
+			$('#id').val('');
+			$('#id').focus();
+		}else if(loginCheck == 'failPw'){
+			alert('비밀번호가 다릅니다!!');
+			$('#pw').val('');
+			$('#id').focus();
+		}
+	})
+	
+	function loginAjax(){
+		var id= $('#id').val();
+		var pw= $('#pw').val();
+		alert('id : '+id+' pw : '+pw);
+		if(id == '' || id==null){
+			alert('아이디를 입력하세요');
+			$('#id').focus();
+			return;
+		}else if(pw == '' || pw==null){
+			alert('비밀번호를 입력하세요');
+			$('#pw').focus();
+			return;
+		}
+		
+		$('#userForm').submit();
+	} 
 	</script>
 </head>
 <body>
@@ -71,7 +84,6 @@
 		<!--로그인폼 st -->
 		<form action="login" method="post" id="userForm">
 			<input type="hidden" name="path" value="${path }"/>
-			<input type="hidden" name="userAndAdmin" value="user"/>
 			<div class="loginformstle">
 				<ul class="lo_forms">
 					<li class="mb_10"><input name="id" id="id" type="text" placeholder="아이디" /></li>
@@ -87,8 +99,8 @@
 		<!--로그인폼end -->
 
 		<!--회원가입btn,아이디비번찾기btn st -->
-		<div class="joinandidpwtle">
-			<!--회원가입 바로가기 st -->
+		 <div class="joinandidpwtle">
+			<!--회원가입 바로가기 st
 			<div class="joinviewtle">
 				<ul class="join_menttle">
 					<li class="join_titment">아직 회원이 아니신가요?</li>
@@ -98,11 +110,11 @@
 			  	<ul class="join_btn">
 			  		<li><a href="addUser">회원가입</a></li>
 			  	</ul>
-			</div>
+			</div> -->
 		 	<!--회원가입 바로가기 end --> 
 
 			<!--아이디비번찾기바로기기 st -->
-			<div class="id_pw_viewtle">
+			<!-- <div class="id_pw_viewtle">
 				<ul class="idpw_menttle">
 					<li class="idpw_titment">아이디와 비밀번호를 잊으셨나요? </li>
 					<li class="idpw_ment">
@@ -112,7 +124,7 @@
 				<ul class="idpw_btn">
 					<li><a href="findPass">아이디/비번찾기</a></li>
 				</ul>   
-			</div>
+			</div> -->
 			<!--아이디비번찾기바로기기 end -->
 		</div>
 		<!--회원가입btn,아이디비번찾기btn end -->

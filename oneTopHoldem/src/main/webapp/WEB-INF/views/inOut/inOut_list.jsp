@@ -96,6 +96,12 @@
    		
 	});
 	
+	
+	function reFresh(accountId){
+		if(confirm('충전하시겠습니까?')){
+			alert('뭔금액을 충전? 기능설명 부족!')
+		}
+	}
 	</script>
 </head>
 <body>
@@ -140,6 +146,7 @@
 		</div>
 	</div>
 </div>
-
+<c:import url="../popup/mms_list.jsp"></c:import>
+<c:import url="../popup/modify_myInfo.jsp"></c:import>
 </body>
 </html>

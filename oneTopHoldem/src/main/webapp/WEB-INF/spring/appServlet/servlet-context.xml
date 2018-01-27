@@ -18,13 +18,13 @@
 	<!-- <mvc:interceptors>
 		<mvc:interceptor>
 			mapping 된 클래스를 모두 가로챈다
-			<mvc:mapping path="/person/*" />
+			<mvc:mapping path="/holdem/*" />
 			해당 path는 인터셉트 하지않는다
 			<mvc:exclude-mapping path="/intro" />
 			<mvc:exclude-mapping path="/main" />
 			<mvc:exclude-mapping path="/error" />
 			로그인체크 인터셉터 클래스
-			<bean class="com.log4h.singletontrip.util.SessionInterceptor" />
+			<bean class="one.top.holdem.util.SessionInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors> -->
 

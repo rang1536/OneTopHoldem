@@ -24,9 +24,24 @@ public class AdminDao {
 		return result;
 	}
 	
-	// 모든유저 조회
-	public List<Account> selectAllUser(){
-		return sqlSession.selectList("AdDao.selectAllUser");
+	//로그인 아이디 조회
+	public List<Account> selectLoginCheckId(String loginId){
+		return sqlSession.selectList("AdDao.selectLoginCheckId", loginId);
+	}
+	
+	//로그인 패스워드 확인
+	public int selectLoginCheckPw(String loginPw){
+		return sqlSession.selectOne("AdDao.selectLoginCheckPw", loginPw);
+	}
+	
+	// 모든유저 조회 -MASTER
+	public List<Account> selectAllUserMaster(){
+		return sqlSession.selectList("AdDao.selectAllUserMaster");
+	}
+	
+	// 모든유저 조회 - BRANCH
+	public List<Account> selectAllUserBranch(){
+		return sqlSession.selectList("AdDao.selectAllUserBranch");
 	}
 	
 	//하나의 회원 조회

@@ -72,14 +72,16 @@
 	    		    list[i].goldText = "<span class='numberInput'>"+list[i].gold+"</span>"
 					// 데이터 수정버튼 추가
 	   	      		list[i].btnGroup ="<div align='center'><button type='button' class='btn btn-success'>수정</button>&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning'>정지</button>&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-danger'>삭제</button></div>";		   	    			   	    	
-   	           }
-	    	   console.log("list : "+list)
+   	           		list[i].startTime = list[i].startDate.substring(11,list[i].startDate.length);
+	   	      		list[i].startDate = list[i].startDate.substring(0,10);
+	    	   }
+	    	   /* console.log("list : "+list) */
 	    	   return list;
 	      	}
 		  },            
 		  columns : [
 			  {data: "startDate"},
-			  {data: "startDate"},
+			  {data: "startTime"},
 			  {data: "needTicket"},
 			  {data: "needGold"},
 			  {data: "needCommission"},
@@ -220,5 +222,7 @@
 </div>
 
 <c:import url="../popup/add_branch.jsp"></c:import>
+<c:import url="../popup/mms_list.jsp"></c:import>
+<c:import url="../popup/modify_myInfo.jsp"></c:import>
 </body>
 </html>

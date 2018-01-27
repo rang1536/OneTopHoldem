@@ -77,9 +77,9 @@
 	   	      		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='changePass("+list[i].accountId+")'>비번변경</button>";
 	   	      		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='addGoldFn("+list[i].accountId+")'>골드증여</button>";
 	   	     		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='addTicket("+list[i].accountId+")'>티켓증여</button>";
-	   	     		
-		   	     	if(list[i].accountStatus == 1) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatusNone("+list[i].accountId+");'>정지풀기</button>"
-					else if(list[i].accountStatus == 0) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatus("+list[i].accountId+");'>정지</button>"
+	   	     	
+		   	     	if(list[i].accountState == 1) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatusNone("+list[i].accountId+");'>정지풀기</button>"
+					else if(list[i].accountState == 0) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatus("+list[i].accountId+");'>정지</button>"
 	   	      		
    	           }
 	    	   
@@ -459,5 +459,7 @@
 <c:import url="../popup/change_Pass.jsp"></c:import> 	<!--비번변경 팝업  -->
 <c:import url="../popup/add_gold.jsp"></c:import> 		<!--골드증여 팝업  -->
 <c:import url="../popup/add_ticket.jsp"></c:import>		<!--티켓증여 팝업 -->
+<c:import url="../popup/mms_list.jsp"></c:import>
+<c:import url="../popup/modify_myInfo.jsp"></c:import>
 </body>
 </html>

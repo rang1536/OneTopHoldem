@@ -267,5 +267,8 @@
 		</form>
 	</div>
 </div> <!-- page-wrapper End -->
+
+<c:import url="../popup/mms_list.jsp"></c:import>
+<c:import url="../popup/modify_myInfo.jsp"></c:import>
 </body>
 </html>

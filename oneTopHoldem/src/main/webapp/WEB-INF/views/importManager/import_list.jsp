@@ -157,5 +157,8 @@
 		</div>
 	</div>
 </div>
+
+<c:import url="../popup/mms_list.jsp"></c:import>
+<c:import url="../popup/modify_myInfo.jsp"></c:import>
 </body>
 </html>

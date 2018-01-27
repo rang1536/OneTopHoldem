@@ -10,10 +10,30 @@
 	FROM dbo.Account
 </select>
 
+<!-- 로그인 - 로그인 아이디로 회원조회 -->
+<select id="selectLoginCheckId" parameterType="String" resultType="one.top.holdem.admin.vo.Account">
+	SELECT *
+	FROM dbo.Account
+	WHERE loginId = #{loginId}
+</select>
+
+<!-- 로그인 - 비번 일치 여부 확인 -->
+<select id="selectLoginCheckPw" parameterType="String" resultType="int">
+	SELECT PwdCompare('#{loginPw}',loginPassword)
+	FROM dbo.Account
+</select>
+
 <!-- 모든 회원정보 조회 -->
-<select id="selectAllUser" resultType="one.top.holdem.admin.vo.Account">
+<select id="selectAllUserMaster" resultType="one.top.holdem.admin.vo.Account">
 	SELECT *
 	FROM dbo.Account	
+</select>
+
+<!-- 모든 회원정보 조회 -->
+<select id="selectAllUserBranch" resultType="one.top.holdem.admin.vo.Account">
+	SELECT *
+	FROM dbo.Account
+	WHERE grade != 2	
 </select>
 
 <!-- 하나의 회원조회  -->
@@ -116,6 +136,8 @@
 	INSERT INTO dbo.Notice(lastSendDate, notice)
 	VALUES(#{lastSendDate}, #{notice})
 </insert>
+
+<!-- 메세지조회 -->
 
 
 </mapper>

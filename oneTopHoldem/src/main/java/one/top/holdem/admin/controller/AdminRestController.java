@@ -5,16 +5,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import one.top.holdem.admin.service.AdminService;
 import one.top.holdem.admin.vo.Account;
 import one.top.holdem.admin.vo.Import;
 import one.top.holdem.admin.vo.Master;
 
+@SessionAttributes({"grade","id"})
 @RestController
 public class AdminRestController {
 	@Autowired
@@ -22,8 +25,10 @@ public class AdminRestController {
 	
 	//회원목록조회
 	@RequestMapping(value="/userList", method = RequestMethod.POST)
+	/*public Map<String, Object> userListCtrl(@ModelAttribute(value="grade")int grade){*/
 	public Map<String, Object> userListCtrl(){
-		List<Account> list = adminService.readAllUserServ();
+		int grade=0;
+		List<Account> list = adminService.readAllUserServ(grade);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
 		return map;
@@ -120,6 +125,14 @@ public class AdminRestController {
 		/*System.out.println("폼 입력값 확인  : "+hour+" ,"+minute+" ,"+msg);*/
 		/* 긴급공지 로직 정해질때까지 보류
 		 * Map<String, String> map = adminService.addNoticeServ(hour, minute, msg);*/
+		return null; 
+	}
+	
+	//메세지목록조회
+	@RequestMapping(value="/mmsList", method = RequestMethod.POST)
+	public Map<String, String> mmsListCtrl(@ModelAttribute(value="id")String loginId){
+		// 보낸 메세지를 보겠다는건지? 아니면 본인한테 온 긴급공지라든지 공지같은걸 보겠다는건지? 후자라면 테이블이 없는데..?
+		
 		return null; 
 	}
 }

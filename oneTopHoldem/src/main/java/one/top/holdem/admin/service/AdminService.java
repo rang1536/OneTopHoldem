@@ -1,5 +1,6 @@
 package one.top.holdem.admin.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,34 @@ public class AdminService {
 		return 0;
 	}
 	
+	//로그인
+	public Map<String, Object> loginServ(String loginId, String loginPw){
+		List<Account> list = adminDao.selectLoginCheckId(loginId);
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		int chkCount = 0;
+		if(list.size() != 0){
+			for(int i=0; i<list.size(); i++){
+				int pwCheck = adminDao.selectLoginCheckPw(loginPw);
+				
+				if(pwCheck == 1){
+					map.put("loginCheck", "success"); //로그인
+					map.put("account", list.get(i));
+				}else if(pwCheck ==0){
+					if(chkCount == list.size()){
+						map.put("loginCheck", "failPw"); //비번불일치
+					}else{
+						chkCount++;
+					}
+				}
+			}
+		}else{
+			map.put("loginCheck", "failId"); //아이디불일치
+		}
+		
+		return map;
+	}
+	
 	//등급명 구하기
 	public String getName(int grade) {
 		String name = "";
@@ -37,8 +66,14 @@ public class AdminService {
 	}
 	/* 모든유저정보조회
 	 * @resultType : Account*/
-	public List<Account> readAllUserServ(){
-		List<Account> list = adminDao.selectAllUser();
+	public List<Account> readAllUserServ(int grade){
+		List<Account> list = new ArrayList<Account>();
+		if(grade == 1){
+			list = adminDao.selectAllUserMaster(); 
+		}else{
+			list = adminDao.selectAllUserBranch(); 
+		}
+		
 		
 		DecimalFormat df = new DecimalFormat("#,##0");
 		
