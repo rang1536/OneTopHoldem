@@ -75,8 +75,8 @@
 	   	      		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='addGoldFn("+list[i].accountId+")'>골드증여</button>";
 	   	     		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='modifyAccount("+list[i].accountId+")'>티켓증여</button>";
 	   	      		list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatus("+list[i].accountId+");'>정지</button>" 			   	    			   	    	
-   	           }
-	    	   console.log("list : "+list) */
+   	           }*/
+	    	   console.log("list : "+list) 
 	    	   return list;
 	      	}
 		  },            
@@ -127,7 +127,7 @@
 				var date = new Date();
 				var month = date.getMonth()+1;
 				if(month < 10) month = "0"+month.toString();
-				console.log(month);
+				/* console.log(month); */
 				$('#month').val(month).attr('selected','selected');
 			</script>
 		</div>

@@ -68,11 +68,14 @@ public class EventService {
 		params.put("month", month);
 		
 		List<Import> list = eventDao.selectImport(params);
-		
-		if(list != null) {
+		System.out.println(list);
+		System.out.println(list.size());
+		if(list.size() != 0) {
 			for(int i=0; i<list.size(); i++) {
 				System.out.println(i+ " 번째 결과값 확인 : "+list);
 			}
+		}else{
+			System.out.println("조회된 수입목록이 없음!!");
 		}
 		
 		return list;
