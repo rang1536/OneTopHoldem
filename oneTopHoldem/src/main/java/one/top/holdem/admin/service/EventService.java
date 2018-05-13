@@ -42,8 +42,9 @@ public class EventService {
 //			eventVO.setContent(article.get("B"));
 //			eventVO.setUserId(article.get("C"));
 //			eventVO.setFileName(article.get("D"));
-			
+		
 //			eventDao.insertEvent(eventVO);
+			System.out.println("check : "+eventVO);
 		}
 	}
 

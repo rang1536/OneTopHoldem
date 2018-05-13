@@ -124,7 +124,7 @@ public class ExcelRead {
     
     
     
-    public static void main(String[] args) {
+   /* public static void main(String[] args) {
         
         ReadOption ro = new ReadOption();
         ro.setFilePath("D:/game.xlsx");
@@ -137,7 +137,7 @@ public class ExcelRead {
         for(Map<String, String> map : result) {
             System.out.println(map.get("A"));
         }
-    }
+    }*/
     
 }
 

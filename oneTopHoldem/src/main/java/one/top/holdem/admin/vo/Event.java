@@ -263,6 +263,24 @@ public class Event {
 	public void setSmallBlindUpValueOther(long smallBlindUpValueOther) {
 		this.smallBlindUpValueOther = smallBlindUpValueOther;
 	}
+	@Override
+	public String toString() {
+		return "Event [registDate=" + registDate + ", startDate=" + startDate + ", needTicket=" + needTicket
+				+ ", needGold=" + needGold + ", needCommission=" + needCommission + ", receiveChip=" + receiveChip
+				+ ", maxRebuyCount=" + maxRebuyCount + ", rebuyNeedGold=" + rebuyNeedGold + ", rebuyNeedCommission="
+				+ rebuyNeedCommission + ", rebuyReceiveChip=" + rebuyReceiveChip + ", maxAddOnCount=" + maxAddOnCount
+				+ ", addOnNeedGold=" + addOnNeedGold + ", addOnNeedCommission=" + addOnNeedCommission
+				+ ", addOnReceiveChip=" + addOnReceiveChip + ", isDoubleBuyIn=" + isDoubleBuyIn + ", minUser=" + minUser
+				+ ", maxUser=" + maxUser + ", guarantee=" + guarantee + ", tournamentType=" + tournamentType
+				+ ", blindUpTime=" + blindUpTime + ", breakTimeLevel=" + breakTimeLevel + ", breakTime=" + breakTime
+				+ ", title=" + title + ", anteBaseValue=" + anteBaseValue + ", anteUpValue9=" + anteUpValue9
+				+ ", anteUpValue19=" + anteUpValue19 + ", anteUpValue29=" + anteUpValue29 + ", anteUpValue39="
+				+ anteUpValue39 + ", anteUpValue49=" + anteUpValue49 + ", anteUpValueOther=" + anteUpValueOther
+				+ ", smallBlindBaseValue=" + smallBlindBaseValue + ", smallBlindUpValue9=" + smallBlindUpValue9
+				+ ", smallBlindUpValue19=" + smallBlindUpValue19 + ", smallBlindUpValue29=" + smallBlindUpValue29
+				+ ", smallBlindUpValue39=" + smallBlindUpValue39 + ", smallBlindUpValue49=" + smallBlindUpValue49
+				+ ", smallBlindUpValueOther=" + smallBlindUpValueOther + "]";
+	}
 	
 	
 	
