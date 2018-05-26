@@ -6,11 +6,17 @@
 
 <!--db test  -->
 
-<select id="eventList" resultType="one.top.holdem.admin.vo.Event">
+<select id="eventList" resultType="one.top.holdem.admin.vo.Tournament">
 	SELECT *
 	FROM dbo.Tournament
 </select>
 
- 
+ <!-- import조회 -->
+ <select id="selectImport" parameterType="Map" resultType="one.top.holdem.admin.vo.Import">
+ 	SELECT *
+ 	FROM dbo.Import
+ 	WHERE year = #{year}
+ 	AND month = #{month}
+ </select>
 
 </mapper>

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import one.top.holdem.admin.service.AdminService;
 import one.top.holdem.admin.vo.Account;
+import one.top.holdem.admin.vo.Master;
 
 
 @Controller
@@ -23,31 +24,35 @@ public class AdminController {
 	@RequestMapping(value="/start", method = RequestMethod.GET)
 	public String startCtrl() {
 		int result = adminService.testDbServ();
-		return "login";
+		return "/admin/login";
 	}
 	
 	//지점관리
 	@RequestMapping(value="/branchManagement", method = RequestMethod.GET)
 	public String branchManagementCtrl() {
-		return "index";
+		return "/admin/main";
 	}
 		
 	//회원정보관리
 	@RequestMapping(value="/userManagement", method = RequestMethod.GET)
 	public String userManagementCtrl() {
-		return "/user/list_user";
+		return "/admin/user/list_user";
 	}
 	
 	//게임관리
 	@RequestMapping(value="/gameManagement", method = RequestMethod.GET)
-	public String gameManagementCtrl() {
-		return "/gameManager/input_form";
+	public String gameManagementCtrl(Model model) {
+		// 현재 배당율 조회하여 포워딩
+		Master master = adminService.readNowMasterInfo();
+		
+		model.addAttribute("master", master);
+		return "/admin/gameManager/input_form";
 	}
 	
 	//입출금관리
 	@RequestMapping(value="/inOutManagement", method = RequestMethod.GET)
 	public String inOutManagementCtrl() {
-		return "/inOut/inOut_list";
+		return "/admin/inOut/inOut_list";
 	}
 	
 	//지점등록 (01-13 미완성)
@@ -62,7 +67,7 @@ public class AdminController {
 		
 		Map<String, String> map = adminService.addBranchServ(account, hp2);
 		model.addAttribute("inputCheck", map.get("inputCheck"));
-		return "index";
+		return "/admin/main";
 	}
 	
 	//지점수정 modifyAccount
@@ -78,6 +83,6 @@ public class AdminController {
 		Map<String, String> map = adminService.modifyAccountServ(account, hp2);
 		model.addAttribute("updateCheck", map.get("updateCheck"));
 		
-		return "index";
+		return "/admin/main";
 	}
 }

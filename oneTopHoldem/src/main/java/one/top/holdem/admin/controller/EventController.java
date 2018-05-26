@@ -15,7 +15,12 @@ public class EventController {
 	
 	@RequestMapping(value="/event", method = RequestMethod.GET)
 	public String eventCtrl() {
-		return "/event/event";
+		return "/admin/event/event";
 	}
 
+	//수익관리 importManagement
+	@RequestMapping(value="/importManagement", method = RequestMethod.GET)
+	public String importManagementCtrl() {
+		return "/admin/importManager/import_list";
+	}
 }

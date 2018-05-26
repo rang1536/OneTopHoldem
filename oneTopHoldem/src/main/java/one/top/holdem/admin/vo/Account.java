@@ -15,10 +15,16 @@ public class Account {
 	private int accountLevel;
 	private long accountExp;
 	private long gold;
+	private long bonusGold;
 	private long chargeGold;
 	private long ticket;
 	private int costume;
 	private long recommenderAccountId;
+	private String lastLoginDate;
+	private long todayCash;
+	private long monthCash;
+	private long todayStartGold;
+	
 	
 	private String goldCount; //보유골드 3자리 컴마추가된 문자열
 	private String gradeName; //등급명
@@ -27,6 +33,37 @@ public class Account {
 	private String reLoginPassword;
 	
 	
+	
+	public long getBonusGold() {
+		return bonusGold;
+	}
+	public void setBonusGold(long bonusGold) {
+		this.bonusGold = bonusGold;
+	}
+	public String getLastLoginDate() {
+		return lastLoginDate;
+	}
+	public void setLastLoginDate(String lastLoginDate) {
+		this.lastLoginDate = lastLoginDate;
+	}
+	public long getTodayCash() {
+		return todayCash;
+	}
+	public void setTodayCash(long todayCash) {
+		this.todayCash = todayCash;
+	}
+	public long getMonthCash() {
+		return monthCash;
+	}
+	public void setMonthCash(long monthCash) {
+		this.monthCash = monthCash;
+	}
+	public long getTodayStartGold() {
+		return todayStartGold;
+	}
+	public void setTodayStartGold(long todayStartGold) {
+		this.todayStartGold = todayStartGold;
+	}
 	public String getReLoginPassword() {
 		return reLoginPassword;
 	}
@@ -166,11 +203,12 @@ public class Account {
 				+ ", accountState=" + accountState + ", telephone=" + telephone + ", email=" + email + ", accountText="
 				+ accountText + ", accountId=" + accountId + ", loginId=" + loginId + ", loginPassword=" + loginPassword
 				+ ", nickname=" + nickname + ", accountLevel=" + accountLevel + ", accountExp=" + accountExp + ", gold="
-				+ gold + ", chargeGold=" + chargeGold + ", ticket=" + ticket + ", costume=" + costume
-				+ ", recommenderAccountId=" + recommenderAccountId + ", goldCount=" + goldCount + ", gradeName="
-				+ gradeName + "]";
+				+ gold + ", bonusGold=" + bonusGold + ", chargeGold=" + chargeGold + ", ticket=" + ticket + ", costume="
+				+ costume + ", recommenderAccountId=" + recommenderAccountId + ", lastLoginDate=" + lastLoginDate
+				+ ", todayCash=" + todayCash + ", monthCash=" + monthCash + ", todayStartGold=" + todayStartGold
+				+ ", goldCount=" + goldCount + ", gradeName=" + gradeName + ", chargeGoldToString=" + chargeGoldToString
+				+ ", reLoginPassword=" + reLoginPassword + "]";
 	}
-	
 	
 	
 }

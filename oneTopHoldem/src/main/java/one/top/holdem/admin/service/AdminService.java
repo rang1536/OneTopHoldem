@@ -1,5 +1,6 @@
 package one.top.holdem.admin.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,8 @@ import com.ibm.icu.text.DecimalFormat;
 import one.top.holdem.admin.dao.AdminDao;
 import one.top.holdem.admin.vo.Account;
 import one.top.holdem.admin.vo.Import;
+import one.top.holdem.admin.vo.Master;
+import one.top.holdem.admin.vo.Notice;
 
 @Service
 public class AdminService {
@@ -22,6 +25,33 @@ public class AdminService {
 		int result = adminDao.selectTest();
 		System.out.println("테스트 : "+result);
 		return 0;
+	}
+	
+	//로그인
+	public Map<String, Object> loginServ(String loginId, String loginPw){
+		List<Account> list = adminDao.selectLoginCheckId(loginId);
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		int chkCount = 0;
+		if(list.size() != 0){
+			Account account = new Account();
+			account.setLoginId(loginId);
+			account.setLoginPassword(loginPw);
+			
+			int pwCheck = adminDao.selectLoginCheckPw(account);
+			
+			if(pwCheck == 1){
+				map.put("loginCheck", "success"); //로그인
+				
+			}else if(pwCheck ==0){
+				map.put("loginCheck", "failPw"); //비번불일치
+			}
+		
+		}else{
+			map.put("loginCheck", "failId"); //아이디불일치
+		}
+		
+		return map;
 	}
 	
 	//등급명 구하기
@@ -35,8 +65,14 @@ public class AdminService {
 	}
 	/* 모든유저정보조회
 	 * @resultType : Account*/
-	public List<Account> readAllUserServ(){
-		List<Account> list = adminDao.selectAllUser();
+	public List<Account> readAllUserServ(int grade){
+		List<Account> list = new ArrayList<Account>();
+		if(grade == 1){
+			list = adminDao.selectAllUserMaster(); 
+		}else{
+			list = adminDao.selectAllUserBranch(); 
+		}
+		
 		
 		DecimalFormat df = new DecimalFormat("#,##0");
 		
@@ -133,6 +169,79 @@ public class AdminService {
 		Map<String, String> map = new HashMap<String, String>();
 		if(result > 0) map.put("changeCheck", "success");
 		else if(result == 0) map.put("changeCheck", "fail");
+		
+		return map;
+	}
+	
+	//골드증여
+	public Map<String, String> modifyAccountGoldServ(int accountId, long addGold){
+		//기존소유골드 조회
+		Account account = adminDao.selectAccount(accountId);
+		
+		long gold = account.getGold() + addGold; //기존골드 + 증여골드 세팅
+		account.setGold(gold);
+		
+		int result = adminDao.updateAccountGoldPlus(account);
+		
+		Map<String, String> map = new HashMap<String, String>();
+		if(result > 0) map.put("addGoldCheck", "success");
+		else if(result == 0) map.put("addGoldCheck", "fail");
+		
+		return map;
+	} 
+	
+	//티켓증여
+	public Map<String, String> modifyAccountTicketServ(int accountId, long addTicket){
+		//기존소유골드 조회
+		Account account = adminDao.selectAccount(accountId);
+		
+		long ticket = account.getTicket() + addTicket; //기존티켓 + 증여티켓 세팅
+		account.setTicket(ticket);
+		
+		int result = adminDao.updateAccountTicketPlus(account);
+		
+		Map<String, String> map = new HashMap<String, String>();
+		if(result > 0) map.put("addTicketCheck", "success");
+		else if(result == 0) map.put("addTicketCheck", "fail");
+		
+		return map;
+	} 
+	
+	//기존 배당율 조회
+	public Master readNowMasterInfo(){
+		return adminDao.selectNowMasterInfo();
+	}
+	
+	//게임 배당율 수정 - 피케이 없이 수정되나? 
+	public Map<String, String> modifyMasterInfoServ(Master master){
+		int result = adminDao.updateMasterInfo(master);
+		
+		Map<String, String> map = new HashMap<String, String>();
+		if(result > 0) map.put("masterInfoModifyCheck", "success");
+		else if(result == 0) map.put("masterInfoModifyCheck", "fail");
+		
+		return map;
+	}
+	
+	//긴급공지 등록 - 이게 맞나 몰라 공지 1개만 있고 계속 갈아치우는?
+	public Map<String, String> addNoticeServ(int hour, int minute, String msg){
+		int result = 0;
+		//먼저 기존 공지를 삭제한다.
+		int deleteResult = adminDao.deleteNotice();
+		
+		//공지값 세팅
+		Notice notice = new Notice();
+		notice.setNotice(msg);
+		//현재시간 구해서 입력받은 시간,분 더하기 포멧- utc시간
+		
+		//삭제 확인후 공지입력
+		if(deleteResult == 1) result = adminDao.insertNotice(notice);
+		
+		// 공지 입력 후 공지 알림 스크립트 실행하도록 뭔가 처리를 해줌.
+		
+		Map<String, String> map = new HashMap<String, String>();
+		if(result > 0) map.put("addNoticeCheck", "success");
+		else if(result == 0) map.put("addNoticeCheck", "fail");
 		
 		return map;
 	}

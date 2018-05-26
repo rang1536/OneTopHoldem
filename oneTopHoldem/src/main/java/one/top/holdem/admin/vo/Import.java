@@ -6,6 +6,15 @@ public class Import {
 	private int day;
 	private long gold;
 	private long cash;
+	private long accountId;
+	
+	
+	public long getAccountId() {
+		return accountId;
+	}
+	public void setAccountId(long accountId) {
+		this.accountId = accountId;
+	}
 	public int getYear() {
 		return year;
 	}
@@ -38,7 +47,8 @@ public class Import {
 	}
 	@Override
 	public String toString() {
-		return "Import [year=" + year + ", month=" + month + ", day=" + day + ", gold=" + gold + ", cash=" + cash + "]";
+		return "Import [year=" + year + ", month=" + month + ", day=" + day + ", gold=" + gold + ", cash=" + cash
+				+ ", accountId=" + accountId + "]";
 	}
 	
 	

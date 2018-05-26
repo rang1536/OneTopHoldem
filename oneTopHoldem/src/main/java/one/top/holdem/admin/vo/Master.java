@@ -12,6 +12,7 @@ public class Master {
 	private long fullHouseJackpot;
 	private long fourOfAKindJackpot;
 	private long straightFlushJackpot;
+	
 	public int getDealerCommission() {
 		return dealerCommission;
 	}

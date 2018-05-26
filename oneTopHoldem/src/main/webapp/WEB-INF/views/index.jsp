@@ -1,357 +1,264 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:import url="./module/side.jsp"></c:import>
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css"/>
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.css"/>
-	
-	<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.js"></script> -->
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.js"></script>
-	
-	<script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
-	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
-	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.bootstrap.min.js"></script>
-	
-	<script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.js"></script>
-	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
-	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js"></script>
-	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.colVis.min.js"></script>
-	<script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js"></script>
-	<script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-	               
-	<link rel="StyleSheet" href="<c:url value='resources/css/datatable.css'/>" type="text/css">
-	<link rel="StyleSheet" href="<c:url value='resources/css/datatableUse.css'/>" type="text/css"> 
-	
-	<script>
-	$(document).ready(function(){
-		$('.topMenu:eq(0)').css('background','#FFC19E');
-		var inputCheck = '${inputCheck}'; //지점등록시 체크하는 변수
-		var updateCheck = '${updateCheck}'; //지점수정시 체크하는 변수
-		
-		// 지점등록, 수정등 성공여부 알림창
-		if(inputCheck == 'success') alert('지점등록에 성공하였습니다!!');
-		else if(inputCheck == 'fail') alert('지점등록에 실패하였습니다!!');
-		
-		if(updateCheck == 'success') alert('지점수정에 성공하였습니다!!');
-		else if(updateCheck == 'fail') alert('지점수정에 실패하였습니다!!');
-		
-   		var table = 
-        $('#payList').DataTable( {
-          dom: 'Bfrtip',
-          lengthChange: false,
-          autoWidth : false,
-          processing: false,
-          ordering: true,
-          serverSide: false,
-          searching: true,
-          //lengthMenu : [ [ 3, 5, 10, -1 ], [ 3, 5, 10, "All" ] ],
-          pageLength: 50,
-          bPaginate: true,
-          bLengthChange: false,
-          bAutoWidth: false,
-          bStateSave: true,
-          buttons: [], 
-          oLanguage : {
-             sProcessing : "처리중...",
-             sZeroRecords : "데이터가 없습니다(전체보기시 10초정도 소요될 수 있습니다)",
-             oPaginate : {
-                   sFirst : "처음",
-                   sNext : ">",
-                   sPrevious : "<",
-                   sLast : "끝"
- 
-             },
-             sInfo : "총_TOTAL_건 중, _START_건부터_END_건까지 표시",
-             sInfoEmpty : "0 건 중, 0부터 0 까지 표시", 
-             sInfoFiltered : "(총 _MAX_ 건에서 추출 )",
-             sSearch : "상세 검색 : "                
-       },
-	    ajax : {
-	   
-	      "url":"userList",
-	      "type":"POST",
-	      "dataSrc": function(json){
-	    	   var list = json.list;
-	    	   
-				for(var i=0; i<list.length; i++){
-					// 정지된 지점 표시
-					if(list[i].accountStatus == 1) list[i].loginId += '(정지됨)'; 
-					
-					list[i].goldText = "<span class='numberInput'>"+list[i].gold+"</span>"
-					// 데이터 수정버튼 추가
-					list[i].btnGroup ="<div align='center'>"
-					list[i].btnGroup += "<button type='button' class='btn btn-success' onclick='modifyAccount("+list[i].accountId+")'>수정</button>"
-					
-					if(list[i].accountStatus == 1) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatusNone("+list[i].accountId+");'>정지풀기</button>"
-					else if(list[i].accountStatus == 0) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatus("+list[i].accountId+");'>정지</button>"
-					
-					list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-danger' onclick='deleteAccount("+list[i].accountId+");'>삭제</button></div>";		   	    			   	    	
-				}
-				return list;
-	      	}
-		  },            
-		  columns : [
-		      {data: "loginId"},
-		      {data: "commission"},
-		      {data: "createdDate"},
-		      {data: "goldCount"},
-		      {data: "btnGroup"}	     
-		  ],
-	         initComplete : function() {
-	  
-	        	 $('#payList_filter').prepend( $('#buttonWrap')) ;
-	        	 
-	         } 
-	   });
-   		
-	});
-	
-	//유효성검사 하는 함수 정의 - 널체크, 숫자만 입력.
-	function nullCheck(str){ //널체크
-		if(str == null || str == ''){
-			alert('필수항목을 모두 입력해주세요!!');
-			return false;
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>원탑홀덤</title>
+<link rel="stylesheet" href="resources/css/default.css">
+<script type="text/javascript" src="resources/js/yssor.slider.min.js"></script>
+<script type="text/javascript" src="resources/js/jquery-3.2.1.min.js"></script> 
+<script type="text/javascript" src="resources/js/jquery.FadeWideBgImg.js"></script> 
+<script type="text/javascript"> 
+
+(function($){ 
+
+   jQuery(document).ready(function(){ 
+
+      $('.slideshow').FadeWideBgImg({interval:2000}); 
+
+   }); 
+
+}(window.jQuery,window)); 
+
+yssor_1_slider_init = function() {
+            
+	var yssor_1_options = {
+		$AutoPlay: true,
+		$SlideWidth: 264,
+		$Cols: 4,
+		$Align: 600,
+		$ArrowNavigatorOptions: {
+			$Class: $yssorArrowNavigator$
+		},
+		$BulletNavigatorOptions: {
+			$Class: $yssorBulletNavigator$
 		}
-		return true; 
-	}
-	
-	function isNum(str, tag){ //키업이벤트 숫자만 입력하는지 체크
-		var key = event.keyCode;
-		if(!(key==8 || key==9 || key==13 || key==46 || key==144 || (key>=48&&key<=57) || key==110 || key==190)){
-			alert('숫자만 입력가능합니다!!');
-			str = str.substring(0,str.length-1);
-			$('#addBranch').find('#'+tag).val(str);
-			event.returnValue = false;
+	};
+            
+	var yssor_1_slider = new $yssorSlider$("yssor_1", yssor_1_options);
+            
+	function ScaleSlider() {
+		var refSize = yssor_1_slider.$Elmt.parentNode.clientWidth;
+		if (refSize) {
+			refSize = Math.min(refSize, 244);
+			yssor_1_slider.$ScaleWidth(refSize);
+		}
+		else {
+			window.setTimeout(ScaleSlider, 30);
 		}
 	}
-	
-	function isNumModify(str, tag){ //키업이벤트 숫자만 입력하는지 체크
-		var key = event.keyCode;
-		if(!(key==8 || key==9 || key==13 || key==46 || key==144 || (key>=48&&key<=57) || key==110 || key==190)){
-			alert('숫자만 입력가능합니다!!');
-			str = str.substring(0,str.length-1);
-			$('#modifyAccount').find('#'+tag).val(str);
-			event.returnValue = false;
-		}
-	}
-	// id 중복체크(지점등록)
-	function overlapCheck(loginId){
-		if(loginId != null && loginId != ''){
-			$.ajax({
-				url : 'overlap',
-				data: {'loginId':loginId},
-				dataType: 'json',
-				type : 'post',
-				success : function(data){
-					if(data.result == 'fail'){
-						alert('같은 아이디가 존재합니다. 변경해주세요');
-						$('#addBranchForm').find('#loginId').val('');
-						$('#addBranchForm').find('#loginId').focus();
-						return;
-					}
-				}
-			})
-		}
-	}
-	//지점등록 팝업창 열기
-	function addBranchPop(){
-		$('#addBranch').modal();
-	}
-	
-	//지점등록하기 - 유효성검사 & 폼값 서브밋
-	function addBranch(){
-		var loginId = $('#addBranchForm').find('#loginId').val();
-		var loginPassword = $('#addBranchForm').find('#loginPassword').val();
-		var reLoginPassword = $('#addBranchForm').find('#reLoginPassword').val();
-		var commission = $('#addBranchForm').find('#commission').val();
-		var recommendAccountId = $('#addBranchForm').find('#recommendAccountId').val();
-		var telephone = $('#addBranchForm').find('#telephone').val();
-		var hp2 = $('#addBranchForm').find('#hp2').val();
-		var accountText = $('#addBranchForm').find('#accountText').val();
-		
-		//널체크
-		if(loginId ==null || loginId == ''){
-			alert('아이디를 입력해주세요!!');
-			return ;
-		}else if(loginPassword ==null || loginPassword == ''){
-			alert('패스워드를 입력해주세요!!');
-			return ;
-		}else if(reLoginPassword ==null || reLoginPassword == ''){
-			alert('패스워드를 다시 입력해주세요!!');
-			return ;
-		}else if(commission ==null || commission == ''){
-			alert('커미션을 입력해주세요!!');
-			return ;
-		}else if(recommendAccountId ==null || recommendAccountId == ''){
-			alert('추천인을 입력해주세요!!');
-			return ;
-		}else if(telephone ==null || telephone == ''){
-			alert('연락처를 입력해주세요!!');
-			return ;
-		}
-		
-		//비번, 재입력간 일치여부 확인
-		if(loginPassword != reLoginPassword){
-			alert('비밀번호가 다릅니다 다시 입력하세요');
-			$('#addBranchForm').find('#reLoginPassword').val('');
-			$('#addBranchForm').find('#reLoginPassword').focus();
-			return;
-		}
-		
-		$('#addBranchForm').attr('action','addBranch').submit();
-	}
-	//지점수정 팝업창 텍스트박스 값세팅 및 팝업창 열기
-	function modifyAccount(accountId){
-		/* alert(accountId); */
-		$.ajax({
-			url : 'readAccount',
-			data : {'accountId':accountId},
-			dataType:'json',
-			type:'post',
-			success:function(data){
-				$('#modifyAccount').find('#accountId').val(data.accountId);
-				$('#modifyAccount').find('#loginId').val(data.loginId);
-				$('#modifyAccount').find('#todayTd').text(data.createdDate);
-				$('#modifyAccount').find('#commission').val(data.commission);
-				$('#modifyAccount').find('#recommendAccountId').val(data.recommendAccountId);
-				$('#modifyAccount').find('#telephone').val(data.telephone);
-				$('#modifyAccount').find('#accountText').val(data.accountText);
-				
-				$('#modifyAccount').modal();
-			}
-		})
-	}
-	
-	//지점수정
-	function modifyBranch(){
-		var loginPassword = $('#modifyAccountForm').find('#loginPassword').val();
-		var reLoginPassword = $('#modifyAccountForm').find('#reLoginPassword').val();
-		
-		if(loginPassword != null && loginPassword != ''){ //비밀번호를 입력했다면 재입력 비번과 확인하여 다르면 같게 입력하게함.
-			if(loginPassword != reLoginPassword){
-				alert('비밀번호가 다릅니다 다시 입력하세요');
-				$('#modifyAccountForm').find('#reLoginPassword').val('');
-				$('#modifyAccountForm').find('#reLoginPassword').focus();
-				return;
-			}
-		}
-		
-		$('#modifyAccountForm').attr('action','modifyAccount').submit();
-	}
-	
-	//지점 상태변경( >>정지)
-	function changeStatus(accountId){
-		if(confirm('해당지점을 정지로 바꾸겠습니다?')){
-			//accountStatus > 1로 수정
-			$.ajax({
-				url : 'modifyAccountStatus',
-				data:{'accountId':accountId},
-				dataType:'json',
-				type:'post',
-				success:function(data){
-					if(data.updateCheck == 'success'){
-						alert('지점상태를 정지로 수정하였습니다!!');
-						window.location.reload(true);
-					}
-				}
-			})
-		}
-	}
-	
-	//지점 상태변경( >>정지풀기)
-	function changeStatusNone(accountId){
-		if(confirm('해당지점의 정지를 푸시겠습니다?')){
-			//accountStatus > 1로 수정
-			$.ajax({
-				url : 'modifyAccountStatusNone',
-				data:{'accountId':accountId},
-				dataType:'json',
-				type:'post',
-				success:function(data){
-					if(data.updateCheck == 'success'){
-						alert('정지를 풀었습니다!!');
-						window.location.reload(true);
-					}
-				}
-			})
-		}
-	}
-	
-	//지점 삭제
-	function deleteAccount(accountId){
-		if(confirm('해당지점을 삭제하시겠습니까?')){
-			//계정 삭제
-			$.ajax({
-				url : 'removeAccount',
-				data:{'accountId':accountId},
-				dataType:'json',
-				type:'post',
-				success:function(data){
-					if(data.deleteCheck == 'success'){
-						alert('선택한 지점을 삭제하였습니다!!');
-						window.location.reload(true);
-					}
-				}
-			})
-		}
-	}	
-	
-	//단체문자
-	function sendMms(){
-		$('#mms').modal();
-	}
-	
-	</script>
+};
+
+function newWin(url) {
+	window.open(url,'new_win','width=800,height=780,toolbars=no,menubars=no,scrollbars=no');
+}
+</script>
+
+
 </head>
+
+
+
 <body>
-<div id="page-wrapper">
-	<br/>
-	<div class="row">
-		<div class="col-lg-12">
-            <a href="#"><i class="fa fa-home fa-fw"></i></a>  >  지점관리
-        </div>
-	</div>
-	<br/>
-	<div class="row">
-		<div style="text-align:left;margin-right:10px;">
-			<button type="button" class="btn btn-success" onclick="sendMms();">일괄메세지</button>
-			<button type="button" class="btn btn-primary" onclick="addBranchPop();">지점등록</button>
+
+<!---- headr ---------->
+<c:import url="./module/top.jsp"></c:import>
+
+<!---- headr ---------->
+
+
+<div id="warp">
+
+<!---- content ---------->
+	<div id="main_con">
+		<div id="main_ban">
+			<div class="notice">
+				<div style="float:left;color:#fff000;font-weight:600;"><img src="resources/img/noti_icon.png">&nbsp;&nbsp;공지사항&nbsp;&nbsp;|&nbsp;&nbsp;</div>
+				<div style="float:left;color:#fff;font-weight:600;cursor:pointer;" onclick="location.href='noticeView'">[점검안내] 2018/01/06 서버 점검을 실시합니다.</div>
+				<div style="float:right;color:#989898;font-weight:600;cursor:pointer;" onclick="location.href='noticeList'">MORE <img src="resources/img/noti_more.png"></div>
+			</div>
+			<div class="roll_img">
+				<div style="width:100%;">
+					<ul class="slideshow">
+						<li><img src="resources/img/main_ban3.jpg" alt="슬라이드 이미지"/></li>
+						<li><img src="resources/img/main_ban2.jpg" alt="슬라이드 이미지"/></li>
+						<li><img src="resources/img/main_ban1.jpg" alt="슬라이드 이미지"/></li>
+					</ul> 
+				</div> 
+			</div>
+		</div>
+		<div id="game_box">
+			<section id="ol_before" class="ol">
+				<form name="foutlogin" action="index_login.html" onsubmit="return fhead_submit(this);" method="post" autocomplete="off">
+				<fieldset>
+					<div id="ol_auto">
+						<input type="checkbox" name="auto_login" value="1" id="auto_login">
+						<label for="auto_login" id="auto_login_label">보안로그인</label>
+					</div>
+					<label for="ol_id" id="ol_idlabel">아이디</label>
+					<input type="text" id="ol_id" name="mb_id" required class="required" maxlength="20">
+					<label for="ol_pw" id="ol_pwlabel">비밀번호</label>
+					<input type="password" name="mb_password" id="ol_pw" required class="required" maxlength="20">
+					<input type="submit" id="ol_submit" value="로그인">
+					<div id="ol_svc">
+						<a href="join"><b>회원가입</b></a>|<a href="find.html" id="ol_password_lost">정보찾기</a>
+					</div>
+					
+				</fieldset>
+				</form>
+			</section>
+
+			<script>
+			$omi = $('#ol_id');
+			$omp = $('#ol_pw');
+			$omp.css('display','inline-block').css('width',212);
+			$omi_label = $('#ol_idlabel');
+			$omi_label.addClass('ol_idlabel');
+			$omp_label = $('#ol_pwlabel');
+			$omp_label.addClass('ol_pwlabel');
+
+			$(function() {
+				$omi.focus(function() {
+					$omi_label.css('visibility','hidden');
+				});
+				$omp.focus(function() {
+					$omp_label.css('visibility','hidden');
+				});
+				$omi.blur(function() {
+					$this = $(this);
+					if($this.attr('id') == "ol_id" && $this.attr('value') == "") $omi_label.css('visibility','visible');
+				});
+				$omp.blur(function() {
+					$this = $(this);
+					if($this.attr('id') == "ol_pw" && $this.attr('value') == "") $omp_label.css('visibility','visible');
+				});
+
+				$("#auto_login").click(function(){
+					if ($(this).is(":checked")) {
+						if(!confirm("자동로그인을 사용하시면 다음부터 회원아이디와 비밀번호를 입력하실 필요가 없습니다.\n\n공공장소에서는 개인정보가 유출될 수 있으니 사용을 자제하여 주십시오.\n\n자동로그인을 사용하시겠습니까?"))
+							return false;
+					}
+				});
+			});
+
+			function fhead_submit(f)
+			{
+				return true;
+			}
+			</script>
+
+			<div><img src="resources/img/game_down.png"></div>
+			<div style="padding-top:20px;"><img src="resources/img/school_icon.png"></div>
+			<div style="margin:-46px 0 0 60px;color:#fff;font-weight:600;line-height:21px;"><a href="guideMenu"><span style="color:#fff000;font-size:12pt;"><u>홀덤이 처음이세요?</u></span><br><font style="color:#ffffff;">초보자를 위한 게임가이드</font></a></div>
 		</div>
 	</div>
-	
-	<div class="row">
-		<div id="content">
-			<table id="payList">
-				<colgroup>
-					<col width="150px">
-					<col width="100px">
-					<col width="150px">
-					<col width="150px">               
-					<col width="300px">
-				</colgroup>
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>커미션</th>
-						<th>가입일</th>
-						<th>보유머니</th>
-						<th>-</th>						
-					</tr>
-				</thead>
-				<tbody>
-				    
-				</tbody>
-			</table>
+
+	<div id="roll">
+		<div id="yssor_1" style="position:relative; margin: 0 auto; top: 0px; left: 0px; width:1120px; height:96px; overflow: hidden; visibility: hidden;">
+
+			<div data-u="slides" style="cursor: default; position: relative; top: 0px; left:40px; width: 1040px; height:96px; overflow: hidden;">
+				
+				<div data-p="112.50" style="display: none;margin-left:-80px;">
+					<a href="/"><img src="resources/img/roll_img1.jpg" width=244 height=86 style="padding:10px"></a>
+				</div>
+				<div data-p="112.50" style="display: none;margin-left:-80px;">
+					<a href="/"><img src="resources/img/roll_img2.jpg" width=244 height=86 style="padding:10px"></a>
+				</div>
+				<div data-p="112.50" style="display: none;margin-left:-80px;">
+					<a href="/"><img src="resources/img/roll_img3.jpg" width=244 height=86 style="padding:10px"></a>
+				</div>
+				<div data-p="112.50" style="display: none;margin-left:-80px;">
+					<a href="/"><img src="resources/img/roll_img4.jpg" width=244 height=86 style="padding:10px"></a>
+				</div>
+				<div data-p="112.50" style="display: none;margin-left:-80px;">
+					<a href="/"><img src="resources/img/roll_img5.jpg" width=244 height=86 style="padding:10px"></a>
+				</div>
+				<div data-p="112.50" style="display: none;margin-left:-80px;">
+					<a href="/"><img src="resources/img/roll_img6.jpg" width=244 height=86 style="padding:10px"></a>
+				</div>
+
+			
+			</div>
+			<!-- Arrow Navigator -->
+			<span data-u="arrowleft" class="yssora13l" style="top:0px;left:50%;margin-left:-560px;width:40px;height:50px;" data-autocenter="2"></span>
+			<span data-u="arrowright" class="yssora13r" style="top:0px;left:50%;margin-left:520px;width:40px;height:50px;" data-autocenter="2"></span>
+		</div>
+
+		<script>
+			yssor_1_slider_init();
+		</script>
+	</div>
+
+	<div id="noti">
+		<div id="schedule">
+			<div class="title" style="cursor:pointer;" onclick="location.href='tournamentMenu'">토너먼트 일정</div>
+			<div class="list">
+				<ul>
+					<li>01.04 09:30 <span class="point">9만 칩 + 1만 칩</span><br>
+					[09시 30분] No리바이! No에드온! </li>
+					<li>01.04 09:30 <span class="point">9만 칩 + 1만 칩</span><br>
+					[09시 30분] No리바이! No에드온! </li>
+					<li>01.04 09:30 <span class="point">9만 칩 + 1만 칩</span><br>
+					[09시 30분] No리바이! No에드온! </li>
+				</ul>
+			</div>
+		</div>
+		<div id="tournament">
+			<div class="title">토너먼트란?</div>
+			<img src="resources/img/tournament.jpg">
+			<div class="txt">토너먼트는 정해진 시간에 수백명이 동시에 동일한 칩을 가지고<br>
+			게임에 참가하여, 최종 우스자 1명이 나올 때까지 진행되는<br>
+			게임을 말합니다. 적은 참가비를 지불하고 수십~수백배의 상금을<br>
+			받을 수 있다는 점이 큰 묘미 입니다.<br><br>
+			<a href="tournamentGame"><span class="btn1">토너먼트 용어 및 설명</span></a>
+			<a href="tournamentGuide"><span class="btn2">게임방법 & 상금</span></a></div>
+		</div>
+		<div id="moneyShop"><a href="shop"><img src="resources/img/moneyShop.jpg"></a></div>
+	</div>
+
+
+
+	<div id="wrapper">
+		<div style="float:left;width:223px;">
+			<div class="facebook"><img src="resources/img/facebook_icon.jpg"></div>
+		</div>
+		<div id="tournament">
+			<div class="title">토너먼트 소식</div>
+			<img src="resources/img/news_icon.jpg">
+			<div class="txt">
+				<ul>
+					<li>[2018-01-23] 300억 빅토너 가는길! 15,000 티켓 (3장)</li>
+					<li>[2018-01-23] 300억 빅토너 가는길! 15,000 티켓 (3장)</li>
+					<li>[2018-01-23] 300억 빅토너 가는길! 15,000 티켓 (3장)</li>
+				</ul>
+			</div>
+		</div>
+		<div id="glossary">
+			<div class="title">홀덤용어</div>
+			<ul>
+				<li onclick="newWin('glossary#1');" style="cursor:pointer;">베팅(Betting)</li>
+				<li onclick="newWin('glossary#1');" style="cursor:pointer;">레이즈(Raise)</li>
+				<li onclick="newWin('glossary#1');" style="cursor:pointer;">체크(Check)</li>
+				<li onclick="newWin('glossary#1');" style="cursor:pointer;">폴드(Fold)</li>
+				<li onclick="newWin('glossary#1');" style="cursor:pointer;">올인(All in)</li>
+				<li onclick="newWin('glossary#1');" style="cursor:pointer;">베팅용어</li>
+			</ul>
 		</div>
 	</div>
+
+<!---- content ---------->
+
+
+
+<!---- footer ---------->
+
+<c:import url="./module/footer.jsp"></c:import>
+
+<!---- footer ---------->
 </div>
 
-<c:import url="./popup/add_branch.jsp"></c:import>
-<c:import url="./popup/modify_account.jsp"></c:import>
-<c:import url="./popup/mms.jsp"></c:import>
+
 </body>
 </html>
