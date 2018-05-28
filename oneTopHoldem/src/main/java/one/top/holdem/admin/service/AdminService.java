@@ -128,6 +128,7 @@ public class AdminService {
 		// 연락처2 어떻게 할지 정해서 필드를 늘리든 해야함.
 		
 		Map<String, String> map = new HashMap<String, String>();
+		System.out.println("account : "+account);
 		int result = adminDao.updateAccount(account);
 		
 		if(result > 0) map.put("updateCheck", "success");
@@ -137,7 +138,7 @@ public class AdminService {
 	}
 	
 	// 지점상태변경
-	public Map<String, String> modifyAccountStatusServ(int accountId, int accountState){
+	public Map<String, String> modifyAccountStatusServ(long accountId, int accountState){
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("accountId", accountId);
 		params.put("accountState", accountState);

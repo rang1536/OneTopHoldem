@@ -60,20 +60,20 @@
 
 <!-- 지점수정 - 패스워드 변경이 있을시 암호화 하여 업데이트처리 PwdEncrypt('패스워드')함수 사용  -->
 <update id="updateAccount" parameterType="one.top.holdem.admin.vo.Account">
-	UPDATE dbo.Account
+	UPDATE HoldemDB.dbo.Account
 	SET loginId = #{loginId}
 		<if test="commission != null and commission != ''">,commission=#{commission}</if>
 		<if test="telephone != null and telephone != ''">,telephone=#{telephone}</if>
 		<if test="accountText != null and accountText != ''">,accountText=#{accountText}</if>
 		<if test="recommenderAccountId != null and recommenderAccountId != ''">,recommenderAccountId=#{recommenderAccountId}</if>
-		<if test="loginPassword != null and loginPassword != ''">,loginPassword=PwdEncrypt('#{commission}')</if>
+		<if test="loginPassword != null and loginPassword != ''">,loginPassword=PwdEncrypt('#{loginPassword}')</if>
 	WHERE accountId = #{accountId}	
 </update>
 
 <!-- 지점상태변경 0:none 1:stop -->
 <update id="updateAccountStatus" parameterType="Map">
 	UPDATE dbo.Account
-	SET accountStatus = #{accountState}
+	SET accountState = #{accountState}
 	WHERE accountId = #{accountId}
 </update>
 

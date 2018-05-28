@@ -1,17 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+
 <style>
 	tr{margin-top:2px;margin-bottom:2px;}
 </style>
-</head>
-<body>
+
 <!--본문시작  -->
-<div class="modal fade" id="mms" role="dialog">
+<div class="modal" id="mms" role="dialog">
 <div class="modal-dialog">
 
 <!-- Modal content-->
@@ -50,5 +45,3 @@
 	</div>
 </div>
 </div> 
-</body>
-</html>

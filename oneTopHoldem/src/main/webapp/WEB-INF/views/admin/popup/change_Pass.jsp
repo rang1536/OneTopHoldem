@@ -11,7 +11,7 @@
 </head>
 <body>
 <!--본문시작  -->
-<div class="modal fade" id="changePass" role="dialog">
+<div class="modal" id="changePass" role="dialog">
 <div class="modal-dialog">
 
 <!-- Modal content-->

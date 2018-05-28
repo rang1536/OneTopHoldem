@@ -1,17 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+
 <style>
 	tr{margin-top:2px;margin-bottom:2px;}
 </style>
-</head>
-<body>
+
 <!--본문시작  -->
-<div class="modal fade" id="modifyAccount" role="dialog">
+<div class="modal" id="modifyAccount" role="dialog">
 <div class="modal-dialog modal-lg">
 
 <!-- Modal content-->
@@ -28,7 +23,7 @@
 						<td>ID</td>
 						<td><input type="text" class="form-control" name="loginId" id="loginId" readonly/></td>
 						<td>비밀번호</td>
-						<td><input type="text" class="form-control" name="loginPassword"/></td>
+						<td><input type="text" class="form-control" name="loginPassword" id="loginPassword"/></td>
 					</tr>
 					<tr>
 						<td>가입일</td>
@@ -36,7 +31,7 @@
 							
 						</td>
 						<td>비번재입력</td>
-						<td><input type="text" class="form-control" name="reLoginPassword"/></td>
+						<td><input type="text" class="form-control" name="reLoginPassword" id="reLoginPassword"/></td>
 					</tr>
 					<tr>
 						<td>커미션</td>
@@ -73,5 +68,3 @@
 	</div>
 </div>
 </div> 
-</body>
-</html>

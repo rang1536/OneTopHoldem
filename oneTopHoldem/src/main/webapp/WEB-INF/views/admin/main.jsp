@@ -2,9 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="./module/side.jsp"></c:import>
-<!DOCTYPE html>
-<html>
-<head>
+
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css"/>
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.css"/>
 	
@@ -104,7 +102,6 @@
 	         initComplete : function() {
 	  
 	        	 $('#payList_filter').prepend( $('#buttonWrap')) ;
-	        	 alert("왜안됨?")
 	        	 
 	         } 
 	   });
@@ -207,7 +204,7 @@
 	}
 	//지점수정 팝업창 텍스트박스 값세팅 및 팝업창 열기
 	function modifyAccount(accountId){
-		/* alert(accountId); */
+		alert(accountId); 
 		$.ajax({
 			url : 'readAccount',
 			data : {'accountId':accountId},
@@ -240,12 +237,14 @@
 				return;
 			}
 		}
+		console.log($('#modifyAccountForm').serialize());
 		
 		$('#modifyAccountForm').attr('action','modifyAccount').submit();
 	}
 	
 	//지점 상태변경( >>정지)
 	function changeStatus(accountId){
+		alert('accountId : '+accountId);
 		if(confirm('해당지점을 정지로 바꾸겠습니다?')){
 			//accountStatus > 1로 수정
 			$.ajax({
@@ -307,7 +306,7 @@
 	}
 	
 	</script>
-</head>
+
 <body>
 <c:forEach var="list" items="${list }">
 	<p>${list.loginId}</p><br/>

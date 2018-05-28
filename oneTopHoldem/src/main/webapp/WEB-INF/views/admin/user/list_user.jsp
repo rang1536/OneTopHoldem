@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css"/>
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.css"/>
 	
@@ -73,10 +74,12 @@
 					if(list[i].accountStatus == 1) list[i].loginId += '(정지됨)'; 
 	    			
 	    		    // 데이터 수정버튼 추가
-	   	      		list[i].btnGroup ="<div align='center'>"
-	   	      		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='changePass("+list[i].accountId+")'>비번변경</button>";
+	   	      		list[i].btnGroup ="<div id='btnGroup' align='center'>"
+	   	      		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' id='testInp'>test</button>";
+	   	      		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' id='changePassBtn'>비번변경</button>";
 	   	      		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='addGoldFn("+list[i].accountId+")'>골드증여</button>";
 	   	     		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='addTicket("+list[i].accountId+")'>티켓증여</button>";
+	   	     		list[i].btnGroup += '<input type="hidden" id="accountId" value="'+list[i].accountId+'"/>';
 	   	     	
 		   	     	if(list[i].accountState == 1) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatusNone("+list[i].accountId+");'>정지풀기</button>"
 					else if(list[i].accountState == 0) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatus("+list[i].accountId+");'>정지</button>"
@@ -91,15 +94,18 @@
 		      {data: "loginId"},
 		      {data: "btnGroup"}	     
 		  ],
-	         initComplete : function() {
-	  
-	        	 $('#payList_filter').prepend( $('#buttonWrap')) ;
-	        	 
+	         initComplete : function() {  
+	        	 $('#payList_filter').prepend( $('#buttonWrap')) ;	        	 
 	         } 
 	   });
    		
 	});
 	
+	//onclick='changePass("+list[i].accountId+")'
+	
+	$(document).on('click','#testInp',function(){
+		alert('!!');
+	})
 	function isNum(str, tag){ //키업이벤트 숫자만 입력하는지 체크
 		var key = event.keyCode;
 		if(!(key==8 || key==9 || key==13 || key==46 || key==144 || (key>=48&&key<=57) || key==110 || key==190)){
@@ -184,6 +190,7 @@
 	
 	//지점 상태변경( >>정지)
 	function changeStatus(accountId){
+		alert(accountId)
 		if(confirm('해당지점을 정지로 바꾸겠습니다?')){
 			//accountStatus > 1로 수정
 			$.ajax({
@@ -222,6 +229,21 @@
 	
 	
 	//비번변경 팝업창열기
+	$(document).on('click','#changePassBtn',function(){
+		var accountId = $('#btnGroup').find('#accountId').val();
+		$.ajax({
+			url : 'readAccount',
+			data : {'accountId':accountId},
+			dataType:'json',
+			type:'post',
+			success:function(data){
+				$('#changePass').find('#accountId').val(data.accountId);
+				$('#changePass').find('#targetTd').text('['+data.loginId+'님] 비밀번호 변경');
+				$('#changePass').modal();
+			}
+		})
+	})
+	
 	function changePass(accountId){
 		$.ajax({
 			url : 'readAccount',

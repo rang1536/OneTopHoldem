@@ -11,7 +11,7 @@
 </head>
 <body>
 <!--본문시작  -->
-<div class="modal fade" id="modifyMyInfo" role="dialog">
+<div class="modal" id="modifyMyInfo" role="dialog">
 <div class="modal-dialog modal-lg">
 
 <!-- Modal content-->
