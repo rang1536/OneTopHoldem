@@ -45,7 +45,7 @@
 	function loginAjax(){
 		var id= $('#id').val();
 		var pw= $('#pw').val();
-		alert('id : '+id+' pw : '+pw);
+		//alert('id : '+id+' pw : '+pw);
 		if(id == '' || id==null){
 			alert('아이디를 입력하세요');
 			$('#id').focus();

@@ -26,14 +26,14 @@ public class AdminDao {
 	}
 	
 	//로그인 아이디 조회
-	public List<Account> selectLoginCheckId(String loginId){
-		return sqlSession.selectList("AdDao.selectLoginCheckId", loginId);
+	public List<Account> selectLoginCheckId(Map<String, Object> param){
+		return sqlSession.selectList("AdDao.selectLoginCheckId", param);
 	}
 	
 	//로그인 패스워드 확인
-	public int selectLoginCheckPw(Account account){
+	public Account selectLoginCheckPw(Map<String, Object> param){
 		
-		return sqlSession.selectOne("AdDao.selectLoginCheckPw", account);
+		return sqlSession.selectOne("AdDao.selectLoginCheckPw", param);
 	}
 	
 	// 모든유저 조회 -MASTER
@@ -109,5 +109,10 @@ public class AdminDao {
 	//긴급공지삭제 
 	public int deleteNotice(){
 		return sqlSession.delete("AdDao.deleteNotice");
+	}
+	
+	//지점등록
+	public int insertBranch(Account account) {
+		return sqlSession.insert("AdDao.insertBranch", account);
 	}
 }

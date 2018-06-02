@@ -29,21 +29,22 @@ public class AdminService {
 	
 	//로그인
 	public Map<String, Object> loginServ(String loginId, String loginPw){
-		List<Account> list = adminDao.selectLoginCheckId(loginId);
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("loginId", loginId);
+		param.put("loginPassword", loginPw);
+		List<Account> list = adminDao.selectLoginCheckId(param);
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		int chkCount = 0;
 		if(list.size() != 0){
 			Account account = new Account();
-			account.setLoginId(loginId);
-			account.setLoginPassword(loginPw);
 			
-			int pwCheck = adminDao.selectLoginCheckPw(account);
+			account = adminDao.selectLoginCheckPw(param);
 			
-			if(pwCheck == 1){
+			if(account != null){
 				map.put("loginCheck", "success"); //로그인
-				
-			}else if(pwCheck ==0){
+				map.put("account", account);
+			}else{
 				map.put("loginCheck", "failPw"); //비번불일치
 			}
 		
@@ -114,12 +115,21 @@ public class AdminService {
 	// 지점등록 (쿼리작성 전 - 01-13일 윤) - 전 필드 널 허용 안하는데 기본값으로 뭘 입력해줘야 할지 모름, 연락처2도 어디에 사용할지 모름
 	public Map<String, String> addBranchServ(Account account, String hp2) {
 		//입력값 세팅
+		if(account.getRecommenderAccountId() != 0) { //추천인 등급보다 한단계 낮게 유저 등급설정
+			Account recommender = adminDao.selectAccount(account.getRecommenderAccountId());
+			if(recommender.getGrade() == 1) account.setGrade(2);
+			else if(recommender.getGrade() == 2) account.setGrade(3);
+			else if(recommender.getGrade() == 3) account.setGrade(4);
+			else if(recommender.getGrade() == 4) account.setGrade(4);
+		}
+		/*if(account.getCommission() == 0) account.setCommission(0);	*/
 		
 		//쿼리실행
-		
+		int result = adminDao.insertBranch(account);
 		//결과체크
 		Map<String, String> map = new HashMap<String, String>(); //성공 실패값 담아 뷰로 리턴.
-		
+		if(result == 1) map.put("inputCheck", "success");
+		else map.put("inputCheck", "fail");
 		return map;
 	}
 	

@@ -68,7 +68,7 @@ public class AdminRestController {
 	
 	//지점상태 정지로 변경 modifyAccountStatus
 	@RequestMapping(value="/modifyAccountStatusNone", method = RequestMethod.POST)
-	public Map<String, String> modifyAccountStatusNoneCtrl(@RequestParam(value="accountId")int accountId){
+	public Map<String, String> modifyAccountStatusNoneCtrl(@RequestParam(value="accountId")long accountId){
 		/*System.out.println("아이디 확인 : "+accountId);*/
 		Map<String, String> map = adminService.modifyAccountStatusServ(accountId, 0);
 		return map; 

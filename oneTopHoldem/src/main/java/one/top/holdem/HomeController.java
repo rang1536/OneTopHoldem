@@ -218,18 +218,27 @@ public class HomeController {
 	//==================================================================================
 	//관리자
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
-	public String loginCtrl(Model model, 
+	public String mainCtrl(Model model, 
 			@RequestParam(value="path", defaultValue="none")String path) {
 		model.addAttribute("path", path); // 세팅은 하는데 중간 지점이 없이 시작페이지가 로그인이므로 사용할 일은 없다. 리턴 url임.
 		return "/admin/main";
 	}
 	
+	@RequestMapping(value = "/adLogin", method = RequestMethod.GET)
+	public String loginCtrl(Model model, 
+			@RequestParam(value="path", defaultValue="none")String path) {
+		model.addAttribute("path", path); // 세팅은 하는데 중간 지점이 없이 시작페이지가 로그인이므로 사용할 일은 없다. 리턴 url임.
+		return "/admin/login";
+	}
 	//로그인 
 	@RequestMapping(value="/adLogin", method = RequestMethod.POST)
 	public String loginCtrl(Model model, 
 			@RequestParam(value="id")String loginId,
 			@RequestParam(value="pw")String loginPw){
-	
+		System.out.println("###################################");
+		System.out.println("id : "+loginId);
+		System.out.println("id : "+loginPw);
+		System.out.println("###################################");
 		Map<String, Object> map = adminService.loginServ(loginId, loginPw);
 		if(map.get("loginCheck").equals("success")){
 			Account account = (Account)map.get("account");
@@ -241,7 +250,7 @@ public class HomeController {
 			model.addAttribute("loginCheck", map.get("loginCheck"));
 			return "/admin/login";
 		}
-		
+		model.addAttribute("loginCheck", map.get("loginCheck"));
 		return "/admin/main";
 	}
 }

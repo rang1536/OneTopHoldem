@@ -75,10 +75,10 @@ public class AdminController {
 	public String modifyAccountCtrl(Model model,
 			Account account,
 			@RequestParam(value="hp2", defaultValue="none")String hp2) {
-		System.out.println("****** 지점수정 **********************");
+		/*System.out.println("****** 지점수정 **********************");
 		System.out.println("Account : "+account);
 		System.out.println("hp2 : "+ hp2);
-		System.out.println("***********************************");
+		System.out.println("***********************************");*/
 		
 		Map<String, String> map = adminService.modifyAccountServ(account, hp2);
 		model.addAttribute("updateCheck", map.get("updateCheck"));

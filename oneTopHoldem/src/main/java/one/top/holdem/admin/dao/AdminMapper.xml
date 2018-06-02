@@ -11,18 +11,18 @@
 </select>
 
 <!-- 로그인 - 로그인 아이디로 회원조회 -->
-<select id="selectLoginCheckId" parameterType="String" resultType="one.top.holdem.admin.vo.Account">
+<select id="selectLoginCheckId" parameterType="Map" resultType="one.top.holdem.admin.vo.Account">
 	SELECT *
 	FROM dbo.Account
 	WHERE loginId = #{loginId}
 </select>
 
 <!-- 로그인 - 비번 일치 여부 확인 -->
-<select id="selectLoginCheckPw" parameterType="one.top.holdem.admin.vo.Account" resultType="int">
-	SELECT PwdCompare('#{loginPassword}',loginPassword)
+<select id="selectLoginCheckPw" parameterType="Map" resultType="one.top.holdem.admin.vo.Account">
+	SELECT *
 	FROM dbo.Account
 	where loginId = #{loginId}
-	and PwdCompare('#{loginPassword}',loginPassword) = 1
+	and PwdCompare(#{loginPassword},loginPassword) = 1
 </select>
 
 <!-- 모든 회원정보 조회 -->
@@ -60,13 +60,13 @@
 
 <!-- 지점수정 - 패스워드 변경이 있을시 암호화 하여 업데이트처리 PwdEncrypt('패스워드')함수 사용  -->
 <update id="updateAccount" parameterType="one.top.holdem.admin.vo.Account">
-	UPDATE HoldemDB.dbo.Account
+	UPDATE dbo.Account
 	SET loginId = #{loginId}
 		<if test="commission != null and commission != ''">,commission=#{commission}</if>
 		<if test="telephone != null and telephone != ''">,telephone=#{telephone}</if>
 		<if test="accountText != null and accountText != ''">,accountText=#{accountText}</if>
 		<if test="recommenderAccountId != null and recommenderAccountId != ''">,recommenderAccountId=#{recommenderAccountId}</if>
-		<if test="loginPassword != null and loginPassword != ''">,loginPassword=PwdEncrypt('#{loginPassword}')</if>
+		<if test="loginPassword != null and loginPassword != ''">,loginPassword=PwdEncrypt(#{loginPassword})</if>
 	WHERE accountId = #{accountId}	
 </update>
 
@@ -141,5 +141,14 @@
 
 <!-- 메세지조회 -->
 
+<!-- 지점등록 -->
+<insert id="insertBranch" parameterType="one.top.holdem.admin.vo.Account">
+	INSERT INTO dbo.Account(
+		createdDate, grade, commission, accountState, telephone, email, accountText, loginId, loginPassword, nickname, accountLevel, accountExp,
+		gold, bonusGold, chargeGold, ticket, costume, recommenderAccountId, lastLoginDate, todayCash, monthCash, todayStartGold)
+	VALUES(
+		getDate(),#{grade},#{commission},#{accountState},#{telephone},ISNULL(#{email},''),ISNULL(#{accountText},''),#{loginId},PwdEncrypt(#{loginPassword}),ISNULL(#{nickname},''),1,0
+		,0,0,0,0,0,ISNULL(#{recommenderAccountId},0),ISNULL(#{lastLoginDate},''),0,0,0)
+</insert>
 
 </mapper>

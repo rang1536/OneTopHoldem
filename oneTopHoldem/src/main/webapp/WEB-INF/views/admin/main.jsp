@@ -81,13 +81,15 @@
 					
 					list[i].goldText = "<span class='numberInput'>"+list[i].gold+"</span>"
 					// 데이터 수정버튼 추가
-					list[i].btnGroup ="<div align='center'>"
-					list[i].btnGroup += "<button type='button' class='btn btn-success' onclick='modifyAccount("+list[i].accountId+")'>수정</button>"
+					list[i].btnGroup ="<div align='center' class='bgDiv'>"
+					list[i].btnGroup += "<button type='button' class='btn btn-success' id='modBranch'>수정</button>"
+					/* list[i].btnGroup += "<button type='button' class='btn btn-success' onclick='modifyAccount("+list[i].accountId+")'>수정</button>" */
+					list[i].btnGroup += "<input type='hidden' id='bgAccountId' value='"+list[i].accountId+"'/>";
 					
-					if(list[i].accountStatus == 1) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatusNone("+list[i].accountId+");'>정지풀기</button>"
-					else if(list[i].accountStatus == 0) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatus("+list[i].accountId+");'>정지</button>"
+					if(list[i].accountState == 1) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' id='changeStatusNone'>정지풀기</button>"
+					else if(list[i].accountState == 0) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' id='changeStatus'>정지</button>"
 					
-					list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-danger' onclick='deleteAccount("+list[i].accountId+");'>삭제</button></div>";		   	    			   	    	
+					list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-danger' id='deleteAccount'>삭제</button></div>";		   	    			   	    	
 				}
 				return list;
 	      	}
@@ -202,6 +204,10 @@
 		
 		$('#addBranchForm').attr('action','addBranch').submit();
 	}
+	
+	$(document).on('click','#modBranch', function(){
+		modifyAccount($(this).closest('.bgDiv').find('#bgAccountId').val());
+	})
 	//지점수정 팝업창 텍스트박스 값세팅 및 팝업창 열기
 	function modifyAccount(accountId){
 		alert(accountId); 
@@ -243,6 +249,9 @@
 	}
 	
 	//지점 상태변경( >>정지)
+	$(document).on('click','#changeStatus',function(){
+		changeStatus($(this).closest('.bgDiv').find('#bgAccountId').val());
+	})
 	function changeStatus(accountId){
 		alert('accountId : '+accountId);
 		if(confirm('해당지점을 정지로 바꾸겠습니다?')){
@@ -263,6 +272,9 @@
 	}
 	
 	//지점 상태변경( >>정지풀기)
+	$(document).on('click','#changeStatusNone',function(){
+		changeStatusNone($(this).closest('.bgDiv').find('#bgAccountId').val());
+	})
 	function changeStatusNone(accountId){
 		if(confirm('해당지점의 정지를 푸시겠습니다?')){
 			//accountStatus > 1로 수정
@@ -282,6 +294,9 @@
 	}
 	
 	//지점 삭제
+	$(document).on('click','#deleteAccount',function(){
+		deleteAccount($(this).closest('.bgDiv').find('#bgAccountId').val());
+	})
 	function deleteAccount(accountId){
 		if(confirm('해당지점을 삭제하시겠습니까?')){
 			//계정 삭제
