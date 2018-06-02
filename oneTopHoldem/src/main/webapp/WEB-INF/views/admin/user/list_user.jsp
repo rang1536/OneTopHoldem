@@ -75,14 +75,13 @@
 	    			
 	    		    // 데이터 수정버튼 추가
 	   	      		list[i].btnGroup ="<div id='btnGroup' align='center'>"
-	   	      		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' id='testInp'>test</button>";
 	   	      		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' id='changePassBtn'>비번변경</button>";
-	   	      		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='addGoldFn("+list[i].accountId+")'>골드증여</button>";
-	   	     		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' onclick='addTicket("+list[i].accountId+")'>티켓증여</button>";
+	   	      		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' id='addGoldFn'>골드증여</button>";
+	   	     		list[i].btnGroup += "&nbsp;<button type='button' class='btn btn-info' id='addTicketBtn'>티켓증여</button>";
 	   	     		list[i].btnGroup += '<input type="hidden" id="accountId" value="'+list[i].accountId+'"/>';
 	   	     	
-		   	     	if(list[i].accountState == 1) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatusNone("+list[i].accountId+");'>정지풀기</button>"
-					else if(list[i].accountState == 0) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' onclick='changeStatus("+list[i].accountId+");'>정지</button>"
+		   	     	if(list[i].accountState == 1) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' id='changeStatusNone'>정지풀기</button>"
+					else if(list[i].accountState == 0) list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning' id='changeStatus'>정지</button>"
 	   	      		
    	           }
 	    	   
@@ -103,9 +102,7 @@
 	
 	//onclick='changePass("+list[i].accountId+")'
 	
-	$(document).on('click','#testInp',function(){
-		alert('!!');
-	})
+	
 	function isNum(str, tag){ //키업이벤트 숫자만 입력하는지 체크
 		var key = event.keyCode;
 		if(!(key==8 || key==9 || key==13 || key==46 || key==144 || (key>=48&&key<=57) || key==110 || key==190)){
@@ -189,6 +186,10 @@
 	}
 	
 	//지점 상태변경( >>정지)
+	$(document).on('click','#changeStatus',function(){
+		var accountId = $(this).closest('#btnGroup').find('#accountId').val();
+		changeStatus(accountId);
+	})
 	function changeStatus(accountId){
 		alert(accountId)
 		if(confirm('해당지점을 정지로 바꾸겠습니다?')){
@@ -209,6 +210,10 @@
 	}
 	
 	//지점 상태변경( >>정지풀기)
+	$(document).on('click','#changeStatusNone',function(){
+		var accountId = $(this).closest('#btnGroup').find('#accountId').val();
+		changeStatusNone(accountId);
+	})
 	function changeStatusNone(accountId){
 		if(confirm('해당지점의 정지를 푸시겠습니다?')){
 			//accountStatus > 0로 수정
@@ -230,40 +235,27 @@
 	
 	//비번변경 팝업창열기
 	$(document).on('click','#changePassBtn',function(){
-		var accountId = $('#btnGroup').find('#accountId').val();
+		var accountId = $(this).closest('#btnGroup').find('#accountId').val();
 		$.ajax({
 			url : 'readAccount',
 			data : {'accountId':accountId},
 			dataType:'json',
 			type:'post',
 			success:function(data){
-				$('#changePass').find('#accountId').val(data.accountId);
-				$('#changePass').find('#targetTd').text('['+data.loginId+'님] 비밀번호 변경');
+				alert(data.accountId);
+				$('#changePassForm').find('#accountId').val(data.accountId);
+				$('#changePassForm').find('#targetTd').text('['+data.loginId+'님] 비밀번호 변경');
 				$('#changePass').modal();
 			}
 		})
 	})
 	
-	function changePass(accountId){
-		$.ajax({
-			url : 'readAccount',
-			data : {'accountId':accountId},
-			dataType:'json',
-			type:'post',
-			success:function(data){
-				$('#changePass').find('#accountId').val(data.accountId);
-				$('#changePass').find('#targetTd').text('['+data.loginId+'님] 비밀번호 변경');
-				$('#changePass').modal();
-			}
-		})
-		
-	}
-	
 	//비번변경하기
 	function changePassword(){
-		var pass = $('#changePass').find('#loginPassword').val();
-		var rePass = $('#changePass').find('#reLoginPassword').val();
+		var pass = $('#changePassForm').find('#loginPassword').val();
+		var rePass = $('#changePassForm').find('#reLoginPassword').val();
 		
+		alert('!!');
 		if(pass == null || pass == ''){
 			alert('비밀번호를 입력하세요');
 			$('#changePass').find('#loginPassword').focus();
@@ -300,6 +292,10 @@
 	}
 	
 	//골드증여 클릭이벤트
+	$(document).on('click','#addGoldFn',function(){
+		var accountId = $(this).closest('#btnGroup').find('#accountId').val();
+		addGoldFn(accountId);
+	})
 	function addGoldFn(accountId){
 		$.ajax({
 			url : 'readAccount',
@@ -344,33 +340,12 @@
 		}
 	}
 	
-	//비번변경 유효성검사
-	function changePassword(){
-		var password = $('#changePass').find('#loginPassword').val();
-		var rePass = $('#changePass').find('#reLoginPassword').val();
-		var accountId =  $('#changePass').find('#accountId').val();
-		
-		if(password == null || password == ''){
-			alert('비밀번호를 입력하세요');
-			return;
-		}
-		if(rePass == null || rePass == ''){
-			alert('비밀번호를 확인해주세요');
-			return;
-		}
-		
-		if(password == rePass){
-			//submit
-		}else{
-			alert('비밀번호가 일치하지 않습니다!!');
-			$('#changePass').find('#loginPassword').val('');
-			$('#changePass').find('#reLoginPassword').val('');
-			$('#changePass').find('#loginPassword').focus();
-			return;
-		}
-	}
 	
 	//티켓증여 팝업창 열기
+	$(document).on('click','#addTicketBtn',function(){
+		var accountId = $(this).closest('#btnGroup').find('#accountId').val();
+		addTicket(accountId);
+	})
 	function addTicket(accountId){
 		$.ajax({
 			url : 'readAccount',
@@ -386,7 +361,7 @@
 	}
 	
 	//티켓증여 유효성검사 및 서브밋
-	function addGoldSubmit(){
+	function addTicketSubmit(){
 		var accountId =  $('#addTicket').find('#accountId').val();
 		var addTicket = $('#addTicket').find('#addTicketText').val();
 		

@@ -70,8 +70,9 @@
 	    	   
 	    	   for(var i=0; i<list.length; i++){
 	    		    // 충전버튼 추가
-	   	      		list[i].btnGroup ="<div align='center'>"
-	   	      		list[i].btnGroup += "<button type='button' class='btn btn-primary' onclick='reFresh("+list[i].accountId+")'>충전하기</button>";
+	   	      		list[i].btnGroup ="<div align='center' id='btnGroup'>"
+	   	      		list[i].btnGroup += "<button type='button' class='btn btn-primary' id='reFresh'>충전하기</button>";
+	   	      		list[i].btnGroup += "<input type='hidden' id='accountId' value='"+list[i].accountId+"'/></div>";
 	   	      		
 	   	      		// 회수금액세팅
 	   	      		list[i].collectionGold = 0;

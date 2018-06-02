@@ -2,46 +2,47 @@ package one.top.holdem.admin.vo;
 
 public class Tournament {
 
-	private long tournamentId;
-	private long groupId;
-	private String startDate;
-	private int moneyType;
-	private long needTicket;
-	private long needGold;
-	private long needCommission;
-	private long receiveMoney;
-	private long maxRebuyCount;
-	private long rebuyNeedGold;
-	private long rebuyNeedCommission;
-	private long rebuyReceiveMoney;
-	private long maxAddOnCount;
-	private long addOnNeedGold;
-	private long addOnNeedCommission;
-	private long addOnReceiveMoney;
-	private int buyInType;
-	private long minUserCount;
-	private long maxUserCount;
-	private long guarantee;
+	private long tournamentId;//
+	private long groupId;//
+	private String startDate; //
+	private int moneyType; //
+	private long needTicket; //
+	private long needGold; //
+	private long needCommission; //
+	private long receiveMoney; //
+	private long maxRebuyCount; //
+	private long rebuyNeedGold; //
+	private long rebuyNeedCommission; //
+	private long rebuyReceiveMoney; //
+	private long maxAddOnCount; //
+	private long addOnNeedGold; //
+	private long addOnNeedCommission; //
+	private long addOnReceiveMoney; //
+	private int buyInType; //
+	private long minUserCount; //
+	private long maxUserCount; //
+	private long guarantee; //
 	private long maxBettingMoney;
-	private int blindUpTime;
-	private int breakTimeLevel;
-	private int breakTime;
-	private String title;
-	private long anteBaseValue;
-	private long anteUpValue9;
-	private long anteUpValue19;
-	private long anteUpValue29;
-	private long anteUpValue39;
-	private long anteUpValue49;
-	private long anteUpValueOther;
-	private long smallBlindBaseValue;
-	private long smallBlindUpValue9;
-	private long smallBlindUpValue19;
-	private long smallBlindUpValue29;
-	private long smallBlindUpValue39;
-	private long smallBlindUpValue49;
-	private long smallBlindUpValueOther;
+	private int blindUpTime; //
+	private int breakTimeLevel; //
+	private int breakTime; //
+	private String title; //
+	private long anteBaseValue; //
+	private long anteUpValue9; //
+	private long anteUpValue19; //
+	private long anteUpValue29; //
+	private long anteUpValue39; //
+	private long anteUpValue49; //
+	private long anteUpValueOther; //
+	private long smallBlindBaseValue; //
+	private long smallBlindUpValue9; //
+	private long smallBlindUpValue19; //
+	private long smallBlindUpValue29; //
+	private long smallBlindUpValue39; //
+	private long smallBlindUpValue49; //
+	private long smallBlindUpValueOther; //
 	private int tournamentState;
+	
 	public long getTournamentId() {
 		return tournamentId;
 	}

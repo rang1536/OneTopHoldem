@@ -71,7 +71,14 @@
 	    	   for(var i=0; i<list.length; i++){
 	    		    list[i].goldText = "<span class='numberInput'>"+list[i].gold+"</span>"
 					// 데이터 수정버튼 추가
-	   	      		list[i].btnGroup ="<div align='center'><button type='button' class='btn btn-success'>수정</button>&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning'>정지</button>&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-danger'>삭제</button></div>";		   	    			   	    	
+	   	      		list[i].btnGroup ="<div align='center'>"
+	   	      		list[i].btnGroup += "<button type='button' class='btn btn-success'>수정</button>"
+	   	      		list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-warning'>정지</button>";
+	   	      		list[i].btnGroup += "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-danger'>삭제</button>"
+	   	      		list[i].btnGroup += "<input type='hidden' id='tournamentId' value='"+list[i].tournamentId+"'/>";
+		   	      	list[i].btnGroup += "<input type='hidden' id='groupId' value='"+list[i].groupId+"'/>";
+	   	      		list[i].btnGroup += "</div>";		   	    			   	    	
+	   	      		
    	           		list[i].startTime = list[i].startDate.substring(11,list[i].startDate.length);
 	   	      		list[i].startDate = list[i].startDate.substring(0,10);
 	    	   }
@@ -82,23 +89,24 @@
 		  columns : [
 			  {data: "startDate"},
 			  {data: "startTime"},
+			  {data: "moneyType"},
 			  {data: "needTicket"},
 			  {data: "needGold"},
 			  {data: "needCommission"},
-			  {data: "receiveChip"},
+			  {data: "receiveMoney"},
 			  {data: "maxRebuyCount"},
 			  {data: "rebuyNeedGold"},
 			  {data: "rebuyNeedCommission"},
-			  {data: "rebuyReceiveChip"},
+			  {data: "rebuyReceiveMoney"},
 			  {data: "maxAddOnCount"},
 			  {data: "addOnNeedGold"},
 			  {data: "addOnNeedCommission"},
-			  {data: "addOnReceiveChip"},
-			  {data: "isDoubleBuyIn"},
-			  {data: "minUser"},
-			  {data: "maxUser"},
+			  {data: "addOnReceiveMoney"},
+			  {data: "buyInType"},
+			  {data: "minUserCount"},
+			  {data: "maxUserCount"},
 			  {data: "guarantee"},
-			  {data: "tournamentType"},
+			  {data: "tournamentType"}, //
 			  {data: "blindUpTime"},
 			  {data: "breakTimeLevel"},
 			  {data: "breakTime"},
@@ -116,7 +124,9 @@
 			  {data: "smallBlindUpValue29"},
 			  {data: "smallBlindUpValue39"},
 			  {data: "smallBlindUpValue49"},
-			  {data: "smallBlindUpValueOther"}
+			  {data: "smallBlindUpValueOther"},
+			  {data: "tournamentState"},
+			  {data: "btnGroup"}
 		  ],
 	         initComplete : function() {
 	  
@@ -159,10 +169,10 @@
             processData : false,
             contentType : false,
             success : function(data) {
-                alert("파일 업로드하였습니다.");
+            	if(data.uploadResult == 'succ') alert("토너먼트를 등록 하였습니다.");           
             },
             error : function(error) {
-                alert("파일 업로드에 실패하였습니다.");
+                alert("토너먼트 등록에 실패하였습니다.");
                 console.log(error);
                 console.log(error.status);
             }
@@ -214,23 +224,62 @@
 				</colgroup>
 				<thead>
 					<tr>
-						<th>날자</th>
-						<th>시간</th>
+						<th rowspan="2">날짜</th>
+						<th rowspan="2">시간</th>
+						<th rowspan="2">머니타입</th>						
+						<th colspan="4">필요머니</th>
+						
+						<th colspan="4">리바이</th>
+						<th colspan="4">애드온</th>
+						<th rowspan="2">바이인타입</th>
+						<th colspan="2">참가인원</th>
+						<th rowspan="2">게런티</th>
+						
+						<th rowspan="2">토너먼트타입</th>
+						<th rowspan="2">블라인드업타임</th>
+						<th rowspan="2">브레이크타임레벨</th>
+						<th rowspan="2">브레이크타임</th>
+						<th rowspan="2">제목</th>
+						<th colspan="7">ante</th>
+						
+						<th colspan="7">smallBlind</th>
+						<th rowspan="2">상태</th>
+						<th rowspan="2">-</th>
+					</tr>
+					<tr>
+						<th>티켓</th>
+						<th>골드</th>
+						<th>커미션</th>
 						<th>참가비</th>
-						<th>참가정원</th>
-						<th>제목</th>
 						
-						<th>게임타입</th>
-						<th>블라인드업</th>
-						<th>브레이크타임</th>
-						<th>프리롤</th>
-						<th>바이인</th>
+						<th>최대횟수</th>
+						<th>골드</th>
+						<th>커미션</th>
+						<th>참가비</th>
 						
-						<th>더블바이인</th>
-						<th>라바이</th>
-						<th>애드온</th>
-						<th>참여마감시간</th>
-						<th>삭제</th>
+						<th>최대횟수</th>
+						<th>골드</th>
+						<th>커미션</th>
+						<th>참가비</th>
+						
+						<th>최소</th>
+						<th>최대</th>
+						
+						<th>Base</th>					
+						<th>Up9</th>
+						<th>Up19</th>
+						<th>Up29</th>
+						<th>Up39</th>						
+						<th>Up49</th>
+						<th>UpOther</th>
+						
+						<th>Base</th>					
+						<th>Up9</th>
+						<th>Up19</th>
+						<th>Up29</th>
+						<th>Up39</th>						
+						<th>Up49</th>
+						<th>UpOther</th>
 					</tr>
 				</thead>
 				<tbody>

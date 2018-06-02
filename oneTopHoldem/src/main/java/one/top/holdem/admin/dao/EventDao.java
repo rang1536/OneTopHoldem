@@ -25,4 +25,14 @@ public class EventDao {
 	public List<Import> selectImport(Map<String, Object> params){
 		return sqlSession.selectList("eventDao.selectImport", params);
 	}
+	
+	// 토너먼트 마지막 시퀀스조회
+	public long selectLastSeq() {
+		return sqlSession.selectOne("eventDao.selectLastSeq");
+	}
+	
+	//엑셀파일 내용 DB저장
+	public int insertEvent(Tournament tournament) {
+		return sqlSession.insert("eventDao.insertEvent", tournament);
+	}
 }
