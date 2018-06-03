@@ -31,6 +31,8 @@
 	$(document).ready(function(){
 		$('.topMenu:eq(1)').css('background','#FFC19E');
 		
+		var loginId = '${loginId}';
+
    		var table = 
         $('#payList').DataTable( {
           dom: 'Bfrtip',
@@ -64,7 +66,7 @@
        },
 	    ajax : {
 	   
-	      "url":"userList",
+	      "url":"userList?loginId="+loginId,
 	      "type":"POST",
 	      "dataSrc": function(json){
 	    	   var list = json.list;
@@ -127,6 +129,8 @@
 						$('#addBranchForm').find('#loginId').val('');
 						$('#addBranchForm').find('#loginId').focus();
 						return;
+					}else{
+						$('#addBranchForm').find('#recommendAccountId').val(loginId);
 					}
 				}
 			})

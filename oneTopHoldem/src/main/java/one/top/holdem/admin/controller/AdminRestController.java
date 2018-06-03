@@ -27,9 +27,9 @@ public class AdminRestController {
 	//회원목록조회
 	@RequestMapping(value="/userList", method = RequestMethod.POST)
 	/*public Map<String, Object> userListCtrl(@ModelAttribute(value="grade")int grade){*/
-	public Map<String, Object> userListCtrl(){
+	public Map<String, Object> userListCtrl(@RequestParam(value="loginId")String loginId){
 		int grade=0;
-		List<Account> list = adminService.readAllUserServ(grade);
+		List<Account> list = adminService.readAllUserServ(grade, loginId);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
 		return map;
@@ -146,6 +146,24 @@ public class AdminRestController {
 		// 보낸 메세지를 보겠다는건지? 아니면 본인한테 온 긴급공지라든지 공지같은걸 보겠다는건지? 후자라면 테이블이 없는데..?
 		
 		return null; 
+	}
+	
+	//트리 계정조회
+	@RequestMapping(value="/getTree", method = RequestMethod.POST)
+	public Map<String, Object> getTreeCtrl(){
+		System.out.println("ctrl check");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("bonsaList", adminService.readTreeServ());
+		System.out.println("ctrl check2 : "+map.get("bonsaList"));
+		return map; 
+	}
+	
+	//지점검색 searchBranch
+	@RequestMapping(value="/searchBranch", method = RequestMethod.POST)
+	public Map<String, Object> searchBranchCtrl(@RequestParam(value="branchId")String branchId){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("searchList", adminService.searchBranchServ(branchId));
+		return map; 
 	}
 	
 }

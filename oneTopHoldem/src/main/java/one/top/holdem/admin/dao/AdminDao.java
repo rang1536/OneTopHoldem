@@ -37,8 +37,8 @@ public class AdminDao {
 	}
 	
 	// 모든유저 조회 -MASTER
-	public List<Account> selectAllUserMaster(){
-		return sqlSession.selectList("AdDao.selectAllUserMaster");
+	public List<Account> selectAllUserMaster(Map<String, Object> param){
+		return sqlSession.selectList("AdDao.selectAllUserMaster",param);
 	}
 	
 	// 모든유저 조회 - BRANCH
@@ -115,4 +115,16 @@ public class AdminDao {
 	public int insertBranch(Account account) {
 		return sqlSession.insert("AdDao.insertBranch", account);
 	}
+	
+	//좌측 트리메뉴 회원조회
+	public List<Account> selectTree(Map<String, Object> param){
+		return sqlSession.selectList("AdDao.selectTree", param);
+	}
+	
+	//지점 검색
+	public List<Account> searchBranch(Map<String, Object> param){
+		return sqlSession.selectList("AdDao.searchBranch", param);
+	}
+	
+	
 }
