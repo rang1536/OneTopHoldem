@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,11 +10,11 @@
 <link rel="stylesheet" href="resources/css/default.css">
 <script src="resources/js/jquery-3.2.1.min.js"></script>
 <script>
-function info_pop(url){
+function info_pop(tId){
 
 	var popupX = (window.screen.width / 2) - (570 / 2);
 	var popupY= (window.screen.height /2) - (500 / 2);
-
+	var url = 'tournamentInfoView?tId='+tId;
 	window.open(url, '원탑홀덤 토너먼트 정보', 'status=no, height=500, width=570, left='+ popupX + ', top='+ popupY + ', screenX='+ popupX + ', screenY= '+ popupY);
 }
 
@@ -100,7 +101,7 @@ $(document).ready(function(){
 							<td class="date">${item.startDate }</td>
 							<td class="subject">${item.title}! 티켓 ${item.needTicket}장</td>
 							<td class="charge">${item.needGold}골드 (${item.needCommission})</td>
-							<td class="name"><a href="javascript:info_pop('tournamentInfoView');" class="btn02">토너정보</a></td>
+							<td class="name"><a href="javascript:info_pop('${item.tournamentId }');" class="btn02">토너정보</a></td>
 						</tr>
 					</c:forEach>
 				</table>
@@ -111,17 +112,17 @@ $(document).ready(function(){
 						<fmt:parseNumber var="last" value="${totCnt/10}" integerOnly="true"/>
 						<a href="tournamentMenu" class="pg_page pg_start">처음</a>
 						<a href="tournamentMenu?page=${currentPage-1 }" class="pg_page pg_prev">&lt;</a>
-						<c:forEach var="item" varStatus="i" begin="1" end="last" step="1">
+						<c:forEach var="item" varStatus="i" begin="1" end="${last+1}" step="1">
 							<c:choose>
-								<c:when test="${currentPage == i }">
-									<strong class="pg_current">${i }</strong>
+								<c:when test="${currentpage == i.index }">
+									<strong class="pg_current">${i.index }</strong>
 								</c:when>
 								<c:otherwise>
-									<a href="tournamentMent?page=${i }" class="pg_page">${i }</a>		
+									<a href="tournamentMenu?page=${i.index }" class="pg_page">${i.index }</a>		
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
-						<a href="tournamentMenu?page=${currentPage+1 }" class="pg_page pg_next">&gt;</a>
+						<a href="tournamentMenu?page=${currentpage+1 }" class="pg_page pg_next">&gt;</a>
 						<a href="tournamentMenu?page=${last}" class="pg_page pg_end">맨끝</a>
 					</span>
 				</nav>

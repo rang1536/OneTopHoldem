@@ -20,8 +20,7 @@
 	<table width=100% cellpadding=0 cellspacing=0>
 		<tr>
 			<th>설명</th>
-			<td>20억 |개런티 토너먼트<br>
-			* 리바이와 애드온은 전액 상금으로 적립됩니다.</td>
+			<td>${t.title }</td>
 		</tr>
 		<tr>
 			<th>게임타입</th>

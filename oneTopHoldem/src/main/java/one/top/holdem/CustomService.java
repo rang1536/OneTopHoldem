@@ -45,4 +45,18 @@ public class CustomService {
 		return customDao.getTournamentTotCnt();
 	}
 
+	public List<Tournament> tournamentEndList(String page){
+		List<Tournament> list = new ArrayList<Tournament>();
+		list = customDao.tournamentEndList(page); 
+		return list;
+	}
+	
+	public int getTournamentEndTotCnt() {
+		return customDao.getTournamentEndTotCnt();
+	}
+	
+	public Tournament getTournament(String tId) {
+		return customDao.selectTournament(tId);
+	}
+	
 }

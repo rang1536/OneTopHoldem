@@ -31,10 +31,10 @@ public class CustomDao {
 		return sqlSession.insert("customDao.registerMember", account);
 	}
 	
-	//토너먼트
+	//진행중인 토너먼트
 	public List<Tournament> tournamentList(String page){
 		Map<String, Object> map = new HashMap<String, Object>();
-		int paramPage = Integer.parseInt(page);
+		int paramPage = Integer.parseInt(page)*10;
 		map.put("page", paramPage);
 		return sqlSession.selectList("customDao.torunamentList",map);
 	}
@@ -45,6 +45,30 @@ public class CustomDao {
 		System.out.println("cnt - >"+cnt);
 		return cnt;
 	}
+
+	//완료된 토너먼트
+	public List<Tournament> tournamentEndList(String page){
+		Map<String, Object> map = new HashMap<String, Object>();
+		int paramPage = Integer.parseInt(page)*10;
+		map.put("page", paramPage);
+		return sqlSession.selectList("customDao.torunamentEndList",map);
+	}
+	
+	//완료된 전체 토너먼트 갯수
+	public int getTournamentEndTotCnt(){
+		int cnt = sqlSession.selectOne("customDao.tournamentEndTotCnt");
+		System.out.println("cnt - >"+cnt);
+		return cnt;
+	}
+	
+	
+	//하나의 회원 조회
+	public Tournament selectTournament(String tId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("tId", tId);
+		return sqlSession.selectOne("customDao.selectTournament", map);
+	}
+	
 	
 	/*
 	//로그인 패스워드 확인
