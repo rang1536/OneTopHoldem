@@ -29,8 +29,10 @@
 			<div class="sub_menu">
 				<ul>
 					<li class="over"><a href="faqMenu">· FAQ</a></li>
+					<!-- 
 					<li><a href="noticeList">· 공지사항</a></li>
 					<li><a href="qnaWrite">· 1:1문의</a></li>
+					 -->
 				</ul>
 			</div>
 			<div><img src="resources/img/sub_down_btn.jpg"></div>

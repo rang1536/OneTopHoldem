@@ -8,8 +8,131 @@
 <title>원탑홀덤</title>
 <link rel="stylesheet" href="resources/css/default.css">
 <script src="resources/js/jquery-3.2.1.min.js"></script>
+<script src="resources/js/common.js"></script>
 </head>
+	<script>
 
+	$(document).ready(function(){
+		$("#btn_finish").click(function(){
+			if(gfn_isNull($("#reg_mb_id").val())){
+				alert("아이디를 입력하세요.");
+				$("#reg_mb_id").focus();
+				return;
+			}
+			
+			if(gfn_isNull($("#reg_mb_password").val())){
+				alert("비밀번호를 입력하세요.");
+				$("#reg_mb_password").focus();
+				return;
+			}
+			
+			if(gfn_isNull($("#reg_mb_password_re").val())){
+				alert("비밀번호(확인)를 입력하세요.");
+				$("#reg_mb_password_re").focus();
+				return;
+			}
+			
+			if(gfn_isNull($("#reg_mb_name").val())){
+				alert("이름을 입력하세요.");
+				$("#reg_mb_name").focus();
+				return;
+			}
+			
+			if(gfn_isNull($("#reg_mb_nick").val())){
+				alert("닉네임을 입력하세요.");
+				$("#reg_mb_nick").focus();
+				return;
+			}
+			
+			if(gfn_isNull($("#reg_mb_email").val())){
+				alert("이메일을 입력하세요.");
+				$("#reg_mb_email").focus();
+				return;
+			}
+			
+			if(gfn_isNull($("#reg_mb_hp").val())){
+				alert("휴대폰번호를 입력하세요.");
+				$("#reg_mb_hp").focus();
+				return;
+			}
+			
+			if(gfn_isNull($("#reg_mb_recom").val())){
+				alert("추천인을 입력하세요.");
+				$("#reg_mb_recom").focus();
+				return;
+			}
+
+			//id 중복체크
+			$.ajax({
+				url : 'dupIdCheck',
+				data: {'loginId':$("#reg_mb_id").val()},
+				dataType: 'json',
+				type : 'post',
+				success : function(data){
+					if(data.cnt != '0'){
+						alert('같은 아이디가 존재합니다. 변경해주세요');
+						$('#reg_mb_id').val('');
+						$('#reg_mb_id').focus();
+						regFlag = false;
+					}else {
+						registerMember();
+					}
+				}
+			})
+			
+		});
+	});
+		
+	function registerMember(){
+		var iData = {};
+		
+		iData.grade = 4;
+		iData.commission = 0;
+		iData.accountState = 0;
+		iData.telephone = $("#reg_mb_hp").val();
+		iData.email = $("#reg_mb_email").val();
+		iData.accountText = '';
+		iData.loginId = $("#reg_mb_id").val();
+		iData.loginPassword = $("#reg_mb_password").val();
+		iData.nickname = $("#reg_mb_nick").val();
+		iData.accountLevel = 1;
+		iData.accountExp = 0;
+		iData.gold = 0;
+		iData.bonusGold = 0;
+		iData.chargeGold = 0;
+		iData.ticket = 0;
+		iData.costume = 0;
+		iData.recommenderAccountId = $("#reg_mb_recom").val();
+
+		iData.todayCash = 0;
+		iData.monthCash = 0;
+		iData.todayStartGold = 0;
+				
+		
+		console.log("inputData",iData);
+
+		$.ajax({
+			url : 'registerMember',
+			data: iData,
+			dataType: 'json',
+			type : 'post',
+			success : function(data){
+				console.log(data);
+				if(data.inputCheck == 'success'){
+					alert("가입완료");
+					location.href = 'joinConfirm?loginId='+$("#reg_mb_id").val()+'&email='+$("#reg_mb_email").val()+'&name='+$("#reg_mb_name").val();
+				}else {
+					alert("가입실패");
+				}
+			}
+		})	
+		
+	}
+				
+			
+			
+
+	</script>
 
 <body>
 
@@ -50,7 +173,7 @@
 			
 			<div class="join_tt">회원정보입력 <span class="cm">&nbsp;|&nbsp;&nbsp;필수입력사항</span></div>
 
-			<form id="fregisterform" name="fregisterform" action="joinConfirm" onsubmit="return fregisterform_submit(this);" method="post" enctype="multipart/form-data" autocomplete="off">
+			<form id="fregisterform" name="fregisterform" action="joinConfirm" method="post" autocomplete="off">
 			<div class="tbl_frm01 tbl_wrap">
 				<table>
 				<tbody>
@@ -100,9 +223,10 @@
 					<td><input type="text" name="mb_hp" value="" id="reg_mb_hp" class="frm_input" maxlength="20"></td>
 				</tr>
 				<tr>
-					<th scope="row"><label for="reg_mb_hp">추천인ID</label></th>
-					<td><input type="text" name="mb_chu" value="" id="reg_mb_hp" class="frm_input" maxlength="20"></td>
+					<th scope="row"><label for="reg_mb_recom">추천인ID</label></th>
+					<td><input type="text" name="mb_chu" value="" id="reg_mb_recom" class="frm_input" maxlength="20"></td>
 				</tr>
+				<!-- 
 				<tr>
 					<th scope="row">주소</th>
 					<td>
@@ -117,12 +241,13 @@
 						<input type="text" name="mb_addr3" value="" id="reg_mb_addr3" class="frm_input frm_address" size="50" readonly="readonly">
 					</td>
 				</tr>
+				 -->
 				</tbody>
 				</table>
 			</div>
 
 			<div class="btn_confirm">
-				<input type="submit" class="myButton" value="✔ 가입완료">
+				<input type="button" class="myButton" value="✔ 가입완료" id="btn_finish">
 			</div>
 			</form>
 			<br>

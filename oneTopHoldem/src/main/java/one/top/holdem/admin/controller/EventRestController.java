@@ -44,7 +44,7 @@ public class EventRestController {
         File destFile = new File("D:\\"+excelFile.getOriginalFilename());
         try {
         	excelFile.transferTo(destFile);
-        } catch (IllegalStateException | IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e.getMessage(),e);
  
         }
