@@ -26,9 +26,12 @@
 </select>
 
 <!-- 모든 회원정보 조회 -->
-<select id="selectAllUserMaster" resultType="one.top.holdem.admin.vo.Account">
+<select id="selectAllUserMaster" parameterType="Map" resultType="one.top.holdem.admin.vo.Account">
 	SELECT *
-	FROM dbo.Account	
+	FROM dbo.Account
+	<trim prefix="WHERE" prefixOverrides="AND |OR ">
+		<if test="loginId != null and loginId != ''">AND recommenderAccountId = #{loginId}</if>
+	</trim>	
 </select>
 
 <!-- 모든 회원정보 조회 -->
@@ -150,5 +153,20 @@
 		getDate(),#{grade},#{commission},#{accountState},#{telephone},ISNULL(#{email},''),ISNULL(#{accountText},''),#{loginId},PwdEncrypt(#{loginPassword}),ISNULL(#{nickname},''),1,0
 		,0,0,0,0,0,ISNULL(#{recommenderAccountId},0),ISNULL(#{lastLoginDate},''),0,0,0)
 </insert>
+
+<!-- 관리자조회(부본사, 피시방) -->
+<select id="selectTree" parameterType="Map" resultType="one.top.holdem.admin.vo.Account">
+	SELECT *
+	FROM dbo.Account
+	WHERE grade = #{grade}
+	<if test="recommenderAccountId != null and recommenderAccountId != ''">AND recommenderAccountId=#{recommenderAccountId}</if>	
+</select>
+
+<!-- 지점검색 -->
+<select id="searchBranch" parameterType="Map" resultType="one.top.holdem.admin.vo.Account">
+	SELECT *
+	FROM dbo.Account
+	WHERE loginId like '%'||#{branchId}||'%'
+</select>
 
 </mapper>

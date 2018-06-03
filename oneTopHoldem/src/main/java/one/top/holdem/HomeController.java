@@ -251,6 +251,7 @@ public class HomeController {
 			return "/admin/login";
 		}
 		model.addAttribute("loginCheck", map.get("loginCheck"));
+		
 		return "/admin/main";
 	}
 }

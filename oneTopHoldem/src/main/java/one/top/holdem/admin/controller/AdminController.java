@@ -35,7 +35,9 @@ public class AdminController {
 		
 	//회원정보관리
 	@RequestMapping(value="/userManagement", method = RequestMethod.GET)
-	public String userManagementCtrl() {
+	public String userManagementCtrl(Model model, 
+			@RequestParam(value="loginId", defaultValue="none")String loginId) {
+		model.addAttribute("loginId", loginId);
 		return "/admin/user/list_user";
 	}
 	

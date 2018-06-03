@@ -1,5 +1,7 @@
 package one.top.holdem.admin.vo;
 
+import java.util.List;
+
 public class Account {
 	private String createdDate;
 	private int grade;
@@ -32,8 +34,15 @@ public class Account {
 	
 	private String reLoginPassword;
 	
+	private List<Account> pcList;
 	
 	
+	public List<Account> getPcList() {
+		return pcList;
+	}
+	public void setPcList(List<Account> pcList) {
+		this.pcList = pcList;
+	}
 	public long getBonusGold() {
 		return bonusGold;
 	}
@@ -207,8 +216,7 @@ public class Account {
 				+ costume + ", recommenderAccountId=" + recommenderAccountId + ", lastLoginDate=" + lastLoginDate
 				+ ", todayCash=" + todayCash + ", monthCash=" + monthCash + ", todayStartGold=" + todayStartGold
 				+ ", goldCount=" + goldCount + ", gradeName=" + gradeName + ", chargeGoldToString=" + chargeGoldToString
-				+ ", reLoginPassword=" + reLoginPassword + "]";
+				+ ", reLoginPassword=" + reLoginPassword + ", pcList=" + pcList + "]";
 	}
-	
 	
 }

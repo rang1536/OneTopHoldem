@@ -60,21 +60,27 @@ public class AdminService {
 	public String getName(int grade) {
 		String name = "";
 		if(grade==1) name="마스터";
-		if(grade==2) name="지사";
+		if(grade==2) name="부본사";
 		if(grade==3) name="PC방";
-		if(grade==4) name="일반";
+		if(grade==4) name="일반유저";
 		return name;
 	}
 	/* 모든유저정보조회
 	 * @resultType : Account*/
-	public List<Account> readAllUserServ(int grade){
+	public List<Account> readAllUserServ(int grade, String loginId){
 		List<Account> list = new ArrayList<Account>();
-		if(grade == 1){
-			list = adminDao.selectAllUserMaster(); 
-		}else{
-			list = adminDao.selectAllUserBranch(); 
-		}
+		Map<String, Object> param = new HashMap<String, Object>();
 		
+		if(!loginId.equals("none")) {
+			param.put("loginId", loginId);
+			list = adminDao.selectAllUserMaster(param); 
+		}else {
+			if(grade == 1){
+				list = adminDao.selectAllUserMaster(param); 
+			}else{
+				list = adminDao.selectAllUserBranch(); 
+			}
+		}
 		
 		DecimalFormat df = new DecimalFormat("#,##0");
 		
@@ -269,5 +275,40 @@ public class AdminService {
 		else if(result == 0) map.put("addNoticeCheck", "fail");
 		
 		return map;
+	}
+	
+	//트리조회
+	public List<Account> readTreeServ(){
+		System.out.println("ctrl check");
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("grade", 2);
+		
+		List<Account> bonsaList = adminDao.selectTree(param);
+		System.out.println("bonsaList : "+bonsaList);
+		if(bonsaList.size() != 0) {
+			//System.out.println("0 > !!!");
+			for(int i=0; i<bonsaList.size(); i++) {
+				param = new HashMap<String, Object>();
+				param.put("grade", 3);
+				param.put("recommenderAccountId", bonsaList.get(i).getLoginId());
+				System.out.println("param Check : "+param);
+				
+				List<Account> pcList = adminDao.selectTree(param);
+				System.out.println("pcList Check : "+pcList);
+				bonsaList.get(i).setPcList(pcList);
+			}
+		}
+		
+		return bonsaList;
+	}
+	
+	//지점검색
+	public List<Account> searchBranchServ(String branchId){
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("branchId", branchId);
+		
+		List<Account> searchList = adminDao.searchBranch(param);
+		
+		return searchList;
 	}
 }

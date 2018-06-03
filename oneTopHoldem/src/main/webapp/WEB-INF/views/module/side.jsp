@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>ONE TOP HOLD'EM</title>
+    <title>원탑홀덤</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -92,6 +92,34 @@
 			
 			$('#modifyAccountForm').attr('action','modifyAccount').submit();
 		}
+		
+		
+		/* function searchBranch(){
+			var branchId = $('#branchId').val();
+			
+			if(branchId == null && branchId == ''){
+				alert('검색할 지점의 ID를 입력하세요');
+				return;
+			}
+			
+			$.ajax({
+				url : 'searchBranch',
+				data : {'branchId':branchId},
+				dataType : 'json',
+				type : 'post',
+				success:function(data){
+					var html = '';
+					if(data.searchList == null){
+						alert('입력한 ID의 지점이 존재하지 않습니다');
+					}else{
+						$.each(data.searchList, function(i, list){
+							html += '<a href="#"><i class="fa fa-sitemap fa-fw"></i>'+list.loginId+'<span class="fa arrow"></span></a>'; 
+						})
+						
+					}
+				}
+			})
+		} */
 	</script>
 </head>
 
@@ -156,59 +184,21 @@
                     		<a href="#" onclick="modifyMyInfo();"><i class="fa fa-user fa-fw"></i>  개인정보수정</a>							
                     	</li>
                     	
-                        <li class="sidebar-search">
+                        <!-- <li class="sidebar-search">
                             <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="미구현">
+                                <input type="text" class="form-control" placeholder="지점검색" name="branchId" id="branchId">
                                 <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
+                                <button class="btn btn-default" type="button" onclick="searchBranch();">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </span>
-                            </div>
-                            <!-- /input-group -->
+                            </div>                         
+                        </li> -->
+                        <li id="searchResultLi">
+                        	
                         </li>
-                        
-                        <li>
-                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> 본사<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                            	<li>
-                                    <a href="#">지점1 <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                       	<li>
-                                            <a href="#">PC방1</a>
-                                        </li>
-                                        <li>
-                                             <a href="#">PC방2</a>
-                                        </li> 
-                                        
-                                    </ul>
-                                    <!-- /.nav-third-level -->
-                                </li>
-                                <li>
-                                    <a href="#">지점2 <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                   		<li>
-                                           <a href="#">PC방1</a>
-                                        </li>
-                                        <li>
-                                             <a href="#">PC방2</a>
-                                        </li> 
-                                    </ul>
-                                </li>
-                             	<li>
-                                    <a href="#">지점3 <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                    	<li>
-                                           <a href="#">PC방1</a>
-                                        </li>
-                                        <li>
-                                             <a href="#">PC방2</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                               
-                            </ul>
-                            <!-- /.nav-second-level -->
+                        <li id="treeLi">
+                            
                         </li>
                     </ul>
                 </div>
@@ -236,7 +226,32 @@
     <!-- Custom Theme JavaScript -->
     <script src="resources/dist/js/sb-admin-2.js"></script>
 
+	<script>
+	$(document).ready(function(){
+		$.ajax({
+			url : 'getTree',
+			dataType : 'json',
+			type : 'post',
+			success : function(data){
+				var html = '';
+				$.each(data.bonsaList, function(i, list){
+					html += '<a href="#"><i class="fa fa-sitemap fa-fw"></i><a href="userManagement?loginId="'+list.loginId+'>'+list.loginId+'</a><span class="fa arrow"></span></a>';
+					html += '	<ul class="nav nav-second-level">';
+					
+					$.each(list.pcList, function(i, pcList){
+						html += '		<li>';
+						html += '			<a href="#"><a href="userManagement?loginId="'+pcList.loginId+'>'+pcList.loginId+'</a><span class="fa arrow"></span></a>';
+						html += '		</li>';							
+					})
+					html += '	</ul>';						
+				})
+				$('#treeLi').empty();
+				$('#treeLi').html(html);
+			}
+		})
+	})
 	
+	</script>	
 </body>
 
 </html>
