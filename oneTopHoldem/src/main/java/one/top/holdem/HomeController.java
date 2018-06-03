@@ -67,21 +67,24 @@ public class HomeController {
 	
 	//토너먼트 메뉴 - 일정,결과
 	@RequestMapping(value = "/tournamentMenu", method = RequestMethod.GET)
-	public String tournamentMenu(Model model,@RequestParam(value="page",defaultValue="0")String page) {
-		List<Tournament> list = customService.tournamentList(page);
+	public String tournamentMenu(Model model,@RequestParam(value="page",defaultValue="1")String page) {
+		int paramPage = Integer.parseInt(page)-1;
+		List<Tournament> list = customService.tournamentList(String.valueOf(paramPage));
+		System.out.println("param : "+paramPage);
 		int totCnt = customService.getTournamentTotCnt();
+
 		model.addAttribute("list", list);
 		model.addAttribute("totCnt", totCnt);
 		model.addAttribute("currentpage", page);
+		
 		return "/users/tournament_info";
 	}
 	
 	//토너먼트 메뉴 - 일정상세보기
 	@RequestMapping(value = "/tournamentInfoView", method = RequestMethod.GET)
-	public String tournamentInfoView(Model model) {
-		/*List<Account> list = adminService.readAllUserServ(3);
-		model.addAttribute("list", list);*/
-		/*return "index";*/
+	public String tournamentInfoView(Model model, @RequestParam(value="tId")String tId) {
+		Tournament t = customService.getTournament(tId);
+		model.addAttribute("t", t);
 		return "/users/tournament_info_view";
 	}
 	
@@ -115,10 +118,15 @@ public class HomeController {
 	
 	//토너먼트 메뉴 - 결과
 	@RequestMapping(value = "/tournamentResult", method = RequestMethod.GET)
-	public String tournamentResult(Model model) {
-		/*List<Account> list = adminService.readAllUserServ(3);
-		model.addAttribute("list", list);*/
-		/*return "index";*/
+	public String tournamentResult(Model model,@RequestParam(value="page",defaultValue="1")String page) {
+		int paramPage = Integer.parseInt(page)-1;
+		List<Tournament> list = customService.tournamentEndList(String.valueOf(paramPage));
+		int totCnt = customService.getTournamentEndTotCnt();
+
+		model.addAttribute("list", list);
+		model.addAttribute("totCnt", totCnt);
+		model.addAttribute("currentpage", page);
+		
 		return "/users/tournament_result";
 	}
 	

@@ -27,22 +27,49 @@
 		)
 	</insert>
 
-
-	<!-- 중복아이디조회 -->
+	<!-- 진행중인 토너먼트 갯수 -->
 	<select id="tournamentTotCnt" resultType="int">
 	 	SELECT count(*) as cnt
 	 	FROM dbo.Tournament
 	 	WHERE startDate >= getDate()
 	</select>
 
- 
-	<!-- 토너먼트 정보 조회 -->
+ 	<!-- 토너먼트 정보 조회 -->
 	<select id="torunamentList" parameterType="Map" resultType="one.top.holdem.admin.vo.Tournament">
-		SELECT *
-		  FROM dbo.Tournament
-		 WHERE startDate >= getDate()
-		 ORDER BY startDate desc
-		 OFFSET #{page} rows
+		SELECT TOP 10 * FROM (
+			SELECT *
+			  FROM dbo.Tournament
+			 WHERE startDate >= getDate()
+			 ORDER BY startDate desc
+		<if test="page != null">
+			 OFFSET #{page} rows
+		</if>
+		 ) aa
+	</select>
+	
+	<!-- 완료된 토너먼트 갯수 -->
+	<select id="tournamentEndTotCnt" resultType="int">
+	 	SELECT count(*) as cnt
+	 	FROM dbo.Tournament
+	 	WHERE getDate() > startDate
 	</select>
 
+ 
+	<!-- 토너먼트 정보 조회 -->
+	<select id="torunamentEndList" parameterType="Map" resultType="one.top.holdem.admin.vo.Tournament">
+		SELECT TOP 10 * FROM (
+			SELECT *
+			  FROM dbo.Tournament
+			 WHERE getDate() > startDate
+			 ORDER BY startDate desc
+			 OFFSET #{page} rows
+		 ) aa
+	</select>
+	
+	<!-- 선택된 토너먼트 정보 조회 -->
+	<select id="torunamentEndList" parameterType="Map" resultType="one.top.holdem.admin.vo.Tournament">
+			SELECT *
+			  FROM dbo.Tournament
+			 WHERE tournamentId = ${tId}
+	</select>
 </mapper>
