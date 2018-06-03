@@ -18,7 +18,7 @@ import one.top.holdem.admin.vo.Account;
 import one.top.holdem.admin.vo.Import;
 import one.top.holdem.admin.vo.Master;
 
-@SessionAttributes({"grade","id","noticeCheck"})
+@SessionAttributes({"grade","id","noticeCheck","userGold"})
 @RestController
 public class AdminRestController {
 	@Autowired
@@ -166,4 +166,19 @@ public class AdminRestController {
 		return map; 
 	}
 	
+	//유저 로그인 userLogin
+	@RequestMapping(value="/userLogin", method = RequestMethod.POST)
+	public Map<String, Object> userLoginCtrl(Model model, Account account) {
+		System.out.println("ID : "+account.getLoginId());
+		System.out.println("ID : "+account.getLoginPassword());
+		
+		Map<String, Object> map = adminService.loginServ(account.getLoginId(), account.getLoginPassword());
+		Account accountRes = (Account) map.get("account");
+		if(map.get("loginCheck").equals("success")) {
+			model.addAttribute("id", account.getLoginId());
+			model.addAttribute("userGold", accountRes.getGold());
+		}
+		
+		return map;
+	} 
 }

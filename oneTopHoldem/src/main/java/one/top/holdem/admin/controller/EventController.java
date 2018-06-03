@@ -23,4 +23,6 @@ public class EventController {
 	public String importManagementCtrl() {
 		return "/admin/importManager/import_list";
 	}
+	
+	
 }

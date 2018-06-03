@@ -17,7 +17,22 @@
    jQuery(document).ready(function(){ 
 
       $('.slideshow').FadeWideBgImg({interval:2000}); 
-
+	  var id = '${id}';
+	  var gold = '${userGold}';
+	  
+	  if(id != null && id != ''){ //로그인상황
+		  $('#ol_before').css('display','none');
+	  
+		  $('#ol_after').find('#user_name').text('');
+		  $('#ol_after').find('#user_point').text('');
+		  $('#ol_after').find('#user_name').text(id);
+		  $('#ol_after').find('#user_point').text(gold);
+		  
+		  $('#ol_after').css('display','');
+	  }else{ //로그인안된상황
+		  $('#ol_after').css('display','none');
+		  $('#ol_before').css('display','');
+	  }
    }); 
 
 }(window.jQuery,window)); 
@@ -54,6 +69,38 @@ yssor_1_slider_init = function() {
 function newWin(url) {
 	window.open(url,'new_win','width=800,height=780,toolbars=no,menubars=no,scrollbars=no');
 }
+
+$(document).on('click','#ol_submit',function(){
+	var loginId = $('#ol_id').val();
+	var loginPassword = $('#ol_pw').val();
+	
+	if(loginId == null || loginId == ''){
+		alert('아이디를 입력하세요');
+		return;
+	}
+	if(loginPassword == null || loginPassword == ''){
+		alert('비밀번호를 입력하세요');
+		return;
+	}
+	
+	$.ajax({
+		url : 'userLogin',
+		data : {'loginId':loginId ,'loginPassword':loginPassword},
+		dataType : 'json',
+		type : 'post',
+		success : function(data){
+			if(data.loginCheck == 'success'){
+				$('#ol_before').css('display','none');
+				
+				$('#ol_after').find('#user_name').text('');
+				$('#ol_after').find('#user_point').text('');
+				$('#ol_after').find('#user_name').text(data.account.loginId);
+				$('#ol_after').find('#user_point').text(data.account.gold);
+				$('#ol_after').css('display','');
+			}
+		}
+	})
+});
 </script>
 
 
@@ -91,25 +138,39 @@ function newWin(url) {
 		</div>
 		<div id="game_box">
 			<section id="ol_before" class="ol">
-				<form name="foutlogin" action="index_login.html" onsubmit="return fhead_submit(this);" method="post" autocomplete="off">
-				<fieldset>
-					<div id="ol_auto">
-						<input type="checkbox" name="auto_login" value="1" id="auto_login">
-						<label for="auto_login" id="auto_login_label">보안로그인</label>
-					</div>
-					<label for="ol_id" id="ol_idlabel">아이디</label>
-					<input type="text" id="ol_id" name="mb_id" required class="required" maxlength="20">
-					<label for="ol_pw" id="ol_pwlabel">비밀번호</label>
-					<input type="password" name="mb_password" id="ol_pw" required class="required" maxlength="20">
-					<input type="submit" id="ol_submit" value="로그인">
-					<div id="ol_svc">
-						<a href="join"><b>회원가입</b></a>|<a href="find.html" id="ol_password_lost">정보찾기</a>
-					</div>
-					
-				</fieldset>
+				<form name="foutlogin" method="post" autocomplete="off">
+					<fieldset>
+						<div id="ol_auto">
+							<!-- <input type="checkbox" name="auto_login" value="1" id="auto_login"> -->
+							<label for="auto_login" id="auto_login_label">원탑홀덤 회원로그인</label>
+						</div>
+						<label for="ol_id" id="ol_idlabel">아이디</label>
+						<input type="text" id="ol_id" name="mb_id" required class="required" maxlength="20">
+						<label for="ol_pw" id="ol_pwlabel">비밀번호</label>
+						<input type="password" name="mb_password" id="ol_pw" required class="required" maxlength="20">
+						<input type="button" id="ol_submit" value="로그인">
+						<div id="ol_svc">
+							<a href="join"><b>회원가입</b></a>|<a href="#" id="ol_password_lost">정보찾기</a>
+						</div>
+						
+					</fieldset>
 				</form>
 			</section>
-
+			
+			<section id="ol_after" class="ol" style="display:none;">
+				<header id="ol_after_hd">
+					<img src="resources/img/cat_man.jpg">				
+				</header>
+				<ul id="ol_after_private">
+					<li><strong id="user_name"></strong>님 환영합니다.!</li>
+					<li>보유골드 <strong id="user_point"></strong> 원</li>
+				</ul>
+				<footer id="ol_after_ft">
+					<a href="modify" id="ol_after_info">정보수정</a><br>
+					<a href="index" id="ol_after_logout">로그아웃</a>
+				</footer>
+			</section>
+			
 			<script>
 			$omi = $('#ol_id');
 			$omp = $('#ol_pw');
