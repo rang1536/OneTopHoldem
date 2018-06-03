@@ -33,9 +33,9 @@ public class EventRestController {
 		return map;
 	}
 	
-	@RequestMapping("/eventWrite")
-    public ModelAndView eventWriteCtrl(MultipartHttpServletRequest request){
-        System.out.println("g2");
+	@RequestMapping(value="/eventWrite", method = RequestMethod.POST)
+    public Map<String, Object> eventWriteCtrl(MultipartHttpServletRequest request){
+        //System.out.println("g2");
         MultipartFile excelFile = request.getFile("excelFile");
         if(excelFile==null || excelFile.isEmpty()){
             throw new RuntimeException("엑셀파일을 선택해 주세요");
@@ -49,13 +49,11 @@ public class EventRestController {
  
         }
         
-        eventService.insertEvent(destFile);
+        Map<String, Object> map = eventService.insertEvent(destFile);
         
         //FileUtils.deleteFile(destFile.getAbsolutePath());
         
-        ModelAndView view = new ModelAndView();
-        view.setViewName("redirect:eventList");
-        return view;
+        return map;
     }
 
 	//입출금조회

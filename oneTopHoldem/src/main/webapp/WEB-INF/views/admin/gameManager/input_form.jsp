@@ -82,20 +82,17 @@
 	function stopNotice(){
 		if(confirm('긴급공지를 중지하시겠습니까?')){
 			//공지 하나로 지웠다 계속 새로 입력해 쓰는 방식 또는 입력되어 있으면 계속 종료시간까지 입력된다면 삭제처리 해주기.
-			/* $.ajax({
+			$.ajax({
 				url : 'removeNotice',
 				dataType : 'json',
 				type : 'post',
 				success : function(data){
-					if(data.deleteNoticeCheck == 'success'){
-						alert('긴급공지 삭제~!! 공지발송이 종료됩니다!');
-						return;
-					}else{
-						alert('공지삭제 실패!!');
+					if(data.deleteResult == 'success'){
+						alert('긴급공지 발송이 종료됩니다!');
 						return;
 					}
 				}
-			}) */
+			}) 
 			// 버튼 체인지
 			$('#stopBtn').css('display','none');
 			$('#transBtn').css('display','');
@@ -169,6 +166,17 @@
 				success:function(data){
 					if(data.masterInfoModifyCheck == 'success'){
 						alert('입력하신 배당율로 수정하였습니다!!');
+						$('#dealerCommission').val('');
+						$('#jackpotProbability').val('');
+						$('#straightFlushJackpot').val('');
+						$('#fourOfAKindJackpot').val('');
+						$('#fullHouseJackpot').val('');
+						$('#flushJackpot').val('');
+						$('#straightJackpot').val('');
+						$('#threeOfAKindJackpot').val('');
+						$('#twoPairJackpot').val('');
+						$('#onepairJackpot').val('');
+						$('#noPairJackpot').val('');
 						return;
 					}else{
 						alert('수정에 실패하였습니다!!');

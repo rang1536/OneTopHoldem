@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +18,7 @@ import one.top.holdem.admin.vo.Account;
 import one.top.holdem.admin.vo.Import;
 import one.top.holdem.admin.vo.Master;
 
-@SessionAttributes({"grade","id"})
+@SessionAttributes({"grade","id","noticeCheck"})
 @RestController
 public class AdminRestController {
 	@Autowired
@@ -85,7 +86,7 @@ public class AdminRestController {
 	//비번변경 changePass
 	@RequestMapping(value="/changePass", method = RequestMethod.POST)
 	public Map<String, String> changePassCtrl(Account account){
-		/*System.out.println("아이디 확인 : "+accountId);*/
+		System.out.println("폼값 확인 : "+account);
 		Map<String, String> map = adminService.changePassServ(account);
 		return map; 
 	}
@@ -117,17 +118,28 @@ public class AdminRestController {
 	}
 	
 	
+	// 긴급공지중지
+	@RequestMapping(value="/removeNotice", method = RequestMethod.POST)
+	public Map<String, Object> removeNoticeCtrl(Model model){
+		/*System.out.println("폼 입력값 확인  : "+hour+" ,"+minute+" ,"+msg);*/
+		Map<String, Object> map = new HashMap<String, Object>();
+		model.addAttribute("noticeCheck", "stop");
+		
+		map.put("deleteResult", "success");
+		return map; 
+	}
+	
 	// 긴급공지등록 addNotice
 	@RequestMapping(value="/addNotice", method = RequestMethod.POST)
 	public Map<String, String> addNoticeCtrl(@RequestParam(value="hour")int hour,
 			@RequestParam(value="minute")int minute,
 			@RequestParam(value="msg")String msg){
 		/*System.out.println("폼 입력값 확인  : "+hour+" ,"+minute+" ,"+msg);*/
-		/* 긴급공지 로직 정해질때까지 보류
-		 * Map<String, String> map = adminService.addNoticeServ(hour, minute, msg);*/
-		return null; 
+		
+		Map<String, String> map = adminService.addNoticeServ(hour, minute, msg);
+		return map; 
 	}
-	
+		
 	//메세지목록조회
 	@RequestMapping(value="/mmsList", method = RequestMethod.POST)
 	public Map<String, String> mmsListCtrl(@ModelAttribute(value="id")String loginId){

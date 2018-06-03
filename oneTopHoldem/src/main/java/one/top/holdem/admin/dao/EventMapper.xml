@@ -11,12 +11,17 @@
 	FROM dbo.Tournament
 </select>
 
- <!-- import조회 -->
- <select id="selectImport" parameterType="Map" resultType="one.top.holdem.admin.vo.Import">
- 	SELECT *
- 	FROM dbo.Import
- 	WHERE year = #{year}
- 	AND month = #{month}
- </select>
+<!-- import조회 -->
+<select id="selectImport" parameterType="Map" resultType="one.top.holdem.admin.vo.Import">
+	SELECT *
+	FROM dbo.Import
+	WHERE year = #{year}
+	AND month = #{month}
+</select>
+
+<select id="selectLastSeq" resultType="long">
+	SELECT MAX(tournamentId)
+	FROM dbo.Tournament	
+</select>
 
 </mapper>

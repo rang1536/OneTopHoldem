@@ -22,10 +22,9 @@
 		</div>
 		<div class="modal-body">
 			<form role="form" id="changePassForm" method="post">
-				<input type="hidden" id="accountId"/>
 				<table style="width:100%;">
 					<tr>
-						<td style="text-align:center;" id="targetTd"></td>
+						<td style="text-align:center;" id="targetTd"><input type="hidden" id="accountId" name="accountId"/></td>
 					</tr>
 					<tr>
 						<td><br/><input type="password" class="form-control" name="loginPassword" id="loginPassword" placeholder="비밀번호" /><br/></td>

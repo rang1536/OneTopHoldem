@@ -15,6 +15,7 @@ import one.top.holdem.admin.vo.Account;
 import one.top.holdem.admin.vo.Import;
 import one.top.holdem.admin.vo.Master;
 import one.top.holdem.admin.vo.Notice;
+import one.top.holdem.util.UtilDate;
 
 @Service
 public class AdminService {
@@ -178,8 +179,14 @@ public class AdminService {
 		int result = adminDao.updatePass(account);
 		
 		Map<String, String> map = new HashMap<String, String>();
-		if(result > 0) map.put("changeCheck", "success");
-		else if(result == 0) map.put("changeCheck", "fail");
+		if(result > 0) {
+			map.put("changeCheck", "success");
+			System.out.println("succ");
+		}
+		else if(result == 0) {
+			map.put("changeCheck", "fail");
+			System.out.println("fail");
+		}
 		
 		return map;
 	}
@@ -234,21 +241,28 @@ public class AdminService {
 		return map;
 	}
 	
-	//긴급공지 등록 - 이게 맞나 몰라 공지 1개만 있고 계속 갈아치우는?
+	//긴급공지 등록 - lastSendDate에 긴급공지 종료시간을 미리 세팅
 	public Map<String, String> addNoticeServ(int hour, int minute, String msg){
 		int result = 0;
 		//먼저 기존 공지를 삭제한다.
-		int deleteResult = adminDao.deleteNotice();
+		//int deleteResult = adminDao.deleteNotice();
 		
+		if(hour != 0) {
+			for(int i=0; i< hour; i++) {
+				minute += 60;
+			}
+		}
+		
+		UtilDate utilDate = new UtilDate();
+		String lastTime = utilDate.getAfterTime(minute);
 		//공지값 세팅
 		Notice notice = new Notice();
 		notice.setNotice(msg);
 		//현재시간 구해서 입력받은 시간,분 더하기 포멧- utc시간
+		notice.setLastSendDate(lastTime);
 		
 		//삭제 확인후 공지입력
-		if(deleteResult == 1) result = adminDao.insertNotice(notice);
-		
-		// 공지 입력 후 공지 알림 스크립트 실행하도록 뭔가 처리를 해줌.
+		result = adminDao.insertNotice(notice);
 		
 		Map<String, String> map = new HashMap<String, String>();
 		if(result > 0) map.put("addNoticeCheck", "success");

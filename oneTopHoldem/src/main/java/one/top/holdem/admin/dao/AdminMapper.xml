@@ -87,7 +87,7 @@
 <!-- 비번변경 -->
 <update id="updatePass" parameterType="one.top.holdem.admin.vo.Account">
 	UPDATE dbo.Account
-	SET loginPassword=PwdEncrypt('#{commission}')
+	SET loginPassword=PwdEncrypt(#{loginPassword})
 	WHERE accountId = #{accountId}	
 </update>
 
