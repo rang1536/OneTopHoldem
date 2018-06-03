@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="customDao">
+
+	<!-- 중복아이디조회 -->
+	<select id="dupIdCheck" parameterType="Map" resultType="int">
+	 	SELECT count(*)
+	 	FROM dbo.Account
+	 	WHERE loginId = #{loginId}
+	</select>
+
+	<!-- 회원등록 -->
+	<insert id="registerMember" parameterType="one.top.holdem.admin.vo.Account">
+		INSERT INTO dbo.Account(
+			createdDate,grade,commission,accountState,telephone,email,
+			accountText,loginId,loginPassword,nickname,accountLevel,
+			accountExp,gold,bonusGold,chargeGold,ticket,costume,recommenderAccountId,
+			lastLoginDate,todayCash,monthCash,todayStartGold
+		)
+		VALUES (
+			getdate(),#{grade},#{commission},#{accountState},#{telephone},#{email},
+			#{accountText},#{loginId},PwdEncrypt(#{loginPassword}),#{nickname},#{accountLevel},
+			#{accountExp},#{gold},#{bonusGold},#{chargeGold},#{ticket},#{costume},#{recommenderAccountId},
+			getdate(),#{todayCash},#{monthCash},#{todayStartGold}
+		)
+	</insert>
+
+
+	<!-- 중복아이디조회 -->
+	<select id="tournamentTotCnt" resultType="int">
+	 	SELECT count(*) as cnt
+	 	FROM dbo.Tournament
+	 	WHERE startDate >= getDate()
+	</select>
+
+ 
+	<!-- 토너먼트 정보 조회 -->
+	<select id="torunamentList" parameterType="Map" resultType="one.top.holdem.admin.vo.Tournament">
+		SELECT *
+		  FROM dbo.Tournament
+		 WHERE startDate >= getDate()
+		 ORDER BY startDate desc
+		 OFFSET #{page} rows
+	</select>
+
+</mapper>

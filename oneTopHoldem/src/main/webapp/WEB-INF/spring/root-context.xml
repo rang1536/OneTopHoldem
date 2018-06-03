@@ -32,6 +32,7 @@
 			<list>
 				<value>classpath:one/top/holdem/admin/dao/AdminMapper.xml</value>
 				<value>classpath:one/top/holdem/admin/dao/EventMapper.xml</value>
+				<value>classpath:one/top/holdem/CustomMapper.xml</value>
 			</list>
 		</property>
 	</bean>

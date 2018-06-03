@@ -9,8 +9,6 @@
 <link rel="stylesheet" href="resources/css/default.css">
 <script src="resources/js/jquery-3.2.1.min.js"></script>
 </head>
-
-
 <body>
 
 <!---- headr ---------->
@@ -53,14 +51,14 @@
 			<div id="reg_result" class="mbskin">
 
 				<p>
-					<strong>홍길동</strong>님의 회원가입을 진심으로 축하합니다.<br>
+					<strong>${name}</strong>님의 회원가입을 진심으로 축하합니다.<br>
 				</p>
 
 				<div id="result_email">
 					<span>아이디</span>
-					<strong>test</strong><br>
+					<strong>${loginId}</strong><br>
 					<span>이메일 주소</span>
-					<strong>test@naver.com</strong>
+					<strong>${email }</strong>
 				</div>
 				<p>
 					이메일 주소를 잘못 입력하셨다면, 사이트 관리자에게 문의해주시기 바랍니다.

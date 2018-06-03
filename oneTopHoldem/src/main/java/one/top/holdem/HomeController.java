@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import one.top.holdem.admin.service.AdminService;
 import one.top.holdem.admin.vo.Account;
+import one.top.holdem.admin.vo.Tournament;
 
 
 @SessionAttributes({"grade","accountId","id"})
@@ -27,6 +28,9 @@ public class HomeController {
 	@Autowired
 	private AdminService adminService;
 	
+	@Autowired
+	private CustomService customService;
+		
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
 		/*List<Account> list = adminService.readAllUserServ(3);
@@ -63,10 +67,12 @@ public class HomeController {
 	
 	//토너먼트 메뉴 - 일정,결과
 	@RequestMapping(value = "/tournamentMenu", method = RequestMethod.GET)
-	public String tournamentMenu(Model model) {
-		/*List<Account> list = adminService.readAllUserServ(3);
-		model.addAttribute("list", list);*/
-		/*return "index";*/
+	public String tournamentMenu(Model model,@RequestParam(value="page",defaultValue="0")String page) {
+		List<Tournament> list = customService.tournamentList(page);
+		int totCnt = customService.getTournamentTotCnt();
+		model.addAttribute("list", list);
+		model.addAttribute("totCnt", totCnt);
+		model.addAttribute("currentpage", page);
 		return "/users/tournament_info";
 	}
 	
@@ -189,11 +195,14 @@ public class HomeController {
 	}
 		
 	//회원가입 - 3단계
-	@RequestMapping(value = "/joinConfirm", method = RequestMethod.POST)
-	public String joinConfirm(Model model) {
-		/*List<Account> list = adminService.readAllUserServ(3);
-		model.addAttribute("list", list);*/
-		/*return "index";*/
+	@RequestMapping(value = "/joinConfirm", method = RequestMethod.GET)
+	public String joinConfirm(Model model, @RequestParam(value="loginId")String loginId,
+			@RequestParam(value="email",defaultValue="미등록")String email,
+			@RequestParam(value="name",defaultValue="미등록")String name) {
+		
+		model.addAttribute("loginId",loginId);
+		model.addAttribute("email",email);
+		model.addAttribute("name",name);
 		return "/users/join_confirm";
 	}
 	
@@ -215,6 +224,7 @@ public class HomeController {
 		return "/users/glossary";
 	}
 	
+
 	//==================================================================================
 	//관리자
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)

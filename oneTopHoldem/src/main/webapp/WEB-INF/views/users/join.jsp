@@ -9,7 +9,25 @@
 <link rel="stylesheet" href="resources/css/default.css">
 <script src="resources/js/jquery-3.2.1.min.js"></script>
 </head>
-
+	<script>
+	$(document).ready(function(){
+		$("#btn_next").click(function(){
+			
+			if(!$("#agree11").is(":checked")){
+				alert("회원가입약관에 동의하셔야 합니다.");
+				return;
+			}else if(!$("#agree21").is(":checked")){
+				alert("개인정보처리방침안내에 동의하셔야 합니다.");
+				return;				
+			}else {
+				$("#fregister").submit();
+			}
+			
+		});
+		
+	});
+		
+	</script>
 
 <body>
 
@@ -40,7 +58,7 @@
 				<span id="container_title">회원가입</span>
 				<div class="sub_nav"><img src="resources/img/home_icon.jpg"> HOME&nbsp;&nbsp;>&nbsp;&nbsp;멤버쉽&nbsp;&nbsp;>&nbsp;&nbsp;<b>회원가입</b></div>
 			</div>
-			
+<!-- 회원가입 본인인증
 			<div style="padding-top:20px;">
 				<div style="border:3px solid #dddddd;text-align:center;padding:10px;">
 					<img src="resources/img/join_1_over.jpg"><img src="resources/img/join_bar.jpg">
@@ -51,10 +69,13 @@
 			
 			<div class="join_tt">본인인증 <span class="cm">&nbsp;|&nbsp;&nbsp;안전한 가입을 위해 휴대폰 또는 아이핀을 통한 인증 필수.</span></div>
 			<div style="text-align:center;padding:20px 0 20px 0;"><img src="resources/img/join_sign_1.jpg"> <img src="resources/img/join_sign_2.jpg"> <img src="resources/img/join_sign_3.jpg"></div>
-
-			<form  name="fregister" id="fregister" action="joinRegister" onsubmit="return fregister_submit(this);" method="POST" autocomplete="off">
-
+			
 			<p>회원가입약관 및 개인정보처리방침안내의 내용에 동의하셔야 회원가입 하실 수 있습니다.</p>
+ -->
+ 
+			<form  name="fregister" id="fregister" action="joinRegister" method="POST" autocomplete="off">
+
+			
 
 			<section id="fregister_term">
 				<div class="join_tt">회원가입약관 <span class="cm">&nbsp;|&nbsp;&nbsp;약관에 동의하셔야 가입이 가능합니다.</span></div>
@@ -343,7 +364,7 @@ C. 기타 서비스 내 질서 유지를 위해 회사가 필요하다고 판단
 			</section>
 
 			<div class="btn_confirm">
-				<input type="submit" class="myButton" value="✔ 다음단계">
+				<input type="button" class="myButton" value="✔ 다음단계" id="btn_next">
 			</div>
 			</form>
 			<br>

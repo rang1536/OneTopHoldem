@@ -16,6 +16,12 @@ function info_pop(url){
 
 	window.open(url, '원탑홀덤 토너먼트 정보', 'status=no, height=500, width=570, left='+ popupX + ', top='+ popupY + ', screenX='+ popupX + ', screenY= '+ popupY);
 }
+
+$(document).ready(function(){
+
+		
+});
+	
 </script>
 </head>
 <body>
@@ -89,115 +95,36 @@ function info_pop(url){
 						<th>참가비(수수료)</th>
 						<th>정보확인</th>
 					</tr>
-					<tr>
-						<td class="date">2018-01-09 20:00</td>
-						<td class="subject">300억 빅토너 가는길! 15,000 티켓 (3장)</td>
-						<td class="charge">2,000만 칩 (200만 칩)</td>
-						<td class="name"><a href="javascript:info_pop('tournamentInfoView');" class="btn02">토너정보</a></td>
-					</tr>
-					<tr bgcolor=#f6f6f6>
-						<td class="date">2018-01-09 20:00</td>
-						<td class="subject">300억 빅토너 가는길! 15,000 티켓 (3장)</td>
-						<td class="charge">2,000만 칩 (200만 칩)</td>
-						<td class="name"><a href="javascript:info_pop('tournamentInfoView');" class="btn02">토너정보</a></td>
-					</tr>
-					<tr>
-						<td class="date">2018-01-09 20:00</td>
-						<td class="subject">300억 빅토너 가는길! 15,000 티켓 (3장)</td>
-						<td class="charge">2,000만 칩 (200만 칩)</td>
-						<td class="name"><a href="javascript:info_pop('tournamentInfoView');" class="btn02">토너정보</a></td>
-					</tr>
-					<tr bgcolor=#f6f6f6>
-						<td class="date">2018-01-09 20:00</td>
-						<td class="subject">300억 빅토너 가는길! 15,000 티켓 (3장)</td>
-						<td class="charge">2,000만 칩 (200만 칩)</td>
-						<td class="name"><a href="javascript:info_pop('tournamentInfoView');" class="btn02">토너정보</a></td>
-					</tr>
-					<tr>
-						<td class="date">2018-01-09 20:00</td>
-						<td class="subject">300억 빅토너 가는길! 15,000 티켓 (3장)</td>
-						<td class="charge">2,000만 칩 (200만 칩)</td>
-						<td class="name"><a href="javascript:info_pop('tournamentInfoView');" class="btn02">토너정보</a></td>
-					</tr>
-					<tr bgcolor=#f6f6f6>
-						<td class="date">2018-01-09 20:00</td>
-						<td class="subject">300억 빅토너 가는길! 15,000 티켓 (3장)</td>
-						<td class="charge">2,000만 칩 (200만 칩)</td>
-						<td class="name"><a href="javascript:info_pop('tournamentInfoView');" class="btn02">토너정보</a></td>
-					</tr>
-					<tr>
-						<td class="date">2018-01-09 20:00</td>
-						<td class="subject">300억 빅토너 가는길! 15,000 티켓 (3장)</td>
-						<td class="charge">2,000만 칩 (200만 칩)</td>
-						<td class="name"><a href="javascript:info_pop('tournamentInfoView');" class="btn02">토너정보</a></td>
-					</tr>
-					<tr bgcolor=#f6f6f6>
-						<td class="date">2018-01-09 20:00</td>
-						<td class="subject">300억 빅토너 가는길! 15,000 티켓 (3장)</td>
-						<td class="charge">2,000만 칩 (200만 칩)</td>
-						<td class="name"><a href="javascript:info_pop('tournamentInfoView');" class="btn02">토너정보</a></td>
-					</tr>
-					<tr>
-						<td class="date">2018-01-09 20:00</td>
-						<td class="subject">300억 빅토너 가는길! 15,000 티켓 (3장)</td>
-						<td class="charge">2,000만 칩 (200만 칩)</td>
-						<td class="name"><a href="javascript:info_pop('tournamentInfoView');" class="btn02">토너정보</a></td>
-					</tr>
-					<tr bgcolor=#f6f6f6>
-						<td class="date">2018-01-09 20:00</td>
-						<td class="subject">300억 빅토너 가는길! 15,000 티켓 (3장)</td>
-						<td class="charge">2,000만 칩 (200만 칩)</td>
-						<td class="name"><a href="javascript:info_pop('tournamentInfoView');" class="btn02">토너정보</a></td>
-					</tr>
-					<tr>
-						<td class="date">2018-01-09 20:00</td>
-						<td class="subject">300억 빅토너 가는길! 15,000 티켓 (3장)</td>
-						<td class="charge">2,000만 칩 (200만 칩)</td>
-						<td class="name"><a href="javascript:info_pop('tournamentInfoView');" class="btn02">토너정보</a></td>
-					</tr>
-					<tr bgcolor=#f6f6f6>
-						<td class="date">2018-01-09 20:00</td>
-						<td class="subject">300억 빅토너 가는길! 15,000 티켓 (3장)</td>
-						<td class="charge">2,000만 칩 (200만 칩)</td>
-						<td class="name"><a href="javascript:info_pop('tournamentInfoView');" class="btn02">토너정보</a></td>
-					</tr>
-					<tr>
-						<td class="date">2018-01-09 20:00</td>
-						<td class="subject">300억 빅토너 가는길! 15,000 티켓 (3장)</td>
-						<td class="charge">2,000만 칩 (200만 칩)</td>
-						<td class="name"><a href="javascript:info_pop('tournamentInfoView');" class="btn02">토너정보</a></td>
-					</tr>
-					<tr bgcolor=#f6f6f6>
-						<td class="date">2018-01-09 20:00</td>
-						<td class="subject">300억 빅토너 가는길! 15,000 티켓 (3장)</td>
-						<td class="charge">2,000만 칩 (200만 칩)</td>
-						<td class="name"><a href="javascript:info_pop('tournamentInfoView');" class="btn02">토너정보</a></td>
-					</tr>
-					<tr>
-						<td class="date">2018-01-09 20:00</td>
-						<td class="subject">300억 빅토너 가는길! 15,000 티켓 (3장)</td>
-						<td class="charge">2,000만 칩 (200만 칩)</td>
-						<td class="name"><a href="javascript:info_pop('tournamentInfoView');" class="btn02">토너정보</a></td>
-					</tr>
+					<c:forEach var="item" items="${list}" varStatus="status">
+						<tr>
+							<td class="date">${item.startDate }</td>
+							<td class="subject">${item.title}! 티켓 ${item.needTicket}장</td>
+							<td class="charge">${item.needGold}골드 (${item.needCommission})</td>
+							<td class="name"><a href="javascript:info_pop('tournamentInfoView');" class="btn02">토너정보</a></td>
+						</tr>
+					</c:forEach>
 				</table>
 			</div>
 			<div>
-				<nav class="pg_wrap"><span class="pg">
-				<a href="" class="pg_page pg_start">처음</a>
-				<a href="" class="pg_page pg_prev"><</a>
-				<a href="" class="pg_page">1</a>
-				<strong class="pg_current">2</strong>
-				<a href="" class="pg_page">3</a>
-				<a href="" class="pg_page">4</a>
-				<a href="" class="pg_page">5</a>
-				<a href="" class="pg_page">6</a>
-				<a href="" class="pg_page">7</a>
-				<a href="" class="pg_page">8</a>
-				<a href="" class="pg_page">9</a>
-				<a href="" class="pg_page">10</a>
-				<a href="" class="pg_page pg_next">></a>
-				<a href="" class="pg_page pg_end">맨끝</a>
-				</span></nav>
+				<nav class="pg_wrap">
+					<span class="pg">
+						<fmt:parseNumber var="last" value="${totCnt/10}" integerOnly="true"/>
+						<a href="tournamentMenu" class="pg_page pg_start">처음</a>
+						<a href="tournamentMenu?page=${currentPage-1 }" class="pg_page pg_prev">&lt;</a>
+						<c:forEach var="item" varStatus="i" begin="1" end="last" step="1">
+							<c:choose>
+								<c:when test="${currentPage == i }">
+									<strong class="pg_current">${i }</strong>
+								</c:when>
+								<c:otherwise>
+									<a href="tournamentMent?page=${i }" class="pg_page">${i }</a>		
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						<a href="tournamentMenu?page=${currentPage+1 }" class="pg_page pg_next">&gt;</a>
+						<a href="tournamentMenu?page=${last}" class="pg_page pg_end">맨끝</a>
+					</span>
+				</nav>
 			</div>
 		</div>
 	</div>
