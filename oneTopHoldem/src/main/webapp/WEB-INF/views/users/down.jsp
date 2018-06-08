@@ -91,11 +91,11 @@ $(document).on('click','#ol_submit',function(){
 							<!-- <input type="checkbox" name="auto_login" value="1" id="auto_login"> -->
 							<label for="auto_login" id="auto_login_label">원탑홀덤 회원로그인</label>
 						</div>
-						<label for="ol_id" id="ol_idlabel">아이디</label>
-						<input type="text" id="ol_id" name="mb_id" required class="required" maxlength="20">
-						<label for="ol_pw" id="ol_pwlabel">비밀번호</label>
-						<input type="password" name="mb_password" id="ol_pw" required class="required" maxlength="20">
-						<input type="button" id="ol_submit" value="로그인">
+						<!-- <label for="ol_id" id="ol_idlabel">아이디</label> -->
+						<input type="text" id="ol_id" name="mb_id" style="width:160px;" placeholder="아이디">
+						<!-- <label for="ol_pw" id="ol_pwlabel">비밀번호</label> -->
+						<input type="password" name="mb_password" id="ol_pw" style="width:160px;" placeholder="비밀번호">
+						<input type="button" id="ol_submit" value="로그인" style="width:170px;">
 						<div id="ol_svc">
 							<a href="join"><b>회원가입</b></a>|<a href="#" id="ol_password_lost">정보찾기</a>
 						</div>
@@ -109,12 +109,12 @@ $(document).on('click','#ol_submit',function(){
 					<img src="resources/img/cat_man.jpg">				
 				</header>
 				<ul id="ol_after_private">
-					<li><strong id="user_name"></strong>님 환영합니다.!</li>
-					<li>보유골드 <strong id="user_point"></strong> 원</li>
+					<li><strong id="user_name"></strong>님!</li>
+					<li>골드 <strong id="user_point"></strong> 원</li>
 				</ul>
 				<footer id="ol_after_ft2">
 					<a href="modify" id="ol_after_info">정보수정</a><br>
-					<a href="index" id="ol_after_logout">로그아웃</a>
+					<a href="downMenu?check=clSession" id="ol_after_logout">로그아웃</a>
 				</footer>
 			</section>
 			
@@ -162,10 +162,10 @@ $(document).on('click','#ol_submit',function(){
 			</div>
 			<div class="sub_menu">
 				<ul>
-					<li class="over"><a href="down.html">· 다운로드</a></li>
+					<li class="over"><a href="#">· 다운로드</a></li>
 				</ul>
 			</div>
-			<div><img src="resources/img/sub_down_btn.jpg"></div>
+			<div><a href="https://s3.ap-northeast-2.amazonaws.com/onetop/HoldemSetup.exe"><img src="resources/img/sub_down_btn.jpg"></a></div>
 		</div>
 		<div id="container">
 			<div style="padding-bottom:10px;">

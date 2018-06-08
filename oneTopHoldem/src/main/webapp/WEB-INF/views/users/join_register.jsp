@@ -57,11 +57,21 @@
 			}
 			
 			if(gfn_isNull($("#reg_mb_recom").val())){
-				alert("추천인을 입력하세요.");
-				$("#reg_mb_recom").focus();
+				$("#reg_mb_recom").val('0');				
+			} 
+
+			if($("#reg_mb_password").val() != $("#reg_mb_password_re").val()){
+				alert('비밀번호를 다시 확인해주세요');
+				$("#reg_mb_password_re").val('');
+				$("#reg_mb_password_re").focus();
 				return;
 			}
-
+			
+			if($('#emailAuthCheck').val() == 1){
+				alert('이메일 인증을 진행해야 회원가입이 가능합니다');
+				return;
+			};
+			
 			//id 중복체크
 			$.ajax({
 				url : 'dupIdCheck',
@@ -128,9 +138,44 @@
 		})	
 		
 	}
-				
+	
+	function authEmail(){
+		var add = $('#reg_mb_email').val();
+		
+		if(add == null || add == ''){
+			alert('메일주소를 입력하세요');
+		}
+		
+		$.ajax({
+			url : 'sendAuthEmail',
+			data : {'add':add},
+			dataType : 'json',
+			type:'post',
+			success : function(data){
+				if(data.result == 1){
+					alert('메일을 발송하였습니다');
+					$('#authCode').val(data.authCode);
+					$('#authTr').css('display','');
+				}
+			}
+		})
+		
+	}
 			
-			
+	$(document).on('click','#authBtn',function(){
+		var inputCode = $('#reg_mb_authCode').val();
+		var authCode = $('#authCode').val();
+		
+		if(inputCode == authCode){
+			$('#authResultTd').text('인증이 완료되었습니다');
+			$('#emailAuthCheck').val('2');
+			$('#authTr').css('display','none');
+			$('#authResultTr').css('display','');
+		}else{
+			alert('인증번호를 다시 확인해주세요');
+			return;
+		}
+	})		
 
 	</script>
 
@@ -151,11 +196,11 @@
 			</div>
 			<div class="sub_menu">
 				<ul>
-					<li><a href="login">· 로그인</a></li>
+					<!-- <li><a href="login">· 로그인</a></li> -->
 					<li class="over"><a href="join">· 회원가입</a></li>
 				</ul>
 			</div>
-			<div><img src="resources/img/sub_down_btn.jpg"></div>
+			<div><a href="https://s3.ap-northeast-2.amazonaws.com/onetop/HoldemSetup.exe"><img src="resources/img/sub_down_btn.jpg"></a></div>
 		</div>
 		<div id="container">
 			<div style="padding-bottom:10px;">
@@ -175,6 +220,7 @@
 
 			<form id="fregisterform" name="fregisterform" action="joinConfirm" method="post" autocomplete="off">
 			<div class="tbl_frm01 tbl_wrap">
+				<input type="hidden" id="emailAuthCheck" value="1"/>
 				<table>
 				<tbody>
 				<tr>
@@ -212,11 +258,22 @@
 
 				<tr>
 					<th scope="row"><label for="reg_mb_email">E-mail</label></th>
-					<td><input type="text" name="mb_email" value="" id="reg_mb_email" class="frm_input email" size="70" maxlength="100"></td>
+					<td>
+						<input type="text" name="mb_email" id="reg_mb_email" class="frm_input email" size="70" maxlength="100" value="${account.email }">
+						<input type="button" onclick="authEmail()" value="이메일인증"/>
+					</td>
 				</tr>
-				<tr>
-					<th scope="row"><label for="reg_mb_tel">전화번호</label></th>
-					<td><input type="text" name="mb_tel" value="" id="reg_mb_tel" class="frm_input" maxlength="20"></td>
+				<tr id="authTr" style="display:none;">
+					<th scope="row"><label for="reg_mb_tel">인증번호</label></th>
+					<td>
+						<input type="text" name="mb_authCode" id="reg_mb_authCode" class="frm_input" maxlength="20">
+						<input type="button" id="authBtn" value="이메일인증"/>
+						<input type="hidden" id="authCode"/>
+					</td>
+				</tr> 
+				<tr id="authResultTr" style="display:none;">
+					<th scope="row"><label for="reg_mb_tel">이메일인증</label></th>
+					<td id="authResultTd" style="color:#030066;font-weight:bold;"></td>
 				</tr>
 				<tr>
 					<th scope="row"><label for="reg_mb_hp">휴대폰번호</label></th>

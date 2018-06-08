@@ -36,30 +36,31 @@
 	
 	// 공지 전송 시작 - 음? 시간 잘못입력한것도 체크 해줘야 하나? 시간은 그냥 현재시간 나오니 몇시간 몇분동안 발송 으로 하는게 좋을듯
 	function transmission(){
-		var hour = $('#si').val().trim(); 
-		var minute = $('#bun').val().trim();
+		/* var hour = $('#si').val().trim(); 
+		var minute = $('#bun').val().trim(); */
 		var msg = $('#msg').val();
 		var date = new Date();
 		
 		var nowDate = (date.getMonth()+1)+date.getDate();
 		var nowDateText = (date.getMonth()+1)+' 월'+date.getDate()+' 일';
 		
-		if(hour == null || hour == ''){
+		/* if(hour == null || hour == ''){
 			alert('종료시간을 입력하세요');
 			return;
 		}else if(minute == null || minute == ''){
 			alert('종료시간을 입력하세요');
 			return;
-		}else if(msg == null || msg == ''){
+		} */
+		if(msg == null || msg == ''){
 			alert('공지 내용을 입력하세요');
 			return;
 		}
 		
-		if(confirm(hour+' 시간 '+minute+' 분 동안 긴급공지 발송을 하시겠습니까?')){	
+		if(confirm('긴급공지 발송을 하시겠습니까?')){	
 			// 공지 입력하는 ajax코드 추가
 			$.ajax({
 				url : 'addNotice',
-				data : {'hour':hour,'minute':minute,'msg':msg},
+				data : {'msg':msg},
 				dataType : 'json',
 				type : 'post',
 				success : function(data){
@@ -247,7 +248,7 @@
 				</tr>
 				<tr>
 					<td>긴급공지사항</td>
-					<td><input type="text" id="si"> 시간 <input type="text" id="bun"> 분 동안</td>
+					<td><!-- <input type="text" id="si"> 시간 <input type="text" id="bun"> 분 동안 --></td>
 					<td style="width:50px;"></td>
 					<td>쓰리카드</td>
 					<td><input type="text" class="form-control" onkeyup="isNumGameInfo(this.value,'threeOfAKindJackpot')" name="threeOfAKindJackpot" id="threeOfAKindJackpot" placeholder = "현재 ${master.threeOfAKindJackpot }"/></td>

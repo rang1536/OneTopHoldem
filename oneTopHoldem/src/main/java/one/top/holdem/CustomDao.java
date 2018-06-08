@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import one.top.holdem.admin.vo.Account;
+import one.top.holdem.admin.vo.Notice;
 import one.top.holdem.admin.vo.Tournament;
 
 @Repository
@@ -68,6 +69,24 @@ public class CustomDao {
 		map.put("tId", tId);
 		return sqlSession.selectOne("customDao.selectTournament", map);
 	}
+	
+	//회원조회
+	public Account selectMember(String loginId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("loginId", loginId);
+		return sqlSession.selectOne("customDao.selectMember", map);
+	}
+	
+	//회원수정
+	public int updateMember(Account account) {
+		return sqlSession.update("customDao.updateMember", account);
+	}
+	
+	//긴급공지 조회
+	public Notice selectNotice() {
+		return sqlSession.selectOne("customDao.selectNotice");
+	}
+	
 	
 	
 	/*

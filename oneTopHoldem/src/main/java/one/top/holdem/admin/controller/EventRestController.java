@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,6 +22,7 @@ import one.top.holdem.admin.vo.Account;
 import one.top.holdem.admin.vo.Import;
 import one.top.holdem.admin.service.AdminService;
 
+@SessionAttributes({"grade","id","noticeCheck","userGold"})
 @RestController
 public class EventRestController {
 	@Autowired
@@ -36,13 +38,13 @@ public class EventRestController {
 	
 	@RequestMapping(value="/eventWrite", method = RequestMethod.POST)
     public Map<String, Object> eventWriteCtrl(MultipartHttpServletRequest request){
-        //System.out.println("g2");
+        System.out.println("g2");
         MultipartFile excelFile = request.getFile("excelFile");
         if(excelFile==null || excelFile.isEmpty()){
             throw new RuntimeException("엑셀파일을 선택해 주세요");
         }
  
-        File destFile = new File("D:\\"+excelFile.getOriginalFilename());
+        File destFile = new File("C:\\"+excelFile.getOriginalFilename());
         try {
         	excelFile.transferTo(destFile);
         } catch (Exception e) {

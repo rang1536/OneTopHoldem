@@ -17,8 +17,9 @@ import one.top.holdem.admin.service.AdminService;
 import one.top.holdem.admin.vo.Account;
 import one.top.holdem.admin.vo.Import;
 import one.top.holdem.admin.vo.Master;
+import one.top.holdem.admin.vo.Notice;
 
-@SessionAttributes({"grade","id"})
+@SessionAttributes({"grade","id","noticeCheck","userGold"})
 @RestController
 public class CustomRestController {
 	@Autowired
@@ -46,5 +47,28 @@ public class CustomRestController {
 		return returnMap;
 	}
 
+	//회원수정 modifyMember
+	@RequestMapping(value="/modifyMember", method = RequestMethod.POST)
+	public Map<String, Object> modifyMember(Account account) {
+		
+		System.out.println("modifyMember account : "+account);
+		int result = customService.modifyMemberServ(account);
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+		if(result == 1) returnMap.put("result", "succ");
+		else returnMap.put("result", "fail");
+		return returnMap;
+	}
 	
+	//메일인증
+	@RequestMapping(value="/sendAuthEmail", method = RequestMethod.POST)
+	public Map<String, Object> sendAuthEmail(@RequestParam(value="add")String add) {
+		Map<String, Object> returnMap = customService.sendEmailAuthServ(add);
+		return returnMap;
+	}
+	
+	//긴급공지조회
+	@RequestMapping(value="/getNotice", method = RequestMethod.POST)
+	public Notice getNotice() {
+		return customService.readNotice();
+	}
 }

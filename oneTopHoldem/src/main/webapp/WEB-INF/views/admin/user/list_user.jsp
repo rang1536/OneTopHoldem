@@ -26,13 +26,42 @@
 	               
 	<link rel="StyleSheet" href="<c:url value='resources/css/datatable.css'/>" type="text/css">
 	<link rel="StyleSheet" href="<c:url value='resources/css/datatableUse.css'/>" type="text/css"> 
-	
+	<style>
+		#loader{width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			position: fixed;
+			display: block;
+			opacity: 0.8;
+			background: white;
+			z-index: 99;
+			text-align: center;
+		}
+		#loader img{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			z-index: 100;
+		}
+	</style>
 	<script>
 	$(document).ready(function(){
 		$('.topMenu:eq(1)').css('background','#FFC19E');
 		
 		var loginId = '${loginId}';
-
+		var grade = '${adminGrade}';
+		
+		if(loginId == 'none'){
+			loginId = '${id}';
+		}
+		
+		if(grade == 4){
+			grade = '${grade}';
+		}
+		console.log('loginId : '+loginId);
+		$('#loader').css('display','');
+		
    		var table = 
         $('#payList').DataTable( {
           dom: 'Bfrtip',
@@ -66,7 +95,7 @@
        },
 	    ajax : {
 	   
-	      "url":"userList?loginId="+loginId,
+	      "url":"userList?loginId="+loginId+"&grade="+grade,
 	      "type":"POST",
 	      "dataSrc": function(json){
 	    	   var list = json.list;
@@ -96,7 +125,8 @@
 		      {data: "btnGroup"}	     
 		  ],
 	         initComplete : function() {  
-	        	 $('#payList_filter').prepend( $('#buttonWrap')) ;	        	 
+	        	 $('#payList_filter').prepend( $('#buttonWrap')) ;	
+	        	 $('#loader').css('display','none');
 	         } 
 	   });
    		
@@ -138,19 +168,19 @@
 	}
 	
 	//지점등록 팝업창 열기
-	function addBranchPop(){
-		$('#addBranch').modal();
+	function addUserPop(){
+		$('#addUser').modal();
 	}
 	//지점등록하기 - 유효성검사 & 폼값 서브밋
-	function addBranch(){
-		var loginId = $('#addBranchForm').find('#loginId').val();
-		var loginPassword = $('#addBranchForm').find('#loginPassword').val();
-		var reLoginPassword = $('#addBranchForm').find('#reLoginPassword').val();
-		var commission = $('#addBranchForm').find('#commission').val();
-		var recommendAccountId = $('#addBranchForm').find('#recommendAccountId').val();
-		var telephone = $('#addBranchForm').find('#telephone').val();
-		var hp2 = $('#addBranchForm').find('#hp2').val();
-		var accountText = $('#addBranchForm').find('#accountText').val();
+	function addUser(){
+		var loginId = $('#addUserForm').find('#loginId').val();
+		var loginPassword = $('#addUserForm').find('#loginPassword').val();
+		var reLoginPassword = $('#addUserForm').find('#reLoginPassword').val();
+		var commission = $('#addUserForm').find('#commission').val();
+		var recommendAccountId = $('#addUserForm').find('#recommenderId').val();
+		var telephone = $('#addUserForm').find('#telephone').val();
+		var hp2 = $('#addUserForm').find('#hp2').val();
+		var accountText = $('#addUserForm').find('#accountText').val();
 		
 		//널체크
 		if(loginId ==null || loginId == ''){
@@ -162,26 +192,25 @@
 		}else if(reLoginPassword ==null || reLoginPassword == ''){
 			alert('패스워드를 다시 입력해주세요!!');
 			return ;
-		}else if(commission ==null || commission == ''){
-			alert('커미션을 입력해주세요!!');
-			return ;
-		}else if(recommendAccountId ==null || recommendAccountId == ''){
-			alert('추천인을 입력해주세요!!');
-			return ;
 		}else if(telephone ==null || telephone == ''){
 			alert('연락처를 입력해주세요!!');
 			return ;
 		}
+		/* else if(recommendAccountId ==null || recommendAccountId == ''){
+			alert('추천인을 입력해주세요!!');
+			return ;
+		} */
 		
 		//비번, 재입력간 일치여부 확인
 		if(loginPassword != reLoginPassword){
 			alert('비밀번호가 다릅니다 다시 입력하세요');
-			$('#addBranchForm').find('#reLoginPassword').val('');
-			$('#addBranchForm').find('#reLoginPassword').focus();
+			$('#addUserForm').find('#reLoginPassword').val('');
+			$('#addUserForm').find('#reLoginPassword').focus();
 			return;
 		}
 		
-		$('#addBranchForm').attr('action','addBranch').submit();
+		$('#addUserForm').attr('action','addBranch').submit();
+		$('#addUser').modal('hide');
 	}
 	
 	//단체문자
@@ -195,8 +224,9 @@
 		changeStatus(accountId);
 	})
 	function changeStatus(accountId){
-		alert(accountId)
+		//alert(accountId)
 		if(confirm('해당지점을 정지로 바꾸겠습니다?')){
+			$('#loader').css('display','');
 			//accountStatus > 1로 수정
 			$.ajax({
 				url : 'modifyAccountStatus',
@@ -204,6 +234,8 @@
 				dataType:'json',
 				type:'post',
 				success:function(data){
+					$('#loader').css('display','none');
+					
 					if(data.updateCheck == 'success'){
 						alert('지점상태를 정지로 수정하였습니다!!');
 						window.location.reload(true);
@@ -220,6 +252,7 @@
 	})
 	function changeStatusNone(accountId){
 		if(confirm('해당지점의 정지를 푸시겠습니다?')){
+			$('#loader').css('display','');
 			//accountStatus > 0로 수정
 			$.ajax({
 				url : 'modifyAccountStatusNone',
@@ -227,7 +260,9 @@
 				dataType:'json',
 				type:'post',
 				success:function(data){
+					$('#loader').css('display','none');
 					if(data.updateCheck == 'success'){
+						
 						alert('정지를 풀었습니다!!');
 						window.location.reload(true);
 					}
@@ -240,13 +275,14 @@
 	//비번변경 팝업창열기
 	$(document).on('click','#changePassBtn',function(){
 		var accountId = $(this).closest('#btnGroup').find('#accountId').val();
+		
 		$.ajax({
 			url : 'readAccount',
 			data : {'accountId':accountId},
 			dataType:'json',
 			type:'post',
 			success:function(data){
-				alert(data.accountId);
+				//alert(data.accountId);
 				$('#changePassForm').find('#accountId').val(data.accountId);
 				$('#changePassForm').find('#targetTd').text('['+data.loginId+'님] 비밀번호 변경');
 				$('#changePass').modal();
@@ -259,7 +295,7 @@
 		var pass = $('#changePassForm').find('#loginPassword').val();
 		var rePass = $('#changePassForm').find('#reLoginPassword').val();
 		
-		alert('!!');
+		//alert('!!');
 		if(pass == null || pass == ''){
 			alert('비밀번호를 입력하세요');
 			$('#changePass').find('#loginPassword').focus();
@@ -279,12 +315,16 @@
 		
 		var params = $('#changePassForm').serialize();
 		if(confirm('비밀번호를 변경하시겠습니까?')){
+			$('#loader').css('display','');
+			
 			$.ajax({
 				url : 'changePass',
 				data : params,
 				dataType:'json',
 				type:'post',
 				success : function(data){
+					$('#loader').css('display','none');
+					
 					if(data.changeCheck == 'success'){
 						alert('비밀번호를 수정하였습니다');
 						return;
@@ -319,12 +359,14 @@
 		var accountId =  $('#addGold').find('#accountId').val();
 		var addGold = $('#addGold').find('#addGoldText').val();
 		
+		if(addGold == null || addGold == ''){
+			alert('보내실 골드를 입력해주세요');
+			$('#addGold').find('#addGoldText').focus();
+			return;
+		}
 		if(confirm('골드를 보내시겠습니까?')){
-			if(addGold == null || addGold == ''){
-				alert('보내실 골드를 입력해주세요');
-				$('#addGold').find('#addGoldText').focus();
-				return;
-			}
+			$('#loader').css('display','');
+			
 			// submit
 			$.ajax({
 				url : 'addGold',
@@ -332,6 +374,7 @@
 				dataType:'json',
 				type:'post',
 				success:function(data){
+					$('#loader').css('display','none');
 					if(data.addGoldCheck == 'success'){
 						alert('골드를 보냈습니다!!');
 						return;
@@ -368,20 +411,22 @@
 	function addTicketSubmit(){
 		var accountId =  $('#addTicket').find('#accountId').val();
 		var addTicket = $('#addTicket').find('#addTicketText').val();
+		if(addTicket == null || addTicket == ''){
+			alert('보내실 티켓을 입력해주세요');
+			$('#addTicket').find('#addTicketText').focus();
+			return;
+		}
 		
 		if(confirm('티켓을 보내시겠습니까?')){
-			if(addTicket == null || addTicket == ''){
-				alert('보내실 티켓을 입력해주세요');
-				$('#addTicket').find('#addTicketText').focus();
-				return;
-			}
-			// submit
+			
+			$('#loader').css('display','');
 			$.ajax({
 				url : 'addTicket',
 				data : {'accountId':accountId,'addTicket':addTicket},
 				dataType:'json',
 				type:'post',
 				success:function(data){
+					$('#loader').css('display','none');
 					if(data.addTicketCheck == 'success'){
 						alert('티켓을 보냈습니다!!');
 						return;
@@ -416,6 +461,10 @@
 	</script>
 </head>
 <body>
+<div id="loader" style="display:none;">
+	<img src="resources/img/2.gif" alt="loading">
+</div>
+
 <div id="page-wrapper">
 	<br/>
 	<div class="row">
@@ -427,7 +476,7 @@
 	<div class="row" style="text-align:left;margin-right:10px;">
 		<div>
 			<button type="button" class="btn btn-success" onclick="sendMms();">일괄메세지</button>
-			<button type="button" class="btn btn-primary" onclick="addBranchPop();">지점등록</button>
+			<button type="button" class="btn btn-primary" onclick="addUserPop();">회원등록</button>
 		</div>
 		
 	</div>
@@ -455,7 +504,7 @@
 	</div>
 </div>
 
-<c:import url="../popup/add_branch.jsp"></c:import> 	<!--지점등록 팝업  -->
+<c:import url="../popup/add_user.jsp"></c:import> 	<!--유저등록 팝업  -->
 <c:import url="../popup/mms.jsp"></c:import> 			<!--단체문자 팝업  -->
 <c:import url="../popup/change_Pass.jsp"></c:import> 	<!--비번변경 팝업  -->
 <c:import url="../popup/add_gold.jsp"></c:import> 		<!--골드증여 팝업  -->

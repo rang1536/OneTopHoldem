@@ -101,6 +101,11 @@ public class AdminDao {
 		return sqlSession.update("AdDao.updateMasterInfo", master);
 	} 
 	
+	//카드배당률 입력 insertMasterInfo
+	public int insertMasterInfo(Master master) {
+		return sqlSession.insert("AdDao.insertMasterInfo", master);
+	} 
+	
 	//긴급공지 등록 insertNotice
 	public int insertNotice(Notice notice){
 		return sqlSession.insert("AdDao.insertNotice",notice);
@@ -126,5 +131,9 @@ public class AdminDao {
 		return sqlSession.selectList("AdDao.searchBranch", param);
 	}
 	
+	//게임배당율 조회
+	public int selectMasterInfo() {
+		return sqlSession.selectOne("AdDao.selectMasterInfo");
+	}
 	
 }

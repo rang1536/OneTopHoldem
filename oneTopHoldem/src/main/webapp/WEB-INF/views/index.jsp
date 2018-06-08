@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +20,7 @@
       $('.slideshow').FadeWideBgImg({interval:2000}); 
 	  var id = '${id}';
 	  var gold = '${userGold}';
+	  console.log('id : '+id+', gold : '+gold);
 	  
 	  if(id != null && id != ''){ //로그인상황
 		  $('#ol_before').css('display','none');
@@ -33,6 +35,8 @@
 		  $('#ol_after').css('display','none');
 		  $('#ol_before').css('display','');
 	  }
+	  
+	  setInterval(getNotice(), 60000);
    }); 
 
 }(window.jQuery,window)); 
@@ -73,6 +77,7 @@ function newWin(url) {
 $(document).on('click','#ol_submit',function(){
 	var loginId = $('#ol_id').val();
 	var loginPassword = $('#ol_pw').val();
+	var autoLogin = '';
 	
 	if(loginId == null || loginId == ''){
 		alert('아이디를 입력하세요');
@@ -83,13 +88,24 @@ $(document).on('click','#ol_submit',function(){
 		return;
 	}
 	
+	if($('#auto_login').prop("checked")){
+		autoLogin = 'checked';
+		console.log('체크됨')
+	}
+	
 	$.ajax({
 		url : 'userLogin',
-		data : {'loginId':loginId ,'loginPassword':loginPassword},
+		data : {'loginId':loginId ,'loginPassword':loginPassword,'autoLogin':autoLogin},
 		dataType : 'json',
 		type : 'post',
 		success : function(data){
 			if(data.loginCheck == 'success'){
+				cookieId1 = '${cookie.cookieId.value}'
+				c2 = '${cookie.remId.value}'
+				c3 = '${cookieId.remId.value}'
+				console.log('cookieId1'+cookieId1)
+				console.log('c2'+c2)
+				console.log('c3'+c3)
 				$('#ol_before').css('display','none');
 				
 				$('#ol_after').find('#user_name').text('');
@@ -97,10 +113,34 @@ $(document).on('click','#ol_submit',function(){
 				$('#ol_after').find('#user_name').text(data.account.loginId);
 				$('#ol_after').find('#user_point').text(data.account.gold);
 				$('#ol_after').css('display','');
+			}else if(data.loginCheck == 'failPw'){
+				alert('비밀번호가 일치 하지 않습니다');
+				return;
+			}else if(data.loginCheck == 'failId'){
+				alert('아이디가 존재하지 않습니다');
+				return;
 			}
 		}
 	})
 });
+
+function getNotice(){
+	$.ajax({
+		url : 'getNotice',
+		dataType : 'json',
+		type : 'post',
+		success : function(data){
+			if(data.notice != null && data.notice != ''){
+				var html = '[긴급공지]';
+				html += ' '+data.notice;
+				
+				$('#notResult').empty();
+				$('#notResult').text(html);
+			}
+			
+		}
+	})
+}
 </script>
 
 
@@ -123,8 +163,8 @@ $(document).on('click','#ol_submit',function(){
 		<div id="main_ban">
 			<div class="notice">
 				<div style="float:left;color:#fff000;font-weight:600;"><img src="resources/img/noti_icon.png">&nbsp;&nbsp;공지사항&nbsp;&nbsp;|&nbsp;&nbsp;</div>
-				<div style="float:left;color:#fff;font-weight:600;cursor:pointer;" onclick="location.href='noticeView'">[점검안내] 2018/01/06 서버 점검을 실시합니다.</div>
-				<div style="float:right;color:#989898;font-weight:600;cursor:pointer;" onclick="location.href='noticeList'">MORE <img src="resources/img/noti_more.png"></div>
+				<div id="notResult" style="float:left;color:#fff;font-weight:600;cursor:pointer;" onclick="location.href='noticeView'">[점검안내] 2018/01/06 서버 점검을 실시합니다.</div>
+				<div style="float:right;color:#989898;font-weight:600;cursor:pointer;"></div>
 			</div>
 			<div class="roll_img">
 				<div style="width:100%;">
@@ -141,13 +181,13 @@ $(document).on('click','#ol_submit',function(){
 				<form name="foutlogin" method="post" autocomplete="off">
 					<fieldset>
 						<div id="ol_auto">
-							<!-- <input type="checkbox" name="auto_login" value="1" id="auto_login"> -->
-							<label for="auto_login" id="auto_login_label">원탑홀덤 회원로그인</label>
+							<input type="checkbox" name="auto_login" value="1" id="auto_login">
+							<label for="auto_login" id="auto_login_label">아이디저장</label>
 						</div>
-						<label for="ol_id" id="ol_idlabel">아이디</label>
-						<input type="text" id="ol_id" name="mb_id" required class="required" maxlength="20">
-						<label for="ol_pw" id="ol_pwlabel">비밀번호</label>
-						<input type="password" name="mb_password" id="ol_pw" required class="required" maxlength="20">
+						<!-- <label for="ol_id" id="ol_idlabel">아이디</label> -->
+						<input type="text" id="ol_id" name="mb_id" required class="required" maxlength="20" placeholder="아이디" value="${cookie.remId.value }">
+						<!-- <label for="ol_pw" id="ol_pwlabel">비밀번호</label> -->
+						<input type="password" name="mb_password" id="ol_pw" required class="required" maxlength="20" placeholder="비밀번호" value="${cookie.remPw.value }">
 						<input type="button" id="ol_submit" value="로그인">
 						<div id="ol_svc">
 							<a href="join"><b>회원가입</b></a>|<a href="#" id="ol_password_lost">정보찾기</a>
@@ -162,12 +202,12 @@ $(document).on('click','#ol_submit',function(){
 					<img src="resources/img/cat_man.jpg">				
 				</header>
 				<ul id="ol_after_private">
-					<li><strong id="user_name"></strong>님 환영합니다.!</li>
-					<li>보유골드 <strong id="user_point"></strong> 원</li>
+					<li><strong id="user_name"></strong>님 <br/>환영합니다.!</li>
+					<li>보유골드<br/> <strong id="user_point"></strong> 원</li>
 				</ul>
 				<footer id="ol_after_ft">
 					<a href="modify" id="ol_after_info">정보수정</a><br>
-					<a href="index" id="ol_after_logout">로그아웃</a>
+					<a href="index?check=clSession" id="ol_after_logout">로그아웃</a>
 				</footer>
 			</section>
 			
@@ -210,7 +250,7 @@ $(document).on('click','#ol_submit',function(){
 			}
 			</script>
 
-			<div><img src="resources/img/game_down.png"></div>
+			<div><a href="https://s3.ap-northeast-2.amazonaws.com/onetop/HoldemSetup.exe"><img src="resources/img/game_down.png"></a></div>
 			<div style="padding-top:20px;"><img src="resources/img/school_icon.png"></div>
 			<div style="margin:-46px 0 0 60px;color:#fff;font-weight:600;line-height:21px;"><a href="guideMenu"><span style="color:#fff000;font-size:12pt;"><u>홀덤이 처음이세요?</u></span><br><font style="color:#ffffff;">초보자를 위한 게임가이드</font></a></div>
 		</div>
@@ -276,7 +316,7 @@ $(document).on('click','#ol_submit',function(){
 			<a href="tournamentGame"><span class="btn1">토너먼트 용어 및 설명</span></a>
 			<a href="tournamentGuide"><span class="btn2">게임방법 & 상금</span></a></div>
 		</div>
-		<div id="moneyShop"><a href="shop"><img src="resources/img/moneyShop.jpg"></a></div>
+		<div id="moneyShop"><a href="moneyShop"><img src="resources/img/moneyShop.jpg"></a></div>
 	</div>
 
 
@@ -290,9 +330,18 @@ $(document).on('click','#ol_submit',function(){
 			<img src="resources/img/news_icon.jpg">
 			<div class="txt">
 				<ul>
-					<li>[2018-01-23] 300억 빅토너 가는길! 15,000 티켓 (3장)</li>
-					<li>[2018-01-23] 300억 빅토너 가는길! 15,000 티켓 (3장)</li>
-					<li>[2018-01-23] 300억 빅토너 가는길! 15,000 티켓 (3장)</li>
+					<c:if test="${fn:length(tList) > 0 }">
+						<c:forEach var="tList" items="${tList }" varStatus="i">
+							<c:if test="${i.index < 3 }">
+								<li>[${tList.startDate }] ${tList.title}! 티켓 ${tList.needTicket}장</li>
+							</c:if>
+						</c:forEach>
+					</c:if>
+					<c:if test="${fn:length(tList) eq 0 }">
+						<li>[2018-01-23] 300억 빅토너 가는길! 15,000 티켓 (3장)</li>
+						<li>[2018-01-23] 300억 빅토너 가는길! 15,000 티켓 (3장)</li>
+						<li>[2018-01-23] 300억 빅토너 가는길! 15,000 티켓 (3장)</li>
+					</c:if>
 				</ul>
 			</div>
 		</div>

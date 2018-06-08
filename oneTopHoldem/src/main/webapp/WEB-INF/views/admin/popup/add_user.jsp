@@ -5,19 +5,19 @@
 </style>
 
 <!--본문시작  -->
-<div class="modal" id="addBranch" role="dialog">
+<div class="modal" id="addUser" role="dialog">
 <div class="modal-dialog modal-lg">
 
 <!-- Modal content-->
 	<div class="modal-content">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">&times;</button>
-			<h4 style="color:red;"><span class="glyphicon glyphicon-check"></span> 지점등록</h4>
+			<h4 style="color:red;"><span class="glyphicon glyphicon-check"></span> 유저등록</h4>
 		</div>
 		<div class="modal-body">
 			<h4 style="font-size:14px;">(* 표시된 항목은 필수입력 사항입니다.)</h4>
-			<form role="form" id="addBranchForm" method="post">
-				<input type="hidden" name="check" value="branch"/>
+			<form role="form" id="addUserForm" method="post">
+				<input type="hidden" name="check" value="user"/>
 				<table style="width:100%;">
 					<tr>
 						<td><span style="color:red;">*</span>ID</td>
@@ -39,7 +39,7 @@
 					</tr>
 					<tr>
 						<td><span style="color:red;">*</span>커미션</td>
-						<td><input type="text" class="form-control" name="commission" style="width:90%;" id="commission" onkeyup="isNum(this.value, 'commission');" placeholder="숫자만 입력"/></td>
+						<td><input type="text" class="form-control" name="commission" style="width:90%;" id="commission" value="0" readonly /></td>
 						<td><span style="color:red;">*</span>추천인ID</td>
 						<td><input type="text" class="form-control" name="recommenderId" id="recommenderId"/></td>
 					</tr>
@@ -51,12 +51,7 @@
 					</tr>
 					<tr>
 						<td><span style="color:red;">*</span>등급</td>
-						<td>
-							<select name="grade">
-								<option value="1">지점</option>
-								<option value="2">PC방</option>
-							</select>
-						</td>
+						<td><input type="hidden" name="grade" value="3"/>유저</td>
 					</tr>
 					<tr>
 						<td colspan="4" style="text-align:left;"><br/>&nbsp;&nbsp;특이사항</td>						
@@ -68,7 +63,7 @@
 					</tr>
 				</table>
 				<br/>
-				<button type="button" class="btn btn-default btn-success btn-block" onclick="addBranch();">
+				<button type="button" class="btn btn-default btn-success btn-block" onclick="addUser();">
 					<span class="glyphicon glyphicon-off"></span>
 					 등록
 				</button>

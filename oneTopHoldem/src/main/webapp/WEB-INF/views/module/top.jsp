@@ -21,11 +21,12 @@
             <a href="index"><img src="resources/img/logo.jpg" alt="원탑홀덤"></a>
         </div>
 		<div id="nat">
+			<!-- <a href="admin">★관리자페이지&nbsp;&nbsp;</a> -->
 			<a href="" onclick="{window.external.AddFavorite('http://naver.com','원탑홀덤')}">★즐겨찾기추가</a>
 		</div>
 		<div id="menu">
 			<div class="top_menu">
-				<a href="downMenu">다운로드</a>
+				<a href="https://s3.ap-northeast-2.amazonaws.com/onetop/HoldemSetup.exe">다운로드</a>
 				<a href="guideMenu">게임방법</a>
 				<a href="tournamentMenu">토너먼트</a>
 				<a href="faqMenu">고객센터</a>

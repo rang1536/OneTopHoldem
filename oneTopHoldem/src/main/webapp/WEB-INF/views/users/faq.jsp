@@ -35,7 +35,7 @@
 					 -->
 				</ul>
 			</div>
-			<div><img src="resources/img/sub_down_btn.jpg"></div>
+			<div><a href="https://s3.ap-northeast-2.amazonaws.com/onetop/HoldemSetup.exe"><img src="resources/img/sub_down_btn.jpg"></a></div>
 		</div>
 		<div id="container">
 			<div style="padding-bottom:10px;">
@@ -45,7 +45,7 @@
 			<div id="customer_center">
 				<img src="resources/img/customer_icon.jpg">
 				<div class="call">
-					<div><b>상담전화</b> <span style="font-size:16pt;font-weight:800;color:#444;">063-273-8171</span><br><b>평일 Am 10:00 ~ Pm 19:00</b></div>
+					<div><b>상담전화</b> <span style="font-size:16pt;font-weight:800;color:#444;">1899-8172</span><br><b>평일 Am 10:00 ~ Pm 19:00</b></div>
 					<div style="font-size:9pt;">주말 및 공휴일은 1:1문의 게시판을 이용해주세요.</div>
 				</div>
 				<div class="mail">

@@ -7,22 +7,28 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import one.top.holdem.admin.service.AdminService;
 import one.top.holdem.admin.vo.Account;
 import one.top.holdem.admin.vo.Tournament;
 
 
-@SessionAttributes({"grade","accountId","id"})
+@SessionAttributes({"grade","id","noticeCheck","userGold"})
 @Controller
 public class HomeController {
 	@Autowired
@@ -33,26 +39,29 @@ public class HomeController {
 		
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
-		/*List<Account> list = adminService.readAllUserServ(3);
-		model.addAttribute("list", list);*/
-		/*return "index";*/
+		List<Tournament> tournamentList = customService.tournamentList("1");
+		//System.out.println("tournament : "+tournamentList);
+		
+		model.addAttribute("tList", tournamentList);
 		return "index";
 	}
 	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public String index(Model model) {
-		/*List<Account> list = adminService.readAllUserServ(3);
-		model.addAttribute("list", list);*/
-		/*return "index";*/
+	public String index(Model model, @RequestParam(value="check", defaultValue="none")String check,
+			SessionStatus status) {
+		if(check.equals("clSession")) {
+			status.setComplete();
+		}
 		return "index";
 	}
 	
 	//다운로드메뉴
 	@RequestMapping(value = "/downMenu", method = RequestMethod.GET)
-	public String downMenu(Model model) {
-		/*List<Account> list = adminService.readAllUserServ(3);
-		model.addAttribute("list", list);*/
-		/*return "index";*/
+	public String downMenu(Model model, @RequestParam(value="check", defaultValue="none")String check,
+			SessionStatus status) {
+		if(check.equals("clSession")) {
+			status.setComplete();
+		}
 		return "/users/down";
 	}
 	
@@ -232,19 +241,56 @@ public class HomeController {
 		return "/users/glossary";
 	}
 	
+	//개인정보수정
+	@RequestMapping(value = "/modify", method = RequestMethod.GET)
+	public String modify(Model model, 
+			@ModelAttribute(value="id")String loginId) {
+		model.addAttribute("account", customService.readMemberServ(loginId));
+		return "/users/modify";
+	}
 
+	//이용약관
+	@RequestMapping(value = "/provision", method = RequestMethod.GET)
+	public String provision() {
+		return "/users/provision";
+	}
+	
+	//개인정보처리방침
+	@RequestMapping(value = "/privacy", method = RequestMethod.GET)
+	public String privacy() {
+		return "/users/privacy";
+	}
+	
+	//상품구매팝업창
+	@RequestMapping(value = "/shopBuy", method = RequestMethod.GET)
+	public String shopBuy() {
+		return "/users/shop_buy";
+	}
+	
+	//상품구매팝업창
+	@RequestMapping(value = "/shopBuyInfo", method = RequestMethod.GET)
+	public String shopBuyInfo() {
+		return "/users/shop_buy_info";
+	}
+		
+	//상품구매팝업창
+	@RequestMapping(value = "/shopBuyAttend", method = RequestMethod.GET)
+	public String shopBuyAttend() {
+		return "/users/shop_buy_attend";
+	}
+	
 	//==================================================================================
 	//관리자
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String mainCtrl(Model model, 
 			@RequestParam(value="path", defaultValue="none")String path) {
 		model.addAttribute("path", path); // 세팅은 하는데 중간 지점이 없이 시작페이지가 로그인이므로 사용할 일은 없다. 리턴 url임.
-		return "/admin/main";
+		return "/admin/login";
 	}
 	
 	@RequestMapping(value = "/adLogin", method = RequestMethod.GET)
 	public String loginCtrl(Model model, 
-			@RequestParam(value="path", defaultValue="none")String path) {
+			@RequestParam(value="path", required=false)String path) {
 		model.addAttribute("path", path); // 세팅은 하는데 중간 지점이 없이 시작페이지가 로그인이므로 사용할 일은 없다. 리턴 url임.
 		return "/admin/login";
 	}
@@ -252,12 +298,13 @@ public class HomeController {
 	@RequestMapping(value="/adLogin", method = RequestMethod.POST)
 	public String loginCtrl(Model model, 
 			@RequestParam(value="id")String loginId,
-			@RequestParam(value="pw")String loginPw){
+			@RequestParam(value="pw")String loginPw,
+			@RequestParam(value="path", required=false)String path){
 		System.out.println("###################################");
 		System.out.println("id : "+loginId);
 		System.out.println("id : "+loginPw);
 		System.out.println("###################################");
-		Map<String, Object> map = adminService.loginServ(loginId, loginPw);
+		Map<String, Object> map = adminService.loginServ(loginId, loginPw, "admin");
 		if(map.get("loginCheck").equals("success")){
 			Account account = (Account)map.get("account");
 			model.addAttribute("id", account.getLoginId());
@@ -269,7 +316,6 @@ public class HomeController {
 			return "/admin/login";
 		}
 		model.addAttribute("loginCheck", map.get("loginCheck"));
-		
 		return "/admin/main";
 	}
 }

@@ -15,6 +15,7 @@
 	SELECT *
 	FROM dbo.Account
 	WHERE loginId = #{loginId}
+	<if test="grade != null and grade != ''">AND grade != #{grade}</if>
 </select>
 
 <!-- 로그인 - 비번 일치 여부 확인 -->
@@ -25,20 +26,19 @@
 	and PwdCompare(#{loginPassword},loginPassword) = 1
 </select>
 
-<!-- 모든 회원정보 조회 -->
+<!-- 내가 추천인인 회원정보 조회 -->
 <select id="selectAllUserMaster" parameterType="Map" resultType="one.top.holdem.admin.vo.Account">
 	SELECT *
 	FROM dbo.Account
-	<trim prefix="WHERE" prefixOverrides="AND |OR ">
-		<if test="loginId != null and loginId != ''">AND recommenderAccountId = #{loginId}</if>
-	</trim>	
+	WHERE recommenderAccountId = #{loginId}
+	OR recommenderAccountId = #{accountId}
 </select>
 
 <!-- 모든 회원정보 조회 -->
 <select id="selectAllUserBranch" resultType="one.top.holdem.admin.vo.Account">
 	SELECT *
 	FROM dbo.Account
-	WHERE grade != 1	
+	WHERE grade != 0
 </select>
 
 <!-- 하나의 회원조회  -->
@@ -114,6 +114,12 @@
 	FROM dbo.Master
 </select>
 
+<!-- 게임배당율 조회 -->
+<select id="selectMasterInfo" resultType="int">
+	SELECT COUNT(*)
+	FROM dbo.Master
+</select>
+
 <!-- 게임배당율 수정 -->
 <update id="updateMasterInfo" parameterType="one.top.holdem.admin.vo.Master">
 	UPDATE dbo.Master
@@ -129,6 +135,18 @@
 		fullHouseJackpot=#{fullHouseJackpot},
 		fourOfAKindJackpot=#{fourOfAKindJackpot},
 		straightFlushJackpot=#{straightFlushJackpot}
+</update>
+
+<!-- 게임배당율 입력 -->
+<update id="insertMasterInfo" parameterType="one.top.holdem.admin.vo.Master">
+	INSERT INTO dbo.Master(
+		dealerCommission, jackpotProbability, noPairJackpot, onepairJackpot, twoPairJackpot, threeOfAKindJackpot, straightJackpot,
+		flushJackpot, fullHouseJackpot, fourOfAKindJackpot, straightFlushJackpot
+		)
+	VALUES(
+		#{dealerCommission}, #{jackpotProbability}, #{noPairJackpot}, #{onepairJackpot}, #{twoPairJackpot}, #{threeOfAKindJackpot}, #{straightJackpot},
+		#{flushJackpot}, #{fullHouseJackpot}, #{fourOfAKindJackpot}, #{straightFlushJackpot}
+		)
 </update>
 
 <!-- 긴급공지삭제 -->
@@ -147,19 +165,35 @@
 <!-- 지점등록 -->
 <insert id="insertBranch" parameterType="one.top.holdem.admin.vo.Account">
 	INSERT INTO dbo.Account(
-		createdDate, grade, commission, accountState, telephone, email, accountText, loginId, loginPassword, nickname, accountLevel, accountExp,
-		gold, bonusGold, chargeGold, ticket, costume, recommenderAccountId, lastLoginDate, todayCash, monthCash, todayStartGold)
+		createdDate, grade, commission 
+		<if test="accountState != null and accountState != ''">,accountState</if>
+		, telephone
+		<if test="email != null">,email</if>
+		<if test="accountText != null">,accountText</if>, loginId, loginPassword
+		<if test="nickname != null and nickname != ''">, nickname</if>
+		,bonusGold, chargeGold, ticket, costume
+		<if test="recommenderAccountId != null and recommenderAccountId != ''">,recommenderAccountId</if>, lastLoginDate, todayCash, monthCash)
 	VALUES(
-		getDate(),#{grade},#{commission},#{accountState},#{telephone},ISNULL(#{email},''),ISNULL(#{accountText},''),#{loginId},PwdEncrypt(#{loginPassword}),ISNULL(#{nickname},''),1,0
-		,0,0,0,0,0,ISNULL(#{recommenderAccountId},0),ISNULL(#{lastLoginDate},''),0,0,0)
+		getDate(),#{grade},#{commission}
+		<if test="accountState != null and accountState != ''">,#{accountState}</if>,#{telephone}
+		<if test="email != null">,#{email}</if>
+		<if test="accountText != null">,#{accountText}</if>,#{loginId},PwdEncrypt(#{loginPassword})
+		<if test="nickname != null and nickname != ''">,#{nickname}</if>
+		,0,0,0,0
+		<if test="recommenderAccountId != null and recommenderAccountId != ''">,#{recommenderAccountId}</if>,getDate(),0,0
+		)
 </insert>
 
 <!-- 관리자조회(부본사, 피시방) -->
 <select id="selectTree" parameterType="Map" resultType="one.top.holdem.admin.vo.Account">
 	SELECT *
 	FROM dbo.Account
-	WHERE grade = #{grade}
-	<if test="recommenderAccountId != null and recommenderAccountId != ''">AND recommenderAccountId=#{recommenderAccountId}</if>	
+	WHERE grade &lt;= #{grade}
+	<if test="loginId != null and loginId != 'none'">AND loginId = #{loginId}</if>
+	<if test="recommenderAccountId != null and recommenderAccountId != ''">
+		AND recommenderAccountId=#{recommenderAccountId}
+		OR recommenderAccountId = #{accountId}
+	</if>
 </select>
 
 <!-- 지점검색 -->

@@ -32,7 +32,11 @@ public class EventDao {
 	}
 	
 	//엑셀파일 내용 DB저장
-	public int insertEvent(Tournament tournament) {
-		return sqlSession.insert("eventDao.insertEvent", tournament);
+	public int insertTournament(Tournament tournament) {
+		return sqlSession.insert("eventDao.insertTournament", tournament);
+	}
+	
+	public int selectCountTour() {
+		return sqlSession.selectOne("eventDao.selectCountTour");
 	}
 }

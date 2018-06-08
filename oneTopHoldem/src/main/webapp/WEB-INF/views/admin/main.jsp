@@ -25,6 +25,7 @@
 	<link rel="StyleSheet" href="<c:url value='resources/css/datatableUse.css'/>" type="text/css"> 
 	
 	<script>
+	
 	$(document).ready(function(){
 		$('.topMenu:eq(0)').css('background','#FFC19E');
 		var inputCheck = '${inputCheck}'; //지점등록시 체크하는 변수
@@ -37,8 +38,13 @@
 		if(updateCheck == 'success') alert('지점수정에 성공하였습니다!!');
 		else if(updateCheck == 'fail') alert('지점수정에 실패하였습니다!!');
 		
-		var loginId = '${loginId}';
-	
+		var loginId = '${id}';
+		var grade = '${grade}';
+		
+		if(grade != 0){
+			location.href = 'userManagement?loginId='+loginId+'&grade='+grade;
+		}
+		
    		var table = 
         $('#payList').DataTable( {
           dom: 'Bfrtip',
@@ -72,7 +78,7 @@
        },
 	    ajax : {
 	   
-	      "url":"userList?loginId="+loginId,
+	      "url":"userList?loginId="+loginId+"&grade="+grade,
 	      "type":"POST",
 	      "dataSrc": function(json){
 	    	   var list = json.list;
@@ -172,7 +178,7 @@
 		var loginPassword = $('#addBranchForm').find('#loginPassword').val();
 		var reLoginPassword = $('#addBranchForm').find('#reLoginPassword').val();
 		var commission = $('#addBranchForm').find('#commission').val();
-		var recommendAccountId = $('#addBranchForm').find('#recommendAccountId').val();
+		var recommendAccountId = $('#addBranchForm').find('#recommenderId').val();
 		var telephone = $('#addBranchForm').find('#telephone').val();
 		var hp2 = $('#addBranchForm').find('#hp2').val();
 		var accountText = $('#addBranchForm').find('#accountText').val();

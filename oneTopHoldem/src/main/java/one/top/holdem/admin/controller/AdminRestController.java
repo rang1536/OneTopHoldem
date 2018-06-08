@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,8 +30,12 @@ public class AdminRestController {
 	//회원목록조회
 	@RequestMapping(value="/userList", method = RequestMethod.POST)
 	/*public Map<String, Object> userListCtrl(@ModelAttribute(value="grade")int grade){*/
-	public Map<String, Object> userListCtrl(@RequestParam(value="loginId")String loginId){
-		int grade=0;
+	public Map<String, Object> userListCtrl(@RequestParam(value="grade", defaultValue="4")int grade,
+			@RequestParam(value="loginId", defaultValue="none")String loginId){
+		System.out.println("*********************************************************");
+		System.out.println("grade :"+grade);
+		System.out.println("loginId : "+loginId);
+		System.out.println("*********************************************************");
 		List<Account> list = adminService.readAllUserServ(grade, loginId);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
@@ -131,12 +138,10 @@ public class AdminRestController {
 	
 	// 긴급공지등록 addNotice
 	@RequestMapping(value="/addNotice", method = RequestMethod.POST)
-	public Map<String, String> addNoticeCtrl(@RequestParam(value="hour")int hour,
-			@RequestParam(value="minute")int minute,
-			@RequestParam(value="msg")String msg){
+	public Map<String, String> addNoticeCtrl(@RequestParam(value="msg")String msg){
 		/*System.out.println("폼 입력값 확인  : "+hour+" ,"+minute+" ,"+msg);*/
 		
-		Map<String, String> map = adminService.addNoticeServ(hour, minute, msg);
+		Map<String, String> map = adminService.addNoticeServ(msg);
 		return map; 
 	}
 		
@@ -150,11 +155,12 @@ public class AdminRestController {
 	
 	//트리 계정조회
 	@RequestMapping(value="/getTree", method = RequestMethod.POST)
-	public Map<String, Object> getTreeCtrl(){
-		System.out.println("ctrl check");
+	public Map<String, Object> getTreeCtrl(@RequestParam(value="loginId", defaultValue="none")String loginId,
+			@RequestParam(value="grade", defaultValue="3")int grade){
+		//System.out.println("ctrl check");
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("bonsaList", adminService.readTreeServ());
-		System.out.println("ctrl check2 : "+map.get("bonsaList"));
+		map.put("bonsaList", adminService.readTreeServ(loginId, grade));
+		//System.out.println("ctrl check2 : "+map.get("bonsaList"));
 		return map; 
 	}
 	
@@ -168,15 +174,34 @@ public class AdminRestController {
 	
 	//유저 로그인 userLogin
 	@RequestMapping(value="/userLogin", method = RequestMethod.POST)
-	public Map<String, Object> userLoginCtrl(Model model, Account account) {
+	public Map<String, Object> userLoginCtrl(Model model, Account account,
+			@RequestParam(value="autoLogin", defaultValue="none")String autoLogin,
+			HttpServletResponse response) {
 		System.out.println("ID : "+account.getLoginId());
 		System.out.println("ID : "+account.getLoginPassword());
 		
-		Map<String, Object> map = adminService.loginServ(account.getLoginId(), account.getLoginPassword());
+		Map<String, Object> map = adminService.loginServ(account.getLoginId(), account.getLoginPassword(), "user");
 		Account accountRes = (Account) map.get("account");
 		if(map.get("loginCheck").equals("success")) {
 			model.addAttribute("id", account.getLoginId());
 			model.addAttribute("userGold", accountRes.getGold());
+			
+			if(autoLogin.equals("checked")) {
+				Cookie cookieId = new Cookie("remId", account.getLoginId());
+				
+				cookieId.setPath("/");
+				cookieId.setMaxAge(60*60*24*30);
+				
+				response.addCookie(cookieId);
+				
+				Cookie cookiePw = new Cookie("remPw", account.getLoginPassword());
+				
+				cookiePw.setPath("/");
+				cookiePw.setMaxAge(60*60*24*30);
+				
+				response.addCookie(cookiePw);
+				
+			}			
 		}
 		
 		return map;

@@ -137,18 +137,17 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="#">One-Top Hold'em 관리자</a>
-               <%--  <c:if test="${grade eq 1 }"> --%>
+               	<c:if test="${grade ne 3 && grade eq 0}"> 
                 	<a class="navbar-brand topMenu" href="branchManagement" onmouseover="this.style.backgroundColor='#FFC19E'" onmouseout="this.style.backgroundColor=''">지점관리</a>
 	                <a class="navbar-brand topMenu" href="userManagement" onmouseover="this.style.backgroundColor='#FFC19E'" onmouseout="this.style.backgroundColor=''">회원정보관리</a>
 	                <a class="navbar-brand topMenu" href="gameManagement" onmouseover="this.style.backgroundColor='#FFC19E'" onmouseout="this.style.backgroundColor=''">게임관리</a>
 	                <a class="navbar-brand topMenu" href="inOutManagement" onmouseover="this.style.backgroundColor='#FFC19E'" onmouseout="this.style.backgroundColor=''">입출금관리</a>
-	                <a class="navbar-brand topMenu" href="event" onmouseover="this.style.backgroundColor='#FFC19E'" onmouseout="this.style.backgroundColor=''">이벤트관리</a>
+	                <a class="navbar-brand topMenu" href="event" onmouseover="this.style.backgroundColor='#FFC19E'" onmouseout="this.style.backgroundColor=''">토너먼트관리</a>
 	                <a class="navbar-brand topMenu" href="importManagement" onmouseover="this.style.backgroundColor='#FFC19E'" onmouseout="this.style.backgroundColor=''">수익관리</a>
-               <%--  </c:if>
-                <c:if test="${grade ne 1 }">
-                	<a class="navbar-brand topMenu" href="branchManagement" onmouseover="this.style.backgroundColor='#FFC19E'" onmouseout="this.style.backgroundColor=''">지점관리</a>
-	                <a class="navbar-brand topMenu" href="userManagement" onmouseover="this.style.backgroundColor='#FFC19E'" onmouseout="this.style.backgroundColor=''">회원정보관리</a>
-                </c:if> --%>
+               	</c:if>
+                <c:if test="${grade ne 3 && grade ne 0}">
+                	<a class="navbar-brand topMenu" href="userManagement" onmouseover="this.style.backgroundColor='#FFC19E'" onmouseout="this.style.backgroundColor=''">회원정보관리</a>
+                </c:if> 
                 
             </div>
             <!-- /.navbar-header -->
@@ -228,20 +227,25 @@
 
 	<script>
 	console.log('1')
+	var grade = '${grade}';
+	var loginId = '${id}';
+	console.log('loginId : '+loginId);
+	
 	$.ajax({
 		url : 'getTree',
+		data : {'loginId':loginId, 'grade':grade},
 		dataType : 'json',
 		type : 'post',
 		success : function(data){
 			console.log('2')
 			var html = '';
 			$.each(data.bonsaList, function(i, list){
-				html += '<a href="#"><i class="fa fa-sitemap fa-fw"></i><a href="userManagement?loginId="'+list.loginId+'>'+list.loginId+'</a><span class="fa arrow"></span></a>';
+				html += '<a href="userManagement?loginId='+list.loginId+'&grade='+list.grade+'"><i class="fa fa-sitemap fa-fw"></i>'+list.loginId+'</a>';
 				html += '	<ul class="nav nav-second-level">';
 				
 				$.each(list.pcList, function(i, pcList){
 					html += '		<li>';
-					html += '			<a href="#"><a href="userManagement?loginId="'+pcList.loginId+'>'+pcList.loginId+'</a><span class="fa arrow"></span></a>';
+					html += '			<a href="userManagement?loginId='+pcList.loginId+'&grade='+pcList.grade+'">'+pcList.loginId+'</a>';
 					html += '		</li>';							
 				})
 				html += '	</ul>';						

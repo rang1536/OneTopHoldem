@@ -29,10 +29,13 @@ public class AdminService {
 	}
 	
 	//로그인
-	public Map<String, Object> loginServ(String loginId, String loginPw){
+	public Map<String, Object> loginServ(String loginId, String loginPw, String type){
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("loginId", loginId);
 		param.put("loginPassword", loginPw);
+		if(type.equals("admin")) {
+			param.put("grade", 3);
+		}
 		List<Account> list = adminDao.selectLoginCheckId(param);
 		Map<String, Object> map = new HashMap<String, Object>();
 		
@@ -59,28 +62,55 @@ public class AdminService {
 	//등급명 구하기
 	public String getName(int grade) {
 		String name = "";
-		if(grade==1) name="마스터";
-		if(grade==2) name="부본사";
-		if(grade==3) name="PC방";
-		if(grade==4) name="일반유저";
+		if(grade==0) name="마스터";
+		if(grade==1) name="지사";
+		if(grade==2) name="PC방";
+		if(grade==3) name="유저";
 		return name;
 	}
+	
 	/* 모든유저정보조회
 	 * @resultType : Account*/
 	public List<Account> readAllUserServ(int grade, String loginId){
 		List<Account> list = new ArrayList<Account>();
+		List<Account> recommender = new ArrayList<Account>();
 		Map<String, Object> param = new HashMap<String, Object>();
 		
 		if(!loginId.equals("none")) {
-			param.put("loginId", loginId);
-			list = adminDao.selectAllUserMaster(param); 
-		}else {
-			if(grade == 1){
-				list = adminDao.selectAllUserMaster(param); 
-			}else{
+			if(grade == 0) { //master
+				//모든유저조회
 				list = adminDao.selectAllUserBranch(); 
+				System.out.println("master");
+			}else if(grade == 1) { //branch
+				param.put("loginId", loginId);
+				recommender = adminDao.selectLoginCheckId(param);
+				param.put("accountId", recommender.get(0).getAccountId());
+				list = adminDao.selectAllUserMaster(param);
+				System.out.println("branch");
+			}else if(grade == 2) { //pc
+				param.put("loginId", loginId);
+				recommender = adminDao.selectLoginCheckId(param);
+				param.put("accountId", recommender.get(0).getAccountId());
+				list = adminDao.selectAllUserMaster(param); 
+				System.out.println("pcRoom");
+			}else if(grade == 3) { //user
+				param.put("loginId", loginId);
+				list = adminDao.selectLoginCheckId(param);
+				System.out.println("user");
 			}
 		}
+			/*param.put("loginId", loginId);
+			list = adminDao.selectAllUserMaster(param); 
+		}else if(!loginId.equals("none") && grade =){
+			if(grade == 1){
+				list = adminDao.selectAllUserMaster(param); 
+			}
+			{
+				list = adminDao.selectAllUserBranch(); 
+			}
+		}*/
+		System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		//System.out.println("list : "+list);
 		
 		DecimalFormat df = new DecimalFormat("#,##0");
 		
@@ -120,16 +150,35 @@ public class AdminService {
 	}
 	
 	// 지점등록 (쿼리작성 전 - 01-13일 윤) - 전 필드 널 허용 안하는데 기본값으로 뭘 입력해줘야 할지 모름, 연락처2도 어디에 사용할지 모름
-	public Map<String, String> addBranchServ(Account account, String hp2) {
-		//입력값 세팅
-		if(account.getRecommenderAccountId() != 0) { //추천인 등급보다 한단계 낮게 유저 등급설정
+	public Map<String, String> addBranchServ(Account account, String recommenderId) {	
+		/*if(account.getRecommenderAccountId() != 0) { //추천인 등급보다 한단계 낮게 유저 등급설정
 			Account recommender = adminDao.selectAccount(account.getRecommenderAccountId());
 			if(recommender.getGrade() == 1) account.setGrade(2);
 			else if(recommender.getGrade() == 2) account.setGrade(3);
 			else if(recommender.getGrade() == 3) account.setGrade(4);
 			else if(recommender.getGrade() == 4) account.setGrade(4);
-		}
+		}*/
 		/*if(account.getCommission() == 0) account.setCommission(0);	*/
+		
+		//입력값 세팅
+		account.setAccountState(0); //정지상태
+		account.setAccountExp(0);
+		if(account.getAccountText() == null) account.setAccountText("");
+		if(account.getNickname() == null) account.setNickname(account.getLoginId());
+		if(recommenderId != null) {
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("loginId", recommenderId);
+			List<Account> recommender = adminDao.selectLoginCheckId(param);
+			
+			if(recommender.size() == 1) {
+				account.setRecommenderAccountId(recommender.get(0).getAccountId());
+			}
+		}else {
+			if(account.getRecommenderAccountId() == 0) {
+				account.setRecommenderAccountId(0);
+			}		
+		}
+		if(account.getEmail() == null) account.setEmail("");
 		
 		//쿼리실행
 		int result = adminDao.insertBranch(account);
@@ -238,7 +287,13 @@ public class AdminService {
 	
 	//게임 배당율 수정 - 피케이 없이 수정되나? 
 	public Map<String, String> modifyMasterInfoServ(Master master){
-		int result = adminDao.updateMasterInfo(master);
+		int count = adminDao.selectMasterInfo();
+		int result = 0;
+		if(count == 0) {
+			result = adminDao.insertMasterInfo(master);			
+		}else if(count > 0) {
+			result = adminDao.updateMasterInfo(master);			
+		}
 		
 		Map<String, String> map = new HashMap<String, String>();
 		if(result > 0) map.put("masterInfoModifyCheck", "success");
@@ -248,24 +303,26 @@ public class AdminService {
 	}
 	
 	//긴급공지 등록 - lastSendDate에 긴급공지 종료시간을 미리 세팅
-	public Map<String, String> addNoticeServ(int hour, int minute, String msg){
+	public Map<String, String> addNoticeServ(String msg){
 		int result = 0;
 		//먼저 기존 공지를 삭제한다.
-		//int deleteResult = adminDao.deleteNotice();
+		int deleteResult = adminDao.deleteNotice();
 		
-		if(hour != 0) {
+		/*if(hour != 0) {
 			for(int i=0; i< hour; i++) {
 				minute += 60;
 			}
 		}
 		
 		UtilDate utilDate = new UtilDate();
-		String lastTime = utilDate.getAfterTime(minute);
+		String lastTime = utilDate.getAfterTime(minute);*/
 		//공지값 세팅
 		Notice notice = new Notice();
 		notice.setNotice(msg);
+		
+		UtilDate utilDate = new UtilDate();
 		//현재시간 구해서 입력받은 시간,분 더하기 포멧- utc시간
-		notice.setLastSendDate(lastTime);
+		notice.setLastSendDate(utilDate.getNowDateTime());
 		
 		//삭제 확인후 공지입력
 		result = adminDao.insertNotice(notice);
@@ -278,23 +335,26 @@ public class AdminService {
 	}
 	
 	//트리조회
-	public List<Account> readTreeServ(){
-		System.out.println("ctrl check");
+	public List<Account> readTreeServ(String loginId, int grade){
+		System.out.println("tree : "+loginId);
 		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("grade", 2);
+		param.put("grade", grade);
+		param.put("loginId", loginId);
 		
+		System.out.println("param Check1 : "+param);
 		List<Account> bonsaList = adminDao.selectTree(param);
 		System.out.println("bonsaList : "+bonsaList);
 		if(bonsaList.size() != 0) {
 			//System.out.println("0 > !!!");
 			for(int i=0; i<bonsaList.size(); i++) {
 				param = new HashMap<String, Object>();
-				param.put("grade", 3);
+				param.put("grade", 4);
 				param.put("recommenderAccountId", bonsaList.get(i).getLoginId());
-				System.out.println("param Check : "+param);
+				param.put("accountId", bonsaList.get(i).getAccountId());
+				System.out.println("param2 Check : "+param);
 				
 				List<Account> pcList = adminDao.selectTree(param);
-				System.out.println("pcList Check : "+pcList);
+				//System.out.println("pcList Check : "+pcList);
 				bonsaList.get(i).setPcList(pcList);
 			}
 		}

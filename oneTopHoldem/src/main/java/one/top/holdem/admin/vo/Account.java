@@ -27,7 +27,7 @@ public class Account {
 	private long monthCash;
 	private long todayStartGold;
 	
-	
+	private String recommenderId;
 	private String goldCount; //보유골드 3자리 컴마추가된 문자열
 	private String gradeName; //등급명
 	private String chargeGoldToString;
@@ -37,6 +37,12 @@ public class Account {
 	private List<Account> pcList;
 	
 	
+	public String getRecommenderId() {
+		return recommenderId;
+	}
+	public void setRecommenderId(String recommenderId) {
+		this.recommenderId = recommenderId;
+	}
 	public List<Account> getPcList() {
 		return pcList;
 	}

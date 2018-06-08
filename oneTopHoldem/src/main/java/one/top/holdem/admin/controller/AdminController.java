@@ -8,12 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import one.top.holdem.admin.service.AdminService;
 import one.top.holdem.admin.vo.Account;
 import one.top.holdem.admin.vo.Master;
 
-
+@SessionAttributes({"grade","id","noticeCheck","userGold"})
 @Controller
 public class AdminController {
 	
@@ -36,8 +37,10 @@ public class AdminController {
 	//회원정보관리
 	@RequestMapping(value="/userManagement", method = RequestMethod.GET)
 	public String userManagementCtrl(Model model, 
-			@RequestParam(value="loginId", defaultValue="none")String loginId) {
+			@RequestParam(value="loginId", defaultValue="none")String loginId,
+			@RequestParam(value="grade", defaultValue="4")String grade) {
 		model.addAttribute("loginId", loginId);
+		model.addAttribute("adminGrade", grade);
 		return "/admin/user/list_user";
 	}
 	
@@ -61,15 +64,22 @@ public class AdminController {
 	@RequestMapping(value="/addBranch", method = RequestMethod.POST)
 	public String addBranchCtrl(Model model,
 			Account account,
-			@RequestParam(value="hp2", defaultValue="none")String hp2) {
+			@RequestParam(value="recommenderId", defaultValue="none")String recommenderId,
+			@RequestParam(value="check")String check) {
 		/*System.out.println("****** 지점등록 **********************");
 		System.out.println("Account : "+account);
 		System.out.println("hp2 : "+ hp2);
 		System.out.println("***********************************");*/
 		
-		Map<String, String> map = adminService.addBranchServ(account, hp2);
+		Map<String, String> map = adminService.addBranchServ(account, recommenderId);
 		model.addAttribute("inputCheck", map.get("inputCheck"));
-		return "/admin/main";
+		
+		if(check.equals("branch")) {
+			return "/admin/main";
+		}else {
+			return "/admin/list_user";
+		}
+		
 	}
 	
 	//지점수정 modifyAccount

@@ -169,7 +169,8 @@
             processData : false,
             contentType : false,
             success : function(data) {
-            	if(data.uploadResult == 'succ') alert("토너먼트를 등록 하였습니다.");           
+            	if(data.uploadResult == 'succ') alert("토너먼트를 등록 하였습니다."); 
+            	window.location.reload(true);
             },
             error : function(error) {
                 alert("토너먼트 등록에 실패하였습니다.");
@@ -188,14 +189,14 @@
 		<div>
 			<form name="event" id="event" enctype="multipart/form-data" method="post" action="<c:url value="eventWrite"/>" >
 				<input type="file" name="excelFile" id="excelFile" /><br/>
-				<button type="button" class="btn btn-success" id="btn-upload">이벤트업로드</button>
+				<button type="button" class="btn btn-success" id="btn-upload">토너먼트 업로드</button>
 			</form>
 		</div>
 	</div>
 	<br/>
 	<div class="row">
 		<div class="col-lg-12">
-            <a href="#"><i class="fa fa-home fa-fw"></i></a>  >  이벤트 목록
+            <a href="#"><i class="fa fa-home fa-fw"></i></a>  > 토너먼트 목록
         </div>
 	</div>
 	

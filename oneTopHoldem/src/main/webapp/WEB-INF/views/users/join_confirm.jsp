@@ -26,11 +26,11 @@
 			</div>
 			<div class="sub_menu">
 				<ul>
-					<li><a href="login">· 로그인</a></li>
+					<!-- <li><a href="login">· 로그인</a></li> -->
 					<li class="over"><a href="join">· 회원가입</a></li>
 				</ul>
 			</div>
-			<div><img src="resources/img/sub_down_btn.jpg"></div>
+			<div><a href="https://s3.ap-northeast-2.amazonaws.com/onetop/HoldemSetup.exe"><img src="resources/img/sub_down_btn.jpg"></a></div>
 		</div>
 		<div id="container">
 			<div style="padding-bottom:10px;">

@@ -19,9 +19,36 @@
 	AND month = #{month}
 </select>
 
+<select id="selectCountTour" resultType="int">
+	SELECT COUNT(*) 
+	FROM dbo.Tournament
+</select>
+
 <select id="selectLastSeq" resultType="long">
 	SELECT MAX(tournamentId)
 	FROM dbo.Tournament	
 </select>
 
+<!-- 엑셀파일 인서트 -->
+<insert id="insertTournament" parameterType="one.top.holdem.admin.vo.Tournament">
+	INSERT INTO dbo.Tournament(
+		groupId, startDate, moneyType, needTicket, needGold, needCommission,
+		receiveMoney, maxRebuyCount, rebuyNeedGold, rebuyNeedCommission, rebuyReceiveMoney,
+		maxAddOnCount, addOnNeedGold, addOnNeedCommission, addOnReceiveMoney, buyInType,
+		minUserCount, maxUserCount, guarantee, maxBettingMoney, blindUpTime, breakTimeLevel,
+		breakTime, title, anteBaseValue, anteUpValue9, anteUpValue19, anteUpValue29, anteUpValue39,
+		anteUpValue49, anteUpValueOther, smallBlindBaseValue, smallBlindUpValue9, smallBlindUpValue19,
+		smallBlindUpValue29, smallBlindUpValue39, smallBlindUpValue49, smallBlindUpValueOther,
+		tournamentState)
+	VALUES(
+		0, #{startDate}, #{moneyType}, #{needTicket}, #{needGold}, #{needCommission}
+		, #{receiveMoney}, #{maxRebuyCount}, #{rebuyNeedGold}, #{rebuyNeedCommission}, #{rebuyReceiveMoney}
+		, #{maxAddOnCount}, #{addOnNeedGold}, #{addOnNeedCommission}, #{addOnReceiveMoney}, #{buyInType}
+		, #{minUserCount}, #{maxUserCount}, #{guarantee}, #{maxBettingMoney}, #{blindUpTime}, #{breakTimeLevel}
+		, #{breakTime}, #{title}, #{anteBaseValue}, #{anteUpValue9}, #{anteUpValue19}, #{anteUpValue29}, #{anteUpValue39}
+		, #{anteUpValue49}, #{anteUpValueOther}, #{smallBlindBaseValue}, #{smallBlindUpValue9}, #{smallBlindUpValue19}
+		, #{smallBlindUpValue29}, #{smallBlindUpValue39}, #{smallBlindUpValue49}, #{smallBlindUpValueOther}
+		, #{tournamentState}
+	)
+</insert>
 </mapper>

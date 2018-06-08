@@ -8,6 +8,10 @@
 <title>원탑홀덤</title>
 <link rel="stylesheet" href="resources/css/default.css">
 <script src="resources/js/jquery-3.2.1.min.js"></script>
+
+<script>
+
+</script>
 </head>
 
 
@@ -32,7 +36,7 @@
 					<li><a href="join">· 회원가입</a></li>
 				</ul>
 			</div>
-			<div><img src="resources/img/sub_down_btn.jpg"></div>
+			<div><a href="https://s3.ap-northeast-2.amazonaws.com/onetop/HoldemSetup.exe"><img src="resources/img/sub_down_btn.jpg"></a></div>
 		</div>
 		<div id="container">
 			<div style="padding-bottom:10px;">

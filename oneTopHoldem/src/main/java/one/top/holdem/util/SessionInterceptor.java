@@ -24,7 +24,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 					path = path +"?"+parameter;
 				}
 				//System.out.println("final path : " + path);
-				response.sendRedirect(request.getContextPath()+"/login?path="+path);
+				response.sendRedirect(request.getContextPath()+"/adlogin?path="+path);
 				return false;
 			}
 		} catch (Exception e) {

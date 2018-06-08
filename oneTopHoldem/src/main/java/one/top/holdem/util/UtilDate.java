@@ -119,6 +119,11 @@ public class UtilDate {
 	}
 	
 	// 오늘 날짜 리턴
+	public String getNowDateTime() {
+		return (new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")).format(new Date());
+	}
+		
+	// 오늘 날짜 리턴
 	public String getNowDate() {
 		return (new SimpleDateFormat("MM-dd")).format(new Date());
 	}
