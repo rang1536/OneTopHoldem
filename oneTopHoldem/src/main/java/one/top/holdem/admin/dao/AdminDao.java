@@ -47,8 +47,17 @@ public class AdminDao {
 	}
 	
 	//하나의 회원 조회
+	public Account selectAccount(String loginId) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("loginId", loginId);
+		return sqlSession.selectOne("AdDao.selectAccount", param);
+	}
+	
+	//하나의 회원 조회
 	public Account selectAccount(long accountId) {
-		return sqlSession.selectOne("AdDao.selectAccount", accountId);
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("accountId", accountId);
+		return sqlSession.selectOne("AdDao.selectAccount", param);
 	}
 	
 	// 보유금액조회
@@ -116,6 +125,11 @@ public class AdminDao {
 		return sqlSession.delete("AdDao.deleteNotice");
 	}
 	
+	//긴급공지 정지(시간수정)
+	public int updateNotice() {
+		return sqlSession.update("AdDao.updateNotice");
+	}
+	
 	//지점등록
 	public int insertBranch(Account account) {
 		return sqlSession.insert("AdDao.insertBranch", account);
@@ -136,4 +150,13 @@ public class AdminDao {
 		return sqlSession.selectOne("AdDao.selectMasterInfo");
 	}
 	
+	//발송중인 공지 있는지 조회
+	public int selNoticeNowWorking() {
+		return sqlSession.selectOne("AdDao.selNoticeNowWorking");
+	}
+	
+	//updateChipLimit
+	public int updateChipLimit(Account account) {
+		return sqlSession.update("AdDao.updateChipLimit", account);
+	}
 }

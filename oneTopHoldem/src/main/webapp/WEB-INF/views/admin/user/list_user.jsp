@@ -60,6 +60,7 @@
 			grade = '${grade}';
 		}
 		console.log('loginId : '+loginId);
+		console.log('grade : '+grade);
 		$('#loader').css('display','');
 		
    		var table = 

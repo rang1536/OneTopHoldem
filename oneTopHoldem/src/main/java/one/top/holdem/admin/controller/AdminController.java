@@ -41,6 +41,7 @@ public class AdminController {
 			@RequestParam(value="grade", defaultValue="4")String grade) {
 		model.addAttribute("loginId", loginId);
 		model.addAttribute("adminGrade", grade);
+		System.out.println("USER CHECK : "+loginId+",  "+grade);
 		return "/admin/user/list_user";
 	}
 	
@@ -49,7 +50,9 @@ public class AdminController {
 	public String gameManagementCtrl(Model model) {
 		// 현재 배당율 조회하여 포워딩
 		Master master = adminService.readNowMasterInfo();
-		
+		int nowWorkNoticeCnt = adminService.readNoticeNowWorkingServ();
+		if(nowWorkNoticeCnt > 0) model.addAttribute("workCheck", "working");
+		else if(nowWorkNoticeCnt == 0) model.addAttribute("workCheck", "notWork");
 		model.addAttribute("master", master);
 		return "/admin/gameManager/input_form";
 	}

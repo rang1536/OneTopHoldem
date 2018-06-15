@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import one.top.holdem.admin.service.AdminService;
 import one.top.holdem.admin.vo.Account;
@@ -44,9 +45,9 @@ public class AdminRestController {
 	
 	//하나의회원조회
 	@RequestMapping(value="/readAccount", method = RequestMethod.POST)
-	public Account readAccountCtrl(@RequestParam(value="accountId")long accountId){
+	public Account readAccountCtrl(@RequestParam(value="loginId")String loginId){
 		/*System.out.println("아이디 확인 : "+accountId);*/
-		Account account = adminService.readAcccountServ(accountId);
+		Account account = adminService.readAcccountServ(loginId);
 		return account;
 	}
 	
@@ -130,18 +131,20 @@ public class AdminRestController {
 	public Map<String, Object> removeNoticeCtrl(Model model){
 		/*System.out.println("폼 입력값 확인  : "+hour+" ,"+minute+" ,"+msg);*/
 		Map<String, Object> map = new HashMap<String, Object>();
-		model.addAttribute("noticeCheck", "stop");
-		
-		map.put("deleteResult", "success");
+		int result = adminService.modifyNoticeStop();
+		if(result == 1) map.put("deleteResult", "success");
 		return map; 
 	}
 	
 	// 긴급공지등록 addNotice
 	@RequestMapping(value="/addNotice", method = RequestMethod.POST)
-	public Map<String, String> addNoticeCtrl(@RequestParam(value="msg")String msg){
+	public Map<String, String> addNoticeCtrl(@RequestParam(value="msg")String msg,
+			@RequestParam(value="endDate", defaultValue="none")String endDate,
+			@RequestParam(value="hour", defaultValue="none")String hour,
+			@RequestParam(value="minute", defaultValue="none")String minute){
 		/*System.out.println("폼 입력값 확인  : "+hour+" ,"+minute+" ,"+msg);*/
 		
-		Map<String, String> map = adminService.addNoticeServ(msg);
+		Map<String, String> map = adminService.addNoticeServ(msg, endDate, hour, minute);
 		return map; 
 	}
 		
@@ -205,5 +208,22 @@ public class AdminRestController {
 		}
 		
 		return map;
-	} 
+	}
+	
+	//관리자 로그아웃 SessionStatus status
+	@RequestMapping(value="/adLogOut", method = RequestMethod.POST)
+	public Map<String, Object> adLogOut( SessionStatus status){
+		Map<String, Object> map = new HashMap<String, Object>();
+		status.setComplete();
+		map.put("result", "succ");
+		return map; 
+	}
+	
+	//일일한도 칩금액 설정 setChipLimit
+	@RequestMapping(value="/setChipLimit", method = RequestMethod.POST)
+	public Map<String, Object> setChipLimit(@RequestParam(value="chip")String chip,
+			@ModelAttribute(value="id")String loginId){
+		Map<String, Object> map = adminService.setChipLimitServ(loginId, chip);
+		return map; 
+	}
 }

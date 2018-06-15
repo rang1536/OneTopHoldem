@@ -53,21 +53,21 @@ function win(url){
 			<div id="money_list">
 				<ul>
 					<li>
-						<a href=""><img src="resources/img/shop_img1.jpg"></a><br><img src="resources/img/shop_icon.jpg"> 10억칩<br>
-						<span class="blue">100,000 원</span>
+						<a href=""><img src="resources/img/shop_img1.jpg"></a><br><img src="resources/img/shop_icon.jpg"> 7천만칩<br>
+						<span class="blue">10,000 원</span>
 						<div class="buy_btn"><a href="javascript:win('shopBuy')">구매하기</a></div>
 					</li>
 					<li>
-						<a href=""><img src="resources/img/shop_img2.jpg"></a><br><img src="resources/img/shop_icon.jpg"> 10억칩<br>
-						<span class="blue">100,000 원</span>
+						<a href=""><img src="resources/img/shop_img2.jpg"></a><br><img src="resources/img/shop_icon.jpg"> 3.5억칩<br>
+						<span class="blue">25,000 원</span>
 						<div class="buy_btn"><a href="">구매하기</a></div>
 					</li>
 					<li>
-						<a href=""><img src="resources/img/shop_img3.jpg"></a><br><img src="resources/img/shop_icon.jpg"> 10억칩<br>
-						<span class="blue">100,000 원</span>
+						<a href=""><img src="resources/img/shop_img3.jpg"></a><br><img src="resources/img/shop_icon.jpg"> 7억칩<br>
+						<span class="blue">50,000 원</span>
 						<div class="buy_btn"><a href="">구매하기</a></div>
 					</li>
-					<li>
+					<!-- <li>
 						<a href=""><img src="resources/img/shop_img4.jpg"></a><br><img src="resources/img/shop_icon.jpg"> 10억칩<br>
 						<span class="blue">100,000 원</span>
 						<div class="buy_btn"><a href="">구매하기</a></div>
@@ -151,7 +151,7 @@ function win(url){
 						<a href=""><img src="resources/img/shop_img20.jpg"></a><br><img src="resources/img/shop_icon.jpg"> 1억칩<br>
 						<span class="blue">10,000 원</span>
 						<div class="buy_btn"><a href="">구매하기</a></div>
-					</li>
+					</li> -->
 				</ul>
 			</div>		
 		</div>

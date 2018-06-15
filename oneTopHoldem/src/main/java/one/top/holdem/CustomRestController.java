@@ -71,4 +71,13 @@ public class CustomRestController {
 	public Notice getNotice() {
 		return customService.readNotice();
 	}
+	
+	//비번수정 modifyPassword
+	@RequestMapping(value="/modifyPassword", method = RequestMethod.POST)
+	public Map<String, Object> modifyPassword(@RequestParam(value="nowPw")String nowPw,
+			@RequestParam(value="newPw")String newPw,
+			@ModelAttribute(value="id")String loginId) {
+		Map<String, Object> returnMap = customService.modifyPassWordServ(loginId, nowPw, newPw);	
+		return returnMap;
+	}
 }

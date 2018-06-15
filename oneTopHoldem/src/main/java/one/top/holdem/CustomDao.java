@@ -87,8 +87,15 @@ public class CustomDao {
 		return sqlSession.selectOne("customDao.selectNotice");
 	}
 	
+	//비번변경 - 조회
+	public Account selPwOverlap(Map<String, Object> param) {
+		return sqlSession.selectOne("customDao.selPwOverlap", param);
+	}
 	
-	
+	//비번변경 - 수정
+	public int updatePw(Account account) {
+		return sqlSession.update("customDao.updatePw", account);
+	}
 	/*
 	//로그인 패스워드 확인
 	public Account selectLoginCheckPw(Map<String, Object> param){

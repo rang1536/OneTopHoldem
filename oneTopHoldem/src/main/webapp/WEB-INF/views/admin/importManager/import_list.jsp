@@ -82,7 +82,7 @@
 		  },            
 		  columns : [
 			  {data: "day"},
-			  {accountId:"accountId"},
+			  {data: "accountId"},
 		      {data: "gold"},
 		      {data: "cash"}	     
 		  ],
@@ -145,9 +145,9 @@
 				<thead>
 					<tr>
 						<th>날짜</th>
-						<th>코드</th>
-						<th>획득골드</th>
-						<th>획득현금액</th>											
+						<th>AccountId</th>
+						<th>GOLD</th>
+						<th>CASH</th>											
 					</tr>
 				</thead>
 				<tbody>

@@ -130,8 +130,8 @@ public class AdminService {
 	
 	/* 하나의 유저정보조회
 	 * @resultType : Account*/
-	public Account readAcccountServ(long accountId) {
-		return adminDao.selectAccount(accountId);
+	public Account readAcccountServ(String loginId) {
+		return adminDao.selectAccount(loginId);
 	}
 	
 	// 보유금액 조회
@@ -288,11 +288,15 @@ public class AdminService {
 	//게임 배당율 수정 - 피케이 없이 수정되나? 
 	public Map<String, String> modifyMasterInfoServ(Master master){
 		int count = adminDao.selectMasterInfo();
+		System.out.println("count check : "+count);
+		System.out.println("master check : "+master);
 		int result = 0;
 		if(count == 0) {
-			result = adminDao.insertMasterInfo(master);			
+			result = adminDao.insertMasterInfo(master);	
+			System.out.println("count check2 : insert");
 		}else if(count > 0) {
-			result = adminDao.updateMasterInfo(master);			
+			result = adminDao.updateMasterInfo(master);	
+			System.out.println("count check3 : update");
 		}
 		
 		Map<String, String> map = new HashMap<String, String>();
@@ -303,26 +307,31 @@ public class AdminService {
 	}
 	
 	//긴급공지 등록 - lastSendDate에 긴급공지 종료시간을 미리 세팅
-	public Map<String, String> addNoticeServ(String msg){
+	public Map<String, String> addNoticeServ(String msg, String endDate, String hour, String minute){
 		int result = 0;
 		//먼저 기존 공지를 삭제한다.
 		int deleteResult = adminDao.deleteNotice();
 		
-		/*if(hour != 0) {
-			for(int i=0; i< hour; i++) {
-				minute += 60;
+		UtilDate utilDate = new UtilDate();
+		String lastSendDate = "";
+		if(endDate != null && hour != null) {
+			if(Integer.parseInt(hour) < 10) hour = "0"+hour;
+			if(!minute.equals("none")) {
+				if(Integer.parseInt(minute) < 10) minute = "0"+minute;
+			}else {
+				minute = "00";
 			}
+			lastSendDate = endDate+" "+hour+":"+minute+":00";
+		}else {
+			lastSendDate = utilDate.getNextYear();
 		}
 		
-		UtilDate utilDate = new UtilDate();
-		String lastTime = utilDate.getAfterTime(minute);*/
 		//공지값 세팅
 		Notice notice = new Notice();
 		notice.setNotice(msg);
 		
-		UtilDate utilDate = new UtilDate();
 		//현재시간 구해서 입력받은 시간,분 더하기 포멧- utc시간
-		notice.setLastSendDate(utilDate.getNowDateTime());
+		notice.setLastSendDate(lastSendDate);
 		
 		//삭제 확인후 공지입력
 		result = adminDao.insertNotice(notice);
@@ -334,6 +343,15 @@ public class AdminService {
 		return map;
 	}
 	
+	//긴급공지 시간수정
+	public int modifyNoticeStop() {
+		return adminDao.updateNotice();
+	}
+	
+	//발송중인 긴급공지 있는지 조회
+	public int readNoticeNowWorkingServ() {
+		return adminDao.selNoticeNowWorking();
+	}
 	//트리조회
 	public List<Account> readTreeServ(String loginId, int grade){
 		System.out.println("tree : "+loginId);
@@ -343,14 +361,16 @@ public class AdminService {
 		
 		System.out.println("param Check1 : "+param);
 		List<Account> bonsaList = adminDao.selectTree(param);
-		System.out.println("bonsaList : "+bonsaList);
+		//System.out.println("bonsaList : "+bonsaList);
 		if(bonsaList.size() != 0) {
 			//System.out.println("0 > !!!");
 			for(int i=0; i<bonsaList.size(); i++) {
 				param = new HashMap<String, Object>();
-				param.put("grade", 4);
-				param.put("recommenderAccountId", bonsaList.get(i).getLoginId());
-				param.put("accountId", bonsaList.get(i).getAccountId());
+				if(bonsaList.get(i).getGrade() == 0) param.put("grade", 2);
+				else param.put("grade", 3);
+				param.put("recommenderAccountId", bonsaList.get(i).getAccountId());
+				/*param.put("recommenderAccountId", bonsaList.get(i).getLoginId());
+				param.put("accountId", bonsaList.get(i).getAccountId());*/
 				System.out.println("param2 Check : "+param);
 				
 				List<Account> pcList = adminDao.selectTree(param);
@@ -370,5 +390,19 @@ public class AdminService {
 		List<Account> searchList = adminDao.searchBranch(param);
 		
 		return searchList;
+	}
+	
+	//일일한도금액 칩 설정
+	public Map<String, Object> setChipLimitServ(String loginId, String chip){
+		Map<String, Object> map = new HashMap<String, Object>();
+		Account account = new Account();
+		account.setLoginId(loginId);
+		account.setMaxTodaySpendGold(Long.parseLong(chip));
+		
+		int result = adminDao.updateChipLimit(account);
+		if(result == 1) map.put("result", "succ");
+		else map.put("result", "fail");
+		
+		return map;
 	}
 }

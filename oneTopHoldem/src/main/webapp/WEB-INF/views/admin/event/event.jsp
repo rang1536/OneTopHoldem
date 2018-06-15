@@ -106,7 +106,7 @@
 			  {data: "minUserCount"},
 			  {data: "maxUserCount"},
 			  {data: "guarantee"},
-			  {data: "tournamentType"}, //
+			  {data: "maxBettingMoney"}, //
 			  {data: "blindUpTime"},
 			  {data: "breakTimeLevel"},
 			  {data: "breakTime"},
@@ -126,7 +126,7 @@
 			  {data: "smallBlindUpValue49"},
 			  {data: "smallBlindUpValueOther"},
 			  {data: "tournamentState"},
-			  {data: "btnGroup"}
+			  {data: "groupId"}
 		  ],
 	         initComplete : function() {
 	  
@@ -208,7 +208,25 @@
 					<col width="*">
 					<col width="*">
 					<col width="*">               
-					<col width="300px">
+					<col width="*">
+					
+					<col width="*">
+					<col width="*">
+					<col width="*">
+					<col width="*">
+					<col width="*">
+					
+					<col width="*">
+					<col width="*">
+					<col width="*">
+					<col width="*">
+					<col width="*">
+					
+					<col width="*">
+					<col width="*">
+					<col width="*">
+					<col width="*">               
+					<col width="*">
 					
 					<col width="*">
 					<col width="*">
@@ -222,6 +240,23 @@
 					<col width="*">
 					<col width="*">
 					
+					<col width="*">
+					<col width="*">
+					<col width="*">
+					<col width="*">               
+					<col width="*">
+					
+					<col width="*">
+					<col width="*">
+					<col width="*">
+					<col width="*">
+					<col width="*">
+					
+					<col width="*">
+					<col width="*">
+					<col width="*">
+					<col width="*">
+					<col width="*">
 				</colgroup>
 				<thead>
 					<tr>
@@ -236,7 +271,7 @@
 						<th colspan="2">참가인원</th>
 						<th rowspan="2">게런티</th>
 						
-						<th rowspan="2">토너먼트타입</th>
+						<th rowspan="2">최대배팅금액</th>
 						<th rowspan="2">블라인드업타임</th>
 						<th rowspan="2">브레이크타임레벨</th>
 						<th rowspan="2">브레이크타임</th>
@@ -245,7 +280,7 @@
 						
 						<th colspan="7">smallBlind</th>
 						<th rowspan="2">상태</th>
-						<th rowspan="2">-</th>
+						<th rowspan="2">GroupId</th>
 					</tr>
 					<tr>
 						<th>티켓</th>

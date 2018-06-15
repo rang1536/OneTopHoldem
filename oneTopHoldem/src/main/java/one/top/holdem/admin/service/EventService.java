@@ -33,7 +33,7 @@ public class EventService {
 		System.out.println("insert Service~!!");
 		ReadOption readOption = new ReadOption();
 		readOption.setFilePath(destFile.getAbsolutePath());
-		readOption.setOutputColumns("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL");
+		readOption.setOutputColumns("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM");
 		readOption.setStartRow(2);
 		  
 		List<Map<String, String>> excelContent = ExcelRead.read(readOption);
@@ -44,54 +44,78 @@ public class EventService {
 			System.out.println("setting...");
 			eventVO = new Tournament();
 			eventVO.setStartDate(article.get("A"));
-			eventVO.setMoneyType(Integer.parseInt(article.get("B").substring(0,article.get("B").lastIndexOf("."))));
-			eventVO.setNeedTicket(Long.parseLong(article.get("C").substring(0,article.get("C").lastIndexOf("."))));
-			eventVO.setNeedGold(Long.parseLong(article.get("D").substring(0,article.get("D").lastIndexOf("."))));
-			eventVO.setNeedCommission(Long.parseLong(article.get("E").substring(0,article.get("E").lastIndexOf("."))));
-			eventVO.setReceiveMoney(Long.parseLong(article.get("F").substring(0,article.get("F").lastIndexOf("."))));
-			eventVO.setMaxRebuyCount(Long.parseLong(article.get("G").substring(0,article.get("G").lastIndexOf("."))));
-			eventVO.setRebuyNeedGold(Long.parseLong(article.get("H").substring(0,article.get("H").lastIndexOf("."))));
-			eventVO.setRebuyNeedCommission(Long.parseLong(article.get("I").substring(0,article.get("I").lastIndexOf("."))));
-			eventVO.setRebuyReceiveMoney(Long.parseLong(article.get("J").substring(0,article.get("J").lastIndexOf("."))));
-			eventVO.setMaxAddOnCount(Long.parseLong(article.get("K").substring(0,article.get("K").lastIndexOf("."))));
-			eventVO.setAddOnNeedGold(Long.parseLong(article.get("L").substring(0,article.get("L").lastIndexOf("."))));
-			eventVO.setAddOnNeedCommission(Long.parseLong(article.get("M").substring(0,article.get("M").lastIndexOf("."))));
-			eventVO.setAddOnReceiveMoney(Long.parseLong(article.get("N").substring(0,article.get("N").lastIndexOf("."))));
-			eventVO.setBuyInType(Integer.parseInt(article.get("O").substring(0,article.get("O").lastIndexOf("."))));
-			eventVO.setMinUserCount(Long.parseLong(article.get("P").substring(0,article.get("P").lastIndexOf("."))));
-			eventVO.setMaxUserCount(Long.parseLong(article.get("Q").substring(0,article.get("Q").lastIndexOf("."))));
-			eventVO.setGuarantee(Long.parseLong(article.get("R").substring(0,article.get("R").lastIndexOf("."))));
-			eventVO.setBlindUpTime(Integer.parseInt(article.get("S").substring(0,article.get("S").lastIndexOf("."))));
-			eventVO.setBreakTimeLevel(Integer.parseInt(article.get("T").substring(0,article.get("T").lastIndexOf("."))));
-			eventVO.setBreakTime(Integer.parseInt(article.get("U").substring(0,article.get("U").lastIndexOf("."))));
+			eventVO.setMoneyType(parseInt(article.get("B")));
+			eventVO.setNeedTicket(parseLong(article.get("C")));
+			eventVO.setNeedGold(parseLong(article.get("D")));
+			eventVO.setNeedCommission(parseLong(article.get("E")));
+			eventVO.setReceiveMoney(parseLong(article.get("F")));
+			eventVO.setMaxRebuyCount(parseLong(article.get("G")));
+			eventVO.setRebuyNeedGold(parseLong(article.get("H")));
+			eventVO.setRebuyNeedCommission(parseLong(article.get("I")));
+			eventVO.setRebuyReceiveMoney(parseLong(article.get("J")));
+			eventVO.setMaxAddOnCount(parseLong(article.get("K")));
+			eventVO.setAddOnNeedGold(parseLong(article.get("L")));
+			eventVO.setAddOnNeedCommission(parseLong(article.get("M")));
+			eventVO.setAddOnReceiveMoney(parseLong(article.get("N")));
+			eventVO.setBuyInType(parseInt(article.get("O")));
+			eventVO.setMinUserCount(parseLong(article.get("P")));
+			eventVO.setMaxUserCount(parseLong(article.get("Q")));
+			eventVO.setGuarantee(parseLong(article.get("R")));
+			eventVO.setBlindUpTime(parseInt(article.get("S")));
+			eventVO.setBreakTimeLevel(parseInt(article.get("T")));
+			eventVO.setBreakTime(parseInt(article.get("U")));
 			eventVO.setTitle(article.get("V"));
-			eventVO.setAnteBaseValue(Long.parseLong(article.get("W").substring(0,article.get("W").lastIndexOf("."))));
-			eventVO.setAnteUpValue9(Long.parseLong(article.get("X").substring(0,article.get("X").lastIndexOf("."))));
-			eventVO.setAnteUpValue19(Long.parseLong(article.get("Y").substring(0,article.get("Y").lastIndexOf("."))));
-			eventVO.setAnteUpValue29(Long.parseLong(article.get("Z").substring(0,article.get("Z").lastIndexOf("."))));
-			eventVO.setAnteUpValue39(Long.parseLong(article.get("AA").substring(0,article.get("AA").lastIndexOf("."))));
-			eventVO.setAnteUpValue49(Long.parseLong(article.get("AB").substring(0,article.get("AB").lastIndexOf("."))));
-			eventVO.setAnteUpValueOther(Long.parseLong(article.get("AC").substring(0,article.get("AC").lastIndexOf("."))));
-			eventVO.setSmallBlindBaseValue(Long.parseLong(article.get("AD").substring(0,article.get("AD").lastIndexOf("."))));
-			eventVO.setSmallBlindUpValue9(Long.parseLong(article.get("AE").substring(0,article.get("AE").lastIndexOf("."))));
-			eventVO.setSmallBlindUpValue19(Long.parseLong(article.get("AF").substring(0,article.get("AF").lastIndexOf("."))));
-			eventVO.setSmallBlindUpValue29(Long.parseLong(article.get("AG").substring(0,article.get("AG").lastIndexOf("."))));
-			eventVO.setSmallBlindUpValue39(Long.parseLong(article.get("AH").substring(0,article.get("AH").lastIndexOf("."))));
-			eventVO.setSmallBlindUpValue49(Long.parseLong(article.get("AI").substring(0,article.get("AI").lastIndexOf("."))));
-			eventVO.setSmallBlindUpValueOther(Long.parseLong(article.get("AJ").substring(0,article.get("AJ").lastIndexOf("."))));
-			eventVO.setTournamentState(Integer.parseInt(article.get("AK").substring(0,article.get("AK").lastIndexOf("."))));
-			eventVO.setMaxBettingMoney(Long.parseLong(article.get("AL").substring(0,article.get("AL").lastIndexOf("."))));
+			eventVO.setAnteBaseValue(parseLong(article.get("W")));
+			eventVO.setAnteUpValue9(parseLong(article.get("X")));
+			eventVO.setAnteUpValue19(parseLong(article.get("Y")));
+			eventVO.setAnteUpValue29(parseLong(article.get("Z")));
+			eventVO.setAnteUpValue39(parseLong(article.get("AA")));
+			eventVO.setAnteUpValue49(parseLong(article.get("AB")));
+			eventVO.setAnteUpValueOther(parseLong(article.get("AC")));
+			eventVO.setSmallBlindBaseValue(parseLong(article.get("AD")));
+			eventVO.setSmallBlindUpValue9(parseLong(article.get("AE")));
+			eventVO.setSmallBlindUpValue19(parseLong(article.get("AF")));
+			eventVO.setSmallBlindUpValue29(parseLong(article.get("AG")));
+			eventVO.setSmallBlindUpValue39(parseLong(article.get("AH")));
+			eventVO.setSmallBlindUpValue49(parseLong(article.get("AI")));
+			eventVO.setSmallBlindUpValueOther(parseLong(article.get("AJ")));
+			eventVO.setTournamentState(parseInt(article.get("AK")));
+			eventVO.setMaxBettingMoney(parseLong(article.get("AL")));
+			eventVO.setGroupId(parseLong(article.get("AM")));
 			
 			System.out.println("check : "+eventVO);
 			int result = eventDao.insertTournament(eventVO);
 			
 			
 			if(result == 1) {
-				System.out.println("엑셀파일 입력 성공~!!");
+				System.out.println("excel insert Success~!!");
 				map.put("uploadResult", "succ");
 			}
 		}
 		return map;
+	}
+	
+	//캐스팅 String > int
+	public int parseInt(String value) {
+		int result = 0;
+		if(value.contains(".")) {
+			result = Integer.parseInt(value.substring(0, value.lastIndexOf(".")));
+		}else {
+			result = Integer.parseInt(value);
+		}
+		
+		return result;
+	}
+	
+	//캐스팅 String > long
+	public long parseLong(String value) {
+		long result = 0;
+		if(value.contains(".")) {
+			result = Long.parseLong(value.substring(0, value.lastIndexOf(".")));
+		}else {
+			result = Long.parseLong(value);
+		}
+		return result;
 	}
 	
 	//수익조회
@@ -115,7 +139,7 @@ public class EventService {
 		System.out.println(list.size());
 		if(list.size() != 0) {
 			for(int i=0; i<list.size(); i++) {
-				System.out.println(i+ " 번째 결과값 확인 : "+list);
+				System.out.println(i+ " times result Check : "+list);
 			}
 		}else{
 			System.out.println("조회된 수입목록이 없음!!");

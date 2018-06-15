@@ -63,7 +63,7 @@
        },
 	    ajax : {
 	   
-	      "url":"userList",
+	      "url":"userList?loginId=master&grade=0",
 	      "type":"POST",
 	      "dataSrc": function(json){
 	    	   var list = json.list;
@@ -97,6 +97,10 @@
    		
 	});
 	
+	$(document).on('click','#reFresh',function(){
+		var accountId = $(this).closest('#btnGroup').find('#accountId').val();
+		reFresh(accountId);
+	})
 	
 	function reFresh(accountId){
 		if(confirm('충전하시겠습니까?')){
@@ -108,13 +112,13 @@
 <body>
 <div id="page-wrapper">
 	<br/>
-	<div class="row" style="text-align:right;margin-right:10px;">
+	<!-- <div class="row" style="text-align:right;margin-right:10px;">
 		<div>
 			<button type="button" class="btn btn-success" onclick="mmsList();">메세지보기</button>
 			<button type="button" class="btn btn-success" onclick="modifyMyInfo();">개인정보수정</button>
 		</div>
 		
-	</div>
+	</div> -->
 	<div class="row">
 		<div class="col-lg-12">
             <a href="#"><i class="fa fa-home fa-fw"></i></a>  >  회원정보관리

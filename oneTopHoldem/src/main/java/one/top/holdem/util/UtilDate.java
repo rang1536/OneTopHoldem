@@ -57,6 +57,17 @@ public class UtilDate {
 		return (new SimpleDateFormat("yyyy-MM-dd")).format(cal.getTime());
 	}
 
+	// 1년후 날짜 구하기
+	public String getNextYear() {
+		Calendar cal = Calendar.getInstance();
+		Date date = new Date();
+		cal.setTime(date);
+
+		cal.add(Calendar.DATE, 365);
+
+		return (new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")).format(cal.getTime());
+	}
+	
 	/**
 	 * 입력받은 날짜에 해달 일수를 증가한다.
 	 * 

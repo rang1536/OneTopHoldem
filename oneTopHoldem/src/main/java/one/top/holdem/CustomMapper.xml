@@ -35,11 +35,9 @@
 	<!-- 회원정보수정 -->
 	<update id="updateMember" parameterType="one.top.holdem.admin.vo.Account">
 		UPDATE dbo.Account
-		SET loginPassword = PwdEncrypt(#{loginPassword}),
-			nickname = #{nickname},
+		SET nickname = #{nickname},
 			email = #{email},
-			telephone = #{telephone},
-			recommenderAccountId = #{recommenderAccountId}
+			telephone = #{telephone}
 		WHERE loginId = #{loginId}
 	</update>
 	
@@ -93,5 +91,21 @@
 	<select id="selectNotice" resultType="one.top.holdem.admin.vo.Notice">
 		SELECT *
 		FROM dbo.Notice
+		WHERE lastSendDate > getDate()
 	</select>
+	
+	<!-- 비번수정 (조회)-->
+	<select id="selPwOverlap" resultType="one.top.holdem.admin.vo.Account">
+		SELECT *
+		FROM dbo.Account
+		WHERE loginId= #{loginId}
+		AND PwdCompare(#{loginPassword},loginPassword) = 1
+	</select>
+	
+	<update id="updatePw" parameterType="one.top.holdem.admin.vo.Account">
+		UPDATE dbo.Account
+		SET
+			loginPassword = PwdEncrypt(#{loginPassword})
+		WHERE accountId = #{accountId}
+	</update>
 </mapper>

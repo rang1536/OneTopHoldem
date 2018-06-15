@@ -103,9 +103,9 @@ $(document).on('click','#ol_submit',function(){
 				cookieId1 = '${cookie.cookieId.value}'
 				c2 = '${cookie.remId.value}'
 				c3 = '${cookieId.remId.value}'
-				console.log('cookieId1'+cookieId1)
-				console.log('c2'+c2)
-				console.log('c3'+c3)
+				//console.log('cookieId1'+cookieId1)
+				//console.log('c2'+c2)
+				//console.log('c3'+c3)
 				$('#ol_before').css('display','none');
 				
 				$('#ol_after').find('#user_name').text('');
@@ -136,6 +136,7 @@ function getNotice(){
 				
 				$('#notResult').empty();
 				$('#notResult').text(html);
+				//alert(html);
 			}
 			
 		}
@@ -163,7 +164,7 @@ function getNotice(){
 		<div id="main_ban">
 			<div class="notice">
 				<div style="float:left;color:#fff000;font-weight:600;"><img src="resources/img/noti_icon.png">&nbsp;&nbsp;공지사항&nbsp;&nbsp;|&nbsp;&nbsp;</div>
-				<div id="notResult" style="float:left;color:#fff;font-weight:600;cursor:pointer;" onclick="location.href='noticeView'">[점검안내] 2018/01/06 서버 점검을 실시합니다.</div>
+				<div id="notResult" style="float:left;color:#fff;font-weight:600;cursor:pointer;" onclick="location.href='noticeView'">[알림] 오늘도 저희 원탑홀덤을 이용해주셔서 감사합니다.</div>
 				<div style="float:right;color:#989898;font-weight:600;cursor:pointer;"></div>
 			</div>
 			<div class="roll_img">

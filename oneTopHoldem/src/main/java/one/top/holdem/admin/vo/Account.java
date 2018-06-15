@@ -26,6 +26,7 @@ public class Account {
 	private long todayCash;
 	private long monthCash;
 	private long todayStartGold;
+	private long maxTodaySpendGold;
 	
 	private String recommenderId;
 	private String goldCount; //보유골드 3자리 컴마추가된 문자열
@@ -37,6 +38,12 @@ public class Account {
 	private List<Account> pcList;
 	
 	
+	public long getMaxTodaySpendGold() {
+		return maxTodaySpendGold;
+	}
+	public void setMaxTodaySpendGold(long maxTodaySpendGold) {
+		this.maxTodaySpendGold = maxTodaySpendGold;
+	}
 	public String getRecommenderId() {
 		return recommenderId;
 	}

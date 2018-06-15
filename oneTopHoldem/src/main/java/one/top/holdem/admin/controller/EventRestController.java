@@ -61,10 +61,12 @@ public class EventRestController {
 
 	//입출금조회
 	@RequestMapping(value="/importList", method = RequestMethod.POST)
-	public List<Import> importListCtrl(){
+	public Map<String, Object> importListCtrl(){
 		/*System.out.println("아이디 확인 : "+accountId);*/
+		Map<String, Object> map = new HashMap<String, Object>();
 		List<Import> list = eventService.readImportServ();
-		return list;
+		map.put("list", list);
+		return map;
 	}
 
 }

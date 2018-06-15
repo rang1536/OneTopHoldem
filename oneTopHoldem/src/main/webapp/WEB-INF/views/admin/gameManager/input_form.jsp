@@ -36,13 +36,14 @@
 	
 	// 공지 전송 시작 - 음? 시간 잘못입력한것도 체크 해줘야 하나? 시간은 그냥 현재시간 나오니 몇시간 몇분동안 발송 으로 하는게 좋을듯
 	function transmission(){
-		/* var hour = $('#si').val().trim(); 
-		var minute = $('#bun').val().trim(); */
+		var endDate = $('#endDate').val();
+		var hour = $('#si').val().trim(); 
+		var minute = $('#bun').val().trim();
 		var msg = $('#msg').val();
 		var date = new Date();
 		
-		var nowDate = (date.getMonth()+1)+date.getDate();
-		var nowDateText = (date.getMonth()+1)+' 월'+date.getDate()+' 일';
+		//var nowDate = (date.getMonth()+1)+date.getDate();
+		//var nowDateText = (date.getMonth()+1)+' 월'+date.getDate()+' 일';
 		
 		/* if(hour == null || hour == ''){
 			alert('종료시간을 입력하세요');
@@ -60,7 +61,7 @@
 			// 공지 입력하는 ajax코드 추가
 			$.ajax({
 				url : 'addNotice',
-				data : {'msg':msg},
+				data : {'msg':msg, 'endDate':endDate, 'hour':hour, 'minute':minute},
 				dataType : 'json',
 				type : 'post',
 				success : function(data){
@@ -99,6 +100,7 @@
 			$('#transBtn').css('display','');
 			
 			//폼값 초기화
+			$('#endDate').val('');
 			$('#si').val('');
 			$('#bun').val('');
 			$('#msg').val('');
@@ -248,7 +250,7 @@
 				</tr>
 				<tr>
 					<td>긴급공지사항</td>
-					<td><!-- <input type="text" id="si"> 시간 <input type="text" id="bun"> 분 동안 --></td>
+					<td><input type="date" id="endDate"/><input type="text" id="si" placeholder="00~24"> 시<input type="text" id="bun" placeholder="00~59"> 분</td>
 					<td style="width:50px;"></td>
 					<td>쓰리카드</td>
 					<td><input type="text" class="form-control" onkeyup="isNumGameInfo(this.value,'threeOfAKindJackpot')" name="threeOfAKindJackpot" id="threeOfAKindJackpot" placeholder = "현재 ${master.threeOfAKindJackpot }"/></td>
@@ -266,7 +268,14 @@
 				</tr>
 				<tr>
 					<td colspan="3" style="text-align:right;">
-						<button type="button" class="btn btn-primary" id="transBtn" onclick="transmission();">긴급공지전송</button>
+						<c:if test="${workCheck eq 'working'}">
+							<button type="button" class="btn btn-primary" id="transBtn" onclick="transmission();" style="display:none;">긴급공지전송</button>
+							<button type="button" class="btn btn-danger" id="stopBtn" onclick="stopNotice();">중지</button>
+						</c:if>
+						<c:if test="${workCheck eq 'notWork'}">
+							<button type="button" class="btn btn-primary" id="transBtn" onclick="transmission();">긴급공지전송</button>
+							<button type="button" class="btn btn-danger" id="stopBtn" onclick="stopNotice();" style="display:none;">중지</button>
+						</c:if>
 						<button type="button" class="btn btn-danger" id="stopBtn" onclick="stopNotice();" style="display:none;">중지</button>
 					</td>
 					<td>하이카드</td>

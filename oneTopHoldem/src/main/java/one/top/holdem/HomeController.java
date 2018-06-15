@@ -279,6 +279,18 @@ public class HomeController {
 		return "/users/shop_buy_attend";
 	}
 	
+	//정보수정 - 비번
+	@RequestMapping(value = "/modifyPw", method = RequestMethod.GET)
+	public String modifyPw() {
+		return "/users/modify_pw";
+	}
+	
+	//정보수정 - 한도설정
+	@RequestMapping(value = "/modifyLimit", method = RequestMethod.GET)
+	public String modifyLimit() {
+		return "/users/modify_limit";
+	}
+	
 	//==================================================================================
 	//관리자
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)

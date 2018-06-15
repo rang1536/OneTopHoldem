@@ -41,7 +41,7 @@
 		smallBlindUpValue29, smallBlindUpValue39, smallBlindUpValue49, smallBlindUpValueOther,
 		tournamentState)
 	VALUES(
-		0, #{startDate}, #{moneyType}, #{needTicket}, #{needGold}, #{needCommission}
+		#{groupId}, #{startDate}, #{moneyType}, #{needTicket}, #{needGold}, #{needCommission}
 		, #{receiveMoney}, #{maxRebuyCount}, #{rebuyNeedGold}, #{rebuyNeedCommission}, #{rebuyReceiveMoney}
 		, #{maxAddOnCount}, #{addOnNeedGold}, #{addOnNeedCommission}, #{addOnReceiveMoney}, #{buyInType}
 		, #{minUserCount}, #{maxUserCount}, #{guarantee}, #{maxBettingMoney}, #{blindUpTime}, #{breakTimeLevel}

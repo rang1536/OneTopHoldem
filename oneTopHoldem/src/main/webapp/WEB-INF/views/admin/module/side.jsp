@@ -55,10 +55,10 @@
 		}
 		
 		function modifyMyInfo(){
-			var accountId = '${accountId}';
+			var loginId = '${id}';
 			$.ajax({
 				url : 'readAccount',
-				data : {'accountId':accountId},
+				data : {'loginId':loginId},
 				dataType:'json',
 				type:'post',
 				success:function(data){
@@ -93,7 +93,19 @@
 			$('#modifyAccountForm').attr('action','modifyAccount').submit();
 		}
 		
-		
+		function logOut(){
+			$.ajax({
+				url : 'adLogOut',
+				dataType : 'json',
+				type : 'post',
+				success : function(data){
+					if(data.result == 'succ'){
+						alert('로그아웃 되었습니다');
+						location.href = 'admin';
+					}
+				}
+			})
+		}
 		/* function searchBranch(){
 			var branchId = $('#branchId').val();
 			
@@ -166,7 +178,7 @@
                 </li> -->
                
                 <li class="dropdown">
-                    <a href="#">
+                    <a href="#" onclick="logOut();">
                         <i class="fa fa-sign-out fa-fw"></i>Logout
                     </a>
                     <!-- /.dropdown-alerts -->

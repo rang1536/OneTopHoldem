@@ -1,0 +1,167 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>원탑홀덤</title>
+<link rel="stylesheet" href="css/default.css">
+<script src="/2017/js/jquery-1.8.3.min.js"></script>
+</head>
+
+
+<body>
+
+<!---- headr ---------->
+<div id="hd">
+	<div id="hd_wrapper">
+		<div id="logo">
+            <a href="index.html"><img src="img/logo.jpg" alt="원탑홀덤"></a>
+        </div>
+		<div id="nat">
+			<a href="" onclick="{window.external.AddFavorite('http://naver.com','원탑홀덤')}">★즐겨찾기추가</a>
+		</div>
+		<div id="menu">
+			<div class="top_menu">
+				<a href="down.html">다운로드</a>
+				<a href="guide.html">게임방법</a>
+				<a href="tournament_info.html">토너먼트</a>
+				<a href="faq.html">고객센터</a>
+				<a href="shop.html" style="background:none;">머니샵</a>
+			</div>
+			<div class="tnb">
+				<a href=""><img src="img/gbr_icon.jpg"> GBR</a>
+				<a href=""><img src="img/chn_icon.jpg"> CHN</a>
+				<a href=""><img src="img/jpn_icon.jpg"> JPN</a>
+				<a href=""><img src="img/kor_icon.jpg"> KOR</a>
+			</div>
+		</div>
+	</div>
+</div>
+<!---- headr ---------->
+
+<div id="warp">
+	<!---- content ---------->
+
+	<div id="content">
+		<div id="aside">
+			<div class="tit">
+				<div class="tt"><span class="big">멤버쉽</span><br>MEMBERSHIP</div>
+			</div>
+			<div class="sub_menu">
+				<ul>
+					<li class="over"><a href="modify.html">· 회원정보수정</a></li>
+				</ul>
+			</div>
+			<div><img src="img/sub_down_btn.jpg"></div>
+		</div>
+		<div id="container">
+			<div style="padding-bottom:10px;">
+				<span id="container_title">회원정보수정</span>
+				<div class="sub_nav"><img src="img/home_icon.jpg"> HOME&nbsp;&nbsp;>&nbsp;&nbsp;멤버쉽&nbsp;&nbsp;>&nbsp;&nbsp;<b>회원정보수정</b></div>
+			</div>
+			
+			<div style="padding-top:20px;">
+				<div class="mo_tab">
+					<ul>
+						<li><a href="/modify.html" class="over">기본정보</a></li>
+						<li><a href="/modify_pw.html" class="out">비밀번호 관리</a></li>
+						<li><a href="/modify_limit" class="out">일일한도</a></li>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="join_tt">회원정보수정 <span class="cm">&nbsp;|&nbsp;&nbsp;필수입력사항</span></div>
+
+			<form id="fregisterform" name="fregisterform" action="modify.html" onsubmit="return fregisterform_submit(this);" method="post" enctype="multipart/form-data" autocomplete="off">
+			<div class="tbl_frm01 tbl_wrap">
+				<table>
+				<tbody>
+				<tr>
+					<th scope="row"><label for="reg_mb_name">이름</label></th>
+					<td>홍길동</td>
+				</tr>
+				<tr>
+					<th scope="row"><label for="reg_mb_id">아이디</label></th>
+					<td>testID</td>
+				</tr>
+				<tr>
+					<th scope="row"><label for="reg_mb_nick">별명</label></th>
+					<td>닉네임</td>
+				</tr>
+				<tr>
+					<th scope="row"><label for="reg_mb_password">국가</label></th>
+					<td><select name="" style="width:208px;">
+					<option value="South Korea">South Korea</option>
+					</select></td>
+				</tr>				
+				<tr>
+					<th scope="row"><label for="reg_mb_email">이메일</label></th>
+					<td><input type="text" name="mb_email" value="" id="reg_mb_email" class="frm_input email" size="30" maxlength="100"> <input type="checkbox" name="" value="Y"> 이메일 수신</td>
+				</tr>
+				<tr>
+					<th scope="row"><label for="reg_mb_hp">휴대폰번호</label></th>
+					<td>010-1234-5678 <input type="checkbox" name="" value="Y"> SMS수신</td>
+				</tr>
+				<tr>
+					<th scope="row">본인인증</th>
+					<td>
+						<div style="padding:15px 0 15px 0;"><span class="mo_tx">본인 인증이 완료 되었습니다.</span> <b>닉네임</b>님은 2017년 6월 13일 인증 받으셨습니다.</div>
+						<div style="border:2px solid #327e9f;padding:10px 15px 10px 15px;"><b>'게임산업 진흥에 관한 법률' 시행령 별표2 제8호</b>에 따라,<br>
+						2016년 3월 22일부터 <b>1년(365일)</b>마다 <b>본인확인</b>이 진행됩니다.</div>
+					</td>
+				</tr>
+				</tbody>
+				</table>
+			</div>
+
+			<div class="btn_confirm">
+				<ul>
+					<li><input type="submit" class="myButton" value="✔ 저장"></li>
+					<li><a href="/"  class="clButton">취소</a></li>
+				</ul>
+			</div>
+			</form>
+			<br>
+		</div>
+	</div>
+
+	<!---- content ---------->
+
+
+	<!---- footer ---------->
+
+	<div id="ft">
+		<div style="float:left"><img src="img/bottom_logo.jpg"></div>
+		<div class="txt">
+		<a href="">이용약관</a><a href="">개인정보취급방침</a><br>
+		원탑홀덤 대표 : 홍길동 &nbsp; 사업자번호 : 000-00-00000 &nbsp; 통신판매업 : 제2018-전주덕진-00000호<br>
+		전북 전주시 덕진구 추탄로 48(덕진동2가) 이현빌딩 4층 &nbsp; 대표전화 063-273-8171<br>
+		Copyright ⓒ 2018 ONETOP. All rights reserved.
+		</div>
+		<div style="float:right;padding-top:18px;">
+			<table cellpadding=0 cellspacing=0 class="info">
+				<tr>
+					<td>제명</td>
+					<td>원탑홀덤</td>
+					<td>상호</td>
+					<td>원탑게임즈</td>
+				</tr>
+				<tr>
+					<td>이용등급</td>
+					<td>청소년이용불가</td>
+					<td>등급 분류번호</td>
+					<td>00-00-000000-000</td>
+				</tr>
+				<tr>
+					<td>제작년월일</td>
+					<td>2018-01-01</td>
+					<td>신고(등록)번호</td>
+					<td>2018-000000호</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<!---- footer ---------->
+</div>
+
+</body>
+</html>

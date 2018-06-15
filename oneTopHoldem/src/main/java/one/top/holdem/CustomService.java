@@ -60,6 +60,26 @@ public class CustomService {
 		return customDao.updateMember(account);
 	}
 	
+	//비번수정
+	public Map<String, Object> modifyPassWordServ(String loginId, String nowPw, String newPw) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("loginId", loginId);
+		param.put("loginPassword", nowPw);
+		
+		Account account = customDao.selPwOverlap(param);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(account != null) {
+			account.setLoginPassword(newPw);
+			int result = customDao.updatePw(account);
+			if(result == 1) map.put("result", "succ");
+			else map.put("result", "fail");
+		}else {
+			map.put("result", "noAccount");
+		}
+		return map;
+	}
+	
 	public int getTournamentTotCnt() {
 		return customDao.getTournamentTotCnt();
 	}

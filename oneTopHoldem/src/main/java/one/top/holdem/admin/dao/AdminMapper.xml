@@ -30,8 +30,8 @@
 <select id="selectAllUserMaster" parameterType="Map" resultType="one.top.holdem.admin.vo.Account">
 	SELECT *
 	FROM dbo.Account
-	WHERE recommenderAccountId = #{loginId}
-	OR recommenderAccountId = #{accountId}
+	WHERE recommenderAccountId = #{accountId}
+	OR accountId = #{accountId}
 </select>
 
 <!-- 모든 회원정보 조회 -->
@@ -39,13 +39,17 @@
 	SELECT *
 	FROM dbo.Account
 	WHERE grade != 0
+	ORDER BY grade
 </select>
 
 <!-- 하나의 회원조회  -->
-<select id="selectAccount" parameterType="long" resultType="one.top.holdem.admin.vo.Account">
+<select id="selectAccount" parameterType="Map" resultType="one.top.holdem.admin.vo.Account">
 	SELECT *
 	FROM dbo.Account
-	WHERE accountId = #{accountId}
+	<trim prefix="WHERE" prefixOverrides="AND">
+		<if test="loginId != null and loginId != ''">AND loginId = #{loginId}</if>
+		<if test="loginId != null and loginId != ''">AND accountId = #{accountId}</if>
+	</trim>
 </select>
 
 <!-- 보유금액 조회 -->
@@ -160,6 +164,12 @@
 	VALUES(#{lastSendDate}, #{notice})
 </insert>
 
+<!-- 긴급공지 시간 수정 -->
+<update id="updateNotice">
+	UPDATE dbo.Notice
+	SET lastSendDate = getDate()
+</update>
+
 <!-- 메세지조회 -->
 
 <!-- 지점등록 -->
@@ -192,7 +202,6 @@
 	<if test="loginId != null and loginId != 'none'">AND loginId = #{loginId}</if>
 	<if test="recommenderAccountId != null and recommenderAccountId != ''">
 		AND recommenderAccountId=#{recommenderAccountId}
-		OR recommenderAccountId = #{accountId}
 	</if>
 </select>
 
@@ -202,5 +211,19 @@
 	FROM dbo.Account
 	WHERE loginId like '%'||#{branchId}||'%'
 </select>
+
+<!-- 긴급공지조회 -->
+<select id="selNoticeNowWorking" resultType="int">
+	SELECT COUNT(*)
+	FROM dbo.Notice
+	WHERE lastSendDate > getDate()
+</select>
+
+<!-- 일일한도금액 세팅 -->
+<update id="updateChipLimit" parameterType="one.top.holdem.admin.vo.Account">
+	UPDATE dbo.Account
+	SET maxTodaySpendGold = #{maxTodaySpendGold}
+	WHERE loginId = #{loginId}
+</update>
 
 </mapper>
